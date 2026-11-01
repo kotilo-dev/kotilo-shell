@@ -6,6 +6,7 @@
   "author": "kotilo",
   "description": "Notifications, review requests and repositories, through the gh CLI",
   "kind": "qml",
+  "icon": "git-branch",
   "slots": ["dashboard.tab"],
   "permissions": ["process"]
 }

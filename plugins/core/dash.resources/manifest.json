@@ -1,0 +1,11 @@
+{
+  "id": "dash.resources",
+  "name": "Resources card",
+  "version": "0.1.0",
+  "apiVersion": "^1.13",
+  "author": "kotilo",
+  "description": "CPU, memory and disk as vertical bars",
+  "kind": "qml",
+  "slots": ["dashboard.card"],
+  "permissions": ["process"]
+}

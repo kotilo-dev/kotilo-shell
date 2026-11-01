@@ -6,6 +6,7 @@
   "author": "kotilo",
   "description": "A reader for the feeds you list",
   "kind": "qml",
+  "icon": "rss",
   "slots": ["dashboard.tab"],
   "permissions": ["process"],
   "settingsSchema": "settings.schema.json"

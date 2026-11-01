@@ -8,7 +8,8 @@ import "forecast.js" as Forecast
 // looks up a location from the IP address.
 C.Card {
     id: card
-    title: place ? place.name : "Weather"
+    readonly property var area: ({ x: 0, y: 0, w: 0.36, h: 0.27 })
+    centered: true
     readonly property string city: K.Settings.get("dash.weather", "city", "")
     readonly property string unit: K.Settings.get("dash.weather", "unit", "celsius")
     property var place: null
@@ -37,31 +38,15 @@ C.Card {
     C.Label { visible: !card.weather; width: parent.width; wrapMode: Text.Wrap; secondary: true; textFormat: Text.PlainText; text: card.status }
 
     Row {
+        anchors.horizontalCenter: parent.horizontalCenter
         visible: !!card.weather
-        spacing: K.Theme.space.md
+        spacing: K.Theme.space.lg
 
-        C.Icon { anchors.verticalCenter: parent.verticalCenter; size: 32; color: K.Theme.text.secondary; name: card.weather ? Forecast.describe(card.weather.code).icon : "" }
+        C.Icon { anchors.verticalCenter: parent.verticalCenter; size: 48; color: K.Theme.text.primary; name: card.weather ? Forecast.describe(card.weather.code).icon : "" }
         Column {
-            C.Label { font.pixelSize: K.Theme.font.size + 11; text: card.weather ? card.weather.temperature + "°" : "" }
+            anchors.verticalCenter: parent.verticalCenter
+            C.Label { color: K.Theme.accent.primary; font.pixelSize: K.Theme.font.size + 15; font.weight: Font.DemiBold; text: card.weather ? card.weather.temperature + (card.unit === "fahrenheit" ? "°F" : "°C") : "" }
             C.Label { secondary: true; text: card.weather ? Forecast.describe(card.weather.code).label : "" }
-        }
-    }
-
-    Row {
-        width: parent.width
-        visible: !!card.weather
-
-        Repeater {
-            model: card.weather ? card.weather.days : []
-            delegate: Column {
-                required property var modelData
-                width: parent.width / 3
-                spacing: K.Theme.space.xs
-
-                C.Label { secondary: true; font.pixelSize: K.Theme.font.size - 2; text: Qt.formatDate(new Date(modelData.date + "T12:00:00"), "ddd") }
-                C.Icon { size: 16; color: K.Theme.text.secondary; name: Forecast.describe(modelData.code).icon }
-                C.Label { font.features: { "tnum": 1 }; text: modelData.high + "° " + modelData.low + "°" }
-            }
         }
     }
 }

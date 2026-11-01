@@ -7,7 +7,7 @@ import "month.js" as Month
 
 C.Card {
     id: card
-    title: Qt.formatDate(new Date(year, month, 1), "MMMM yyyy")
+    readonly property var area: ({ x: 0.14, y: 0.27, w: 0.5, h: 0.73 })
 
     SystemClock { id: clock; precision: SystemClock.Hours }
     readonly property date today: clock.date
@@ -41,10 +41,18 @@ C.Card {
         MouseArea { id: stepMouse; anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor; onClicked: step.activated() }
     }
 
-    Row {
-        spacing: K.Theme.space.xs
-        Step { text: "‹"; onActivated: card.shift(-1) }
-        Step { text: "›"; onActivated: card.shift(1) }
+    Item {
+        width: parent.width
+        height: 28
+
+        Step { anchors.left: parent.left; text: "‹"; onActivated: card.shift(-1) }
+        C.Label {
+            anchors.centerIn: parent
+            color: K.Theme.accent.primary
+            font.weight: Font.DemiBold
+            text: Qt.formatDate(new Date(card.year, card.month, 1), "MMMM yyyy")
+        }
+        Step { anchors.right: parent.right; text: "›"; onActivated: card.shift(1) }
     }
 
     Grid {
@@ -52,17 +60,20 @@ C.Card {
         width: parent.width
         columns: 7
         readonly property real cell: width / 7
+        // Rows share the card's height, with one row for the weekday names.
+        readonly property real rowHeight: (card.height - 2 * K.Theme.space.md - 28 - 2 * K.Theme.space.sm) / (Month.weeks(card.year, card.month, card.firstDay).length + 1)
 
         Repeater {
             model: Month.weekdays(card.firstDay)
             delegate: C.Label {
                 required property var modelData
                 width: days.cell
+                height: days.rowHeight
                 horizontalAlignment: Text.AlignHCenter
                 secondary: true
                 font.pixelSize: K.Theme.font.size - 2
                 // 4 January 1970 was a Sunday.
-                text: Qt.formatDate(new Date(1970, 0, 4 + modelData), "ddd").slice(0, 2)
+                text: Qt.formatDate(new Date(1970, 0, 4 + modelData), "ddd")
             }
         }
 
@@ -71,24 +82,23 @@ C.Card {
             delegate: Item {
                 id: day
                 required property var modelData
-                readonly property bool isToday: modelData > 0 && card.year === card.today.getFullYear()
-                    && card.month === card.today.getMonth() && modelData === card.today.getDate()
+                readonly property bool isToday: modelData.inMonth && card.year === card.today.getFullYear()
+                    && card.month === card.today.getMonth() && modelData.day === card.today.getDate()
                 width: days.cell
-                height: 28
+                height: days.rowHeight
 
                 Rectangle {
                     anchors.centerIn: parent
-                    width: 26; height: 26
+                    width: 24; height: 24
                     radius: width / 2
                     visible: day.isToday
                     color: K.Theme.accent.primary
                 }
                 C.Label {
                     anchors.centerIn: parent
-                    visible: day.modelData > 0
-                    color: day.isToday ? K.Theme.text.onAccent : K.Theme.text.primary
+                    color: day.isToday ? K.Theme.text.onAccent : (day.modelData.inMonth ? K.Theme.text.primary : K.Theme.text.muted)
                     font.features: { "tnum": 1 }
-                    text: day.modelData
+                    text: day.modelData.day
                 }
             }
         }

@@ -8,18 +8,20 @@ Surface {
     property var plugin: null
     property string slot: ""
     property string title: ""
+    property bool centered: false               // content in the middle of a taller card
     default property alias content: body.data
     level: 1
+    radius: K.Theme.radius.lg
     implicitHeight: column.implicitHeight + 2 * K.Theme.space.md
 
     Column {
         id: column
         x: K.Theme.space.md
-        y: K.Theme.space.md
+        y: card.centered ? (card.height - implicitHeight) / 2 : K.Theme.space.md
         width: card.width - 2 * K.Theme.space.md
         spacing: K.Theme.space.sm
 
-        Label { secondary: true; textFormat: Text.PlainText; font.pixelSize: K.Theme.font.size - 2; text: card.title }
+        Label { visible: card.title.length > 0; secondary: true; textFormat: Text.PlainText; font.pixelSize: K.Theme.font.size - 2; text: card.title }
         Column { id: body; width: parent.width; spacing: K.Theme.space.xs }
     }
 }

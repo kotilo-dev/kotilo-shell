@@ -91,6 +91,11 @@
       "type": "string",
       "pattern": "^[a-z][a-z0-9-]*$",
       "description": "Bar plugins with the same group sit close together"
+    },
+    "icon": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Icon name, for example on a dashboard tab"
     }
   },
   "allOf": [

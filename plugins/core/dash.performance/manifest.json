@@ -6,6 +6,7 @@
   "author": "kotilo",
   "description": "CPU and memory history, and processes grouped by name",
   "kind": "qml",
+  "icon": "gauge",
   "slots": ["dashboard.tab"],
   "permissions": ["process"]
 }

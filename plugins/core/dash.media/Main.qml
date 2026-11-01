@@ -1,20 +1,36 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import QtQuick
+import Quickshell.Io
+import Quickshell.Widgets
 import qs.Shell as K
 import qs.services as S
 import qs.components as C
 
+// Artwork, track and controls, over a live audio spectrum. Cava runs only while something plays
+// and the dashboard is open. Without cava the bars stay flat.
 C.Card {
     id: card
-    title: S.Mpris.ready ? S.Mpris.player.identity : "Media"
+    readonly property var area: ({ x: 0.76, y: 0, w: 0.24, h: 1 })
     readonly property var player: S.Mpris.player
+    readonly property bool playing: !!player && player.isPlaying
     readonly property bool hasLength: !!player && player.lengthSupported && player.length > 0
+    readonly property int barCount: 16
+    property var levels: []
+
+    Process {
+        running: !!card.plugin && card.playing
+        command: ["cava", "-p", card.plugin ? card.plugin.dir + "/cava.conf" : ""]
+        stdout: SplitParser {
+            onRead: line => { card.levels = line.split(";").slice(0, card.barCount).map(Number); }
+        }
+        onRunningChanged: if (!running) card.levels = []
+    }
 
     component Control: Rectangle {
         id: control
         property string icon: ""
         signal activated()
-        width: 36; height: 36
+        width: 30; height: 30
         radius: K.Theme.radius.sm
         color: "transparent"
         activeFocusOnTab: true
@@ -25,65 +41,105 @@ C.Card {
         }
         C.StateLayer { hovered: controlMouse.containsMouse; pressed: controlMouse.pressed }
         C.FocusRing { visible: control.activeFocus }
-        C.Icon { anchors.centerIn: parent; name: control.icon; size: 18; color: K.Theme.text.primary }
+        C.Icon { anchors.centerIn: parent; name: control.icon; size: 16; color: K.Theme.text.primary }
         MouseArea { id: controlMouse; anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor; onClicked: control.activated() }
     }
 
-    Row {
+    Item {
         width: parent.width
-        spacing: K.Theme.space.md
-        visible: S.Mpris.ready
+        height: card.height - 2 * K.Theme.space.md
 
-        Image {
-            id: art
-            width: 64; height: 64
-            visible: source.toString().length > 0 && status !== Image.Error
-            source: card.player ? card.player.trackArtUrl : ""
-            sourceSize: Qt.size(128, 128)
-            asynchronous: true
-            fillMode: Image.PreserveAspectCrop
+        // Rings around the artwork, as in a record sleeve.
+        Item {
+            id: disc
+            anchors.horizontalCenter: parent.horizontalCenter
+            y: K.Theme.space.sm
+            width: Math.min(parent.width, 132); height: width
+
+            Repeater {
+                model: [1, 0.86]
+                delegate: Rectangle {
+                    required property var modelData
+                    anchors.centerIn: parent
+                    width: disc.width * modelData; height: width
+                    radius: width / 2
+                    color: "transparent"
+                    border.width: 1
+                    border.color: K.Theme.surface[0]
+                }
+            }
+            ClippingRectangle {
+                anchors.centerIn: parent
+                width: disc.width * 0.72; height: width
+                radius: width / 2
+                color: K.Theme.bg.mantle
+
+                C.Icon {
+                    anchors.centerIn: parent
+                    visible: art.status !== Image.Ready
+                    name: "image"
+                    size: 32
+                    color: K.Theme.text.secondary
+                }
+                Image {
+                    id: art
+                    anchors.fill: parent
+                    source: card.player ? card.player.trackArtUrl : ""
+                    sourceSize: Qt.size(192, 192)
+                    asynchronous: true
+                    fillMode: Image.PreserveAspectCrop
+                }
+            }
         }
+
         Column {
-            anchors.verticalCenter: parent.verticalCenter
-            width: parent.width - (art.visible ? art.width + parent.spacing : 0)
+            id: track
+            anchors { top: disc.bottom; left: parent.left; right: parent.right; topMargin: K.Theme.space.md }
+            spacing: K.Theme.space.xs
 
-            C.Label { width: parent.width; elide: Text.ElideRight; textFormat: Text.PlainText; text: card.player ? (card.player.trackTitle || "Unknown track") : "" }
-            C.Label { width: parent.width; elide: Text.ElideRight; secondary: true; textFormat: Text.PlainText; text: card.player ? card.player.trackArtist : "" }
+            C.Label { width: parent.width; horizontalAlignment: Text.AlignHCenter; elide: Text.ElideRight; color: K.Theme.accent.primary; textFormat: Text.PlainText; text: card.player && card.player.trackTitle ? card.player.trackTitle : "No media" }
+            C.Label { width: parent.width; horizontalAlignment: Text.AlignHCenter; elide: Text.ElideRight; secondary: true; font.pixelSize: K.Theme.font.size - 1; textFormat: Text.PlainText; text: card.player && card.player.trackAlbum ? card.player.trackAlbum : "No media" }
+            C.Label { width: parent.width; horizontalAlignment: Text.AlignHCenter; elide: Text.ElideRight; secondary: true; font.pixelSize: K.Theme.font.size - 1; textFormat: Text.PlainText; text: card.player && card.player.trackArtist ? card.player.trackArtist : "No media" }
+        }
+
+        Row {
+            id: controls
+            anchors { top: track.bottom; horizontalCenter: parent.horizontalCenter; topMargin: K.Theme.space.sm }
+            spacing: K.Theme.space.sm
+            Control { icon: "media-previous"; onActivated: S.Mpris.previous() }
+            Control { icon: card.playing ? "media-pause" : "media-play"; onActivated: S.Mpris.toggle() }
+            Control { icon: "media-next"; onActivated: S.Mpris.next() }
+        }
+
+        Row {
+            anchors { top: controls.bottom; bottom: parent.bottom; left: parent.left; right: parent.right; topMargin: K.Theme.space.sm }
+            spacing: 2
+
+            Repeater {
+                model: card.barCount
+                delegate: Item {
+                    required property int index
+                    width: (parent.width - (card.barCount - 1) * parent.spacing) / card.barCount
+                    height: parent.height
+
+                    Rectangle {
+                        anchors.bottom: parent.bottom
+                        width: parent.width
+                        height: Math.max(3, (card.levels[parent.index] || 0) / 100 * parent.height)
+                        radius: width / 2
+                        color: K.Theme.accent.primary
+                        Behavior on height { NumberAnimation { duration: 50 } }
+                    }
+                }
+            }
         }
     }
 
-    Rectangle {
-        id: track
-        width: parent.width
-        height: 4
-        radius: 2
-        visible: card.hasLength
-        color: K.Theme.surface[0]
-
-        Rectangle {
-            id: fill
-            height: parent.height
-            radius: parent.radius
-            color: K.Theme.text.secondary
-            width: card.hasLength ? Math.min(1, card.player.position / card.player.length) * parent.width : 0
-        }
-        // MPRIS does not announce position, so it is read while a track plays and the card exists.
-        Timer {
-            interval: 1000
-            repeat: true
-            running: track.visible && card.player.isPlaying
-            onTriggered: card.player.positionChanged()
-        }
+    // MPRIS does not announce position, so it is read while a track plays and the card exists.
+    Timer {
+        interval: 1000
+        repeat: true
+        running: card.playing && card.hasLength
+        onTriggered: card.player.positionChanged()
     }
-
-    Row {
-        anchors.horizontalCenter: parent.horizontalCenter
-        visible: S.Mpris.ready
-        spacing: K.Theme.space.sm
-        Control { icon: "media-previous"; onActivated: S.Mpris.previous() }
-        Control { icon: S.Mpris.ready && S.Mpris.player.isPlaying ? "media-pause" : "media-play"; onActivated: S.Mpris.toggle() }
-        Control { icon: "media-next"; onActivated: S.Mpris.next() }
-    }
-
-    C.Label { visible: !S.Mpris.ready; secondary: true; text: "Nothing is playing" }
 }

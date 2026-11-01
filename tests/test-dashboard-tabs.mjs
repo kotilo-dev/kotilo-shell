@@ -82,11 +82,19 @@ console.log("  dashboard tab checks pass");
 
 const month = load("dash.calendar/month.js");
 const novemberRows = plain(month.weeks(2026, 10, 1));     // November 2026 starts on a Sunday
-assert.deepEqual(novemberRows[0], [0, 0, 0, 0, 0, 0, 1], "Monday first");
-assert.deepEqual(novemberRows[novemberRows.length - 1], [30, 0, 0, 0, 0, 0, 0]);
-assert.deepEqual(plain(month.weeks(2026, 10, 0))[0], [1, 2, 3, 4, 5, 6, 7], "Sunday first");
-assert.ok(plain(month.weeks(2028, 1, 1)).flat().includes(29), "leap year");
-assert.ok(!plain(month.weeks(2026, 1, 1)).flat().includes(29));
+assert.deepEqual(novemberRows[0].map(c => c.day), [26, 27, 28, 29, 30, 31, 1], "Monday first, with days from October");
+assert.deepEqual(novemberRows[0].map(c => c.inMonth), [false, false, false, false, false, false, true]);
+const lastWeek = novemberRows[novemberRows.length - 1];
+assert.equal(lastWeek[0].day, 30);
+assert.equal(lastWeek[0].inMonth, true);
+assert.equal(lastWeek[1].day, 1);
+assert.equal(lastWeek[1].inMonth, false);
+assert.deepEqual(plain(month.weeks(2026, 10, 0))[0].map(c => c.day), [1, 2, 3, 4, 5, 6, 7], "Sunday first");
+const inMonth = (y, m) => plain(month.weeks(y, m, 1)).flat().filter(c => c.inMonth).map(c => c.day);
+assert.ok(inMonth(2028, 1).includes(29), "leap year");
+assert.ok(!inMonth(2026, 1).includes(29));
+assert.equal(inMonth(2026, 11).length, 31, "December stays inside its year");
+assert.equal(inMonth(2027, 0).length, 31, "January too");
 assert.deepEqual(plain(month.weekdays(1)), [1, 2, 3, 4, 5, 6, 0]);
 
 const w = load("dash.weather/forecast.js");

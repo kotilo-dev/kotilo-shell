@@ -51,7 +51,8 @@ Item {
             WlrLayershell.keyboardFocus: reveal.open ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
             readonly property var tabEntries: root.host && root.host.ready ? root.host.slot("dashboard.tab") : []
-            readonly property var titles: ["Dashboard"].concat(tabEntries.map(t => t.manifest.name.replace(/ tab$/, "")))
+            readonly property var titles: [{ name: "Dashboard", icon: "dashboard" }]
+                .concat(tabEntries.map(t => ({ name: t.manifest.name.replace(/ tab$/, ""), icon: t.manifest.icon || "dashboard" })))
             readonly property int barInset: {
                 const bar = K.Settings.global.bar || {};
                 return bar.position === "bottom" ? 0 : K.Theme.barSize(bar.height || 36);
@@ -64,8 +65,9 @@ Item {
             C.Surface {
                 anchors.horizontalCenter: parent.horizontalCenter
                 y: win.barInset + K.Theme.space.sm
-                width: Math.min(1000, parent.width - 2 * K.Theme.space.lg)
-                height: parent.height - win.barInset - 2 * K.Theme.space.sm
+                width: Math.min(860, parent.width - 2 * K.Theme.space.lg)
+                height: Math.min(520, parent.height - win.barInset - 2 * K.Theme.space.sm)
+                radius: K.Theme.radius.lg * 1.5
 
                 opacity: reveal.progress
                 enabled: reveal.open
@@ -94,28 +96,41 @@ Item {
 
                     Row {
                         id: tabBar
-                        spacing: K.Theme.space.xs
+                        width: parent.width
+                        height: 54
 
                         Repeater {
                             model: win.titles
 
-                            delegate: Rectangle {
+                            delegate: Item {
                                 id: tabButton
                                 required property var modelData
                                 required property int index
                                 readonly property bool chosen: index === root.tab
-                                width: tabLabel.implicitWidth + 2 * K.Theme.space.md
-                                height: 32
-                                radius: K.Theme.radius.sm
-                                color: chosen ? K.Theme.surface[0] : "transparent"
+                                readonly property color tone: chosen ? K.Theme.accent.primary : K.Theme.text.secondary
+                                width: parent.width / win.titles.length
+                                height: parent.height
 
-                                C.StateLayer { hovered: tabMouse.containsMouse; pressed: tabMouse.pressed }
-                                C.Label {
-                                    id: tabLabel
+                                Rectangle {
+                                    anchors.fill: parent
+                                    anchors.margins: K.Theme.space.xs
+                                    radius: K.Theme.radius.sm
+                                    color: "transparent"
+                                    C.StateLayer { hovered: tabMouse.containsMouse; pressed: tabMouse.pressed }
+                                }
+                                Column {
                                     anchors.centerIn: parent
-                                    textFormat: Text.PlainText
-                                    color: tabButton.chosen ? K.Theme.text.primary : K.Theme.text.secondary
-                                    text: tabButton.modelData
+                                    spacing: 2
+                                    C.Icon { anchors.horizontalCenter: parent.horizontalCenter; name: tabButton.modelData.icon; size: 18; color: tabButton.tone }
+                                    C.Label { anchors.horizontalCenter: parent.horizontalCenter; textFormat: Text.PlainText; color: tabButton.tone; text: tabButton.modelData.name }
+                                }
+                                Rectangle {
+                                    anchors { bottom: parent.bottom; horizontalCenter: parent.horizontalCenter }
+                                    visible: tabButton.chosen
+                                    width: Math.min(76, parent.width * 0.7)
+                                    height: 3
+                                    radius: 1.5
+                                    color: K.Theme.accent.primary
                                 }
                                 MouseArea {
                                     id: tabMouse
@@ -128,49 +143,42 @@ Item {
                         }
                     }
 
-                    Item {
-                        anchors { top: tabBar.bottom; bottom: hints.top; left: parent.left; right: parent.right; topMargin: K.Theme.space.md; bottomMargin: K.Theme.space.sm }
+                    Rectangle {
+                        id: tabLine
+                        anchors { top: tabBar.bottom; left: parent.left; right: parent.right }
+                        height: 1
+                        color: K.Theme.surface[0]
+                    }
 
-                        Flickable {
+                    Item {
+                        anchors { top: tabLine.bottom; bottom: parent.bottom; left: parent.left; right: parent.right; topMargin: K.Theme.space.md }
+
+                        // Each card places itself with `area`, fractions of this grid. A third-party card
+                        // without one takes the free space a Card fills: a row of its own below.
+                        Item {
+                            id: grid
                             anchors.fill: parent
                             visible: root.tab === 0
-                            clip: true
-                            contentHeight: flow.implicitHeight
-                            boundsBehavior: Flickable.StopAtBounds
+                            readonly property int gap: K.Theme.space.sm
 
-                            // Three columns, filled in slot order: card n goes to column n % 3.
-                            Row {
-                                id: flow
-                                readonly property var cards: root.host && root.host.ready ? root.host.slot("dashboard.card") : []
-                                readonly property real columnWidth: (width - 2 * spacing) / 3
-                                width: parent.width
-                                spacing: K.Theme.space.md
+                            Repeater {
+                                model: root.host && root.host.ready ? root.host.slot("dashboard.card") : []
 
-                                Repeater {
-                                    model: 3
-
-                                    delegate: Column {
-                                        id: cardColumn
-                                        required property int index
-                                        width: flow.columnWidth
-                                        spacing: K.Theme.space.md
-
-                                        Repeater {
-                                            model: flow.cards.filter((card, i) => i % 3 === cardColumn.index)
-
-                                            delegate: Loader {
-                                                required property var modelData
-                                                width: cardColumn.width
-                                                source: modelData.url
-                                                onLoaded: {
-                                                    item.plugin = modelData;
-                                                    item.slot = "dashboard.card";
-                                                    item.width = Qt.binding(() => width);
-                                                }
-                                                onStatusChanged: if (status === Loader.Error) K.Log.error("failed to mount " + modelData.id, "dashboard")
-                                            }
-                                        }
+                                delegate: Loader {
+                                    required property var modelData
+                                    readonly property var area: item && item.area ? item.area : ({ x: 0, y: 1, w: 1, h: 0.2 })
+                                    x: area.x * (grid.width + grid.gap)
+                                    y: area.y * (grid.height + grid.gap)
+                                    width: area.w * (grid.width + grid.gap) - grid.gap
+                                    height: area.h * (grid.height + grid.gap) - grid.gap
+                                    source: modelData.url
+                                    onLoaded: {
+                                        item.plugin = modelData;
+                                        item.slot = "dashboard.card";
+                                        item.width = Qt.binding(() => width);
+                                        item.height = Qt.binding(() => height);
                                     }
+                                    onStatusChanged: if (status === Loader.Error) K.Log.error("failed to mount " + modelData.id, "dashboard")
                                 }
                             }
                         }
@@ -199,14 +207,6 @@ Item {
                                 onStatusChanged: if (status === Loader.Error) K.Log.error("failed to mount " + modelData.id, "dashboard")
                             }
                         }
-                    }
-
-                    C.Label {
-                        id: hints
-                        anchors { bottom: parent.bottom; left: parent.left }
-                        secondary: true
-                        font.pixelSize: K.Theme.font.size - 2
-                        text: "←→ or 1–" + win.titles.length + " tabs   ↑↓ move   ↵ open   esc close"
                     }
                 }
             }

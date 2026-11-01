@@ -6,6 +6,7 @@
   "author": "kotilo",
   "description": "Running agents and pending approvals",
   "kind": "qml",
+  "icon": "agent",
   "slots": ["dashboard.tab"],
   "permissions": []
 }

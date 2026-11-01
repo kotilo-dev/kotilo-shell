@@ -5,13 +5,13 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 ## [Unreleased]
 
 ### Added
-- Dashboard cards for the clock, calendar, media and weather. Weather uses Open-Meteo and stays offline until you set a city
+- Dashboard grid with weather, system, stacked clock, calendar, resource bars and media with a cava spectrum (API 1.13). Weather uses Open-Meteo and stays offline until you set a city
 - Dashboard panel with tabs, opened from the date and time: Dashboard, Performance with processes grouped by name, Agents, GitHub and RSS (`dashboard.tab`, API 1.12, ADR-0017)
 - Windows list in the bar: pick a window to switch to its workspace and focus it (`Workspaces.workspaceOf`, API 1.11)
 - Bar scale setting: small, normal and large (API 1.10)
 - Kotilo shell icon at the left of the bar, which opens settings
 - Workspace indicator styles: numbers, Roman numerals, dots and circles
-- Dashboard with a `dashboard.card` slot, a Focus card and an open pull requests card (API 1.7, ADR-0015)
+- Dashboard with a `dashboard.card` slot (API 1.7, ADR-0015)
 - Settings panel with general settings and forms generated from each plugin's schema (API 1.6, ADR-0004)
 
 ### Changed
