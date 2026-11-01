@@ -5,6 +5,7 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 ## [Unreleased]
 
 ### Added
+- Dashboard panel with tabs, opened from the date and time: Dashboard, Performance with processes grouped by name, Agents, GitHub and RSS (`dashboard.tab`, API 1.12, ADR-0017)
 - Windows list in the bar: pick a window to switch to its workspace and focus it (`Workspaces.workspaceOf`, API 1.11)
 - Bar scale setting: small, normal and large (API 1.10)
 - Kotilo shell icon at the left of the bar, which opens settings

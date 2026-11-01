@@ -1,0 +1,11 @@
+{
+  "id": "dash.agents",
+  "name": "Agents tab",
+  "version": "0.1.0",
+  "apiVersion": "^1.12",
+  "author": "kotilo",
+  "description": "Running agents and pending approvals",
+  "kind": "qml",
+  "slots": ["dashboard.tab"],
+  "permissions": []
+}

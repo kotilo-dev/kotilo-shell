@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RSS",
+  "type": "object",
+  "properties": {
+    "feeds": { "type": "array", "title": "Feed addresses", "items": { "type": "string" }, "default": [] },
+    "limit": { "type": "integer", "title": "Articles to show", "default": 60, "minimum": 5, "maximum": 300 }
+  }
+}

@@ -15,7 +15,8 @@ Singleton {
     property int ram: 0                 // percent, MemAvailable counts as free
     property real ramUsedGb: 0
     property var history: []            // recent cpu values, oldest first
-    readonly property int historySize: 10
+    property var ramHistory: []         // recent memory values
+    readonly property int historySize: 120
     property bool netReady: false
     property real netDown: 0            // bytes per second, real interfaces only
     property real netUp: 0
@@ -81,6 +82,7 @@ Singleton {
         const total = kb("MemTotal"), available = kb("MemAvailable");
         if (total === 0) { error = "/proc/meminfo has no MemTotal"; return; }
         ram = Math.round(100 * (1 - available / total));
+        ramHistory = ramHistory.slice(1 - historySize).concat([ram]);
         ramUsedGb = (total - available) / 1048576;
         ready = true;
     }

@@ -109,6 +109,7 @@ In the bar, `barGroup` in the manifest places a plugin close to others in the sa
 | `bar.left` / `bar.center` / `bar.right` | Row in the bar | order set in `settings.slots.<slot>`; unlisted plugins follow, sorted by id |
 | `controlcenter.tile` | 3-column grid | root is `C.Tile`: set `title`, `subtitle`, `icon`, `active`, `available`, handle `activated()` (ADR-0009) |
 | `dashboard.card` | two-column flow | root is `C.Card`: set `title`, children go below it. Exists only while the panel is open, so fetch on load (ADR-0015) |
+| `dashboard.tab` | tabs of the dashboard panel | root has `title`, `current` (set by the panel, so poll only while true) and `key(event)`, which returns true when it used the key (ADR-0017) |
 | `lock.widget` | lock screen | below the clock |
 | `osd.kind` | OSD stack | custom OSD types |
 | `shell.overlay` | hidden host | plugins that own a full-screen window, such as the palette |

@@ -66,7 +66,7 @@ C.Card {
                 anchors { left: parent.left; right: parent.right; leftMargin: K.Theme.space.sm; rightMargin: K.Theme.space.sm; verticalCenter: parent.verticalCenter }
                 elide: Text.ElideRight
                 textFormat: Text.PlainText
-                text: row.modelData.title + "  " + (row.modelData.repository ? row.modelData.repository.name : "") + "#" + row.modelData.number
+                text: row.modelData.title + "  " + (row.modelData.repository ? (row.modelData.repository.name || row.modelData.repository.nameWithOwner || "") : "") + "#" + row.modelData.number
             }
             MouseArea {
                 id: mouse

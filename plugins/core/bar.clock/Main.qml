@@ -5,13 +5,12 @@ import qs.Shell as K
 import qs.components as C
 
 // Clock with extra zones: settings.plugins["bar.clock"].zones = [{"label":"SFO","tz":"America/Los_Angeles"}]
-Row {
+C.Pill {
     id: root
-    property var plugin: null
-    property string slot: ""
-    spacing: K.Theme.barSize(8)
+    tooltip: "Open the dashboard"
+    onClicked: K.Shell.toggleDashboard()
 
-    readonly property string format: K.Settings.get("bar.clock", "format", "HH:mm")
+    readonly property string format: K.Settings.get("bar.clock", "format", "ddd d MMM  HH:mm")
     readonly property var zones: K.Settings.get("bar.clock", "zones", [])
     readonly property string localLabel: K.Settings.get("bar.clock", "localLabel", "")
 
@@ -39,14 +38,14 @@ Row {
     function fmt(date, tz) {
         const offset = root.offsets[tz];
         if (offset === undefined) return "--:--";
-        return Qt.formatTime(new Date(date.getTime() + (date.getTimezoneOffset() + offset) * 60000), root.format);
+        return Qt.formatTime(new Date(date.getTime() + (date.getTimezoneOffset() + offset) * 60000), "HH:mm");
     }
 
     C.Label {
         font.pixelSize: K.Theme.barFontSize
         font.weight: Font.DemiBold
         font.features: { "tnum": 1 }
-        text: Qt.formatTime(clock.date, root.format) + (root.localLabel ? " " : "")
+        text: Qt.formatDateTime(clock.date, root.format) + (root.localLabel ? " " : "")
         anchors.verticalCenter: parent.verticalCenter
     }
     C.Label { font.pixelSize: K.Theme.barFontSize; visible: root.localLabel.length > 0; text: root.localLabel; secondary: true; mono: true; anchors.verticalCenter: parent.verticalCenter }

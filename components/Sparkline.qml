@@ -10,6 +10,8 @@ Row {
     property var values: []
     property int count: 10
     property color color: K.Theme.text.secondary
+    property int barWidth: 2
+    property bool linear: false                 // true height, for a panel with room
     height: K.Theme.barSize(14)
     spacing: 1
 
@@ -20,14 +22,14 @@ Row {
             id: column
             required property int index
             readonly property real value: spark.values[spark.values.length - spark.count + index] || 0
-            width: 2
+            width: spark.barWidth
             height: spark.height
             color: K.Theme.surface[0]
 
             Rectangle {
                 anchors.bottom: parent.bottom
                 width: parent.width
-                height: column.value > 0 ? Math.max(2, Math.sqrt(Math.min(1, column.value / 100)) * parent.height) : 0
+                height: column.value > 0 ? Math.max(2, (spark.linear ? Math.min(1, column.value / 100) : Math.sqrt(Math.min(1, column.value / 100))) * parent.height) : 0
                 color: spark.color
             }
         }

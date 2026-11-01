@@ -24,7 +24,7 @@ Row {
         C.Sparkline {
             anchors.verticalCenter: parent.verticalCenter
             visible: K.Settings.get("bar.resources", "sparkline", true)
-            count: S.Resources.historySize
+            count: 10
             values: S.Resources.history
             color: root.high ? K.Theme.state.warning : K.Theme.text.secondary
         }

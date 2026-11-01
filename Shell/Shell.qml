@@ -10,7 +10,7 @@ Singleton {
     id: root
 
     readonly property string version: "0.3.0"
-    readonly property string apiVersion: "1.11.0"
+    readonly property string apiVersion: "1.12.0"
 
     // Resolved config/data dirs (XDG-compliant; never assume a distro layout).
     // The shell/ level keeps these apart from Kotilo Desktop's own files: see docs/adr/0005.
@@ -106,8 +106,10 @@ Singleton {
         return action;
     }
 
-    // Asks the dashboard to close, for a card whose action leaves the shell.
+    // Asks the dashboard to close, for a card or tab whose action leaves the shell.
     signal dashboardClosed()
+    signal dashboardToggled()
+    function toggleDashboard() { dashboardToggled(); }
 
     signal settingsToggled()
     function toggleSettings() { settingsToggled(); }

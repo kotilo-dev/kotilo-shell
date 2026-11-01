@@ -1,13 +1,13 @@
 {
   "id": "bar.clock",
   "name": "Clock",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "apiVersion": "^1.0",
   "author": "kotilo",
   "description": "Local time plus optional extra time zones for distributed teams",
   "kind": "qml",
   "slots": [
-    "bar.right"
+    "bar.center"
   ],
   "permissions": [
     "process"

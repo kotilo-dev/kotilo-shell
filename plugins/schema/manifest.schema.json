@@ -59,6 +59,7 @@
           "bar.right",
           "controlcenter.tile",
           "dashboard.card",
+          "dashboard.tab",
           "lock.widget",
           "osd.kind",
           "shell.overlay",

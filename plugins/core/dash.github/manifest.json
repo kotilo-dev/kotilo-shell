@@ -1,0 +1,11 @@
+{
+  "id": "dash.github",
+  "name": "GitHub tab",
+  "version": "0.1.0",
+  "apiVersion": "^1.12",
+  "author": "kotilo",
+  "description": "Notifications, review requests and repositories, through the gh CLI",
+  "kind": "qml",
+  "slots": ["dashboard.tab"],
+  "permissions": ["process"]
+}

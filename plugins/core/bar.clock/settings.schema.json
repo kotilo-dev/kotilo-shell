@@ -3,7 +3,7 @@
   "title": "Clock",
   "type": "object",
   "properties": {
-    "format": { "type": "string", "default": "HH:mm", "title": "Time format (Qt)" },
+    "format": { "type": "string", "default": "ddd d MMM  HH:mm", "title": "Date and time format (Qt)" },
     "localLabel": { "type": "string", "default": "", "title": "Label for local time (e.g. IST)" },
     "zones": {
       "type": "array", "title": "Extra time zones",
