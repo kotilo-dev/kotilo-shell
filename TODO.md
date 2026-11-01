@@ -16,7 +16,7 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 - [x] OSD (volume/brightness)
 - [x] `install/install.sh` end-to-end on Arch, Fedora, Ubuntu (distrobox)
 - [x] README GIF
-- [ ] AUR `kotilo-shell-git` publish (PKGBUILD builds; blocked: AUR registration paused as of 2026-11-01, watch aur-general / Arch news; also needs public GitHub repo + AUR SSH key. Restore `paru -S kotilo-shell-git` in README after publishing)
+- [ ] AUR `kotilo-shell-git` publish (PKGBUILD builds; blocked: AUR registration paused as of 2026-11-01, watch aur-general / Arch news; also needs an AUR SSH key. Restore `paru -S kotilo-shell-git` in README after publishing)
 
 ## Parking lot
 - CPU sparkline and net up/down in `bar.resources` (SPEC §3.1)
