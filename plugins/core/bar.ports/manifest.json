@@ -6,6 +6,7 @@
   "author": "kotilo",
   "description": "Listening dev ports; click one to open it in the browser",
   "kind": "qml",
+  "barGroup": "dev",
   "slots": ["bar.center"],
   "permissions": ["process"],
   "settingsSchema": "settings.schema.json"

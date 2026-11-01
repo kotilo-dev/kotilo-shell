@@ -3,7 +3,7 @@
   "version": 1,
   "theme": { "id": "catppuccin-mocha", "autoVariant": "off", "propagate": true },
   "animations": true,
-  "bar": { "position": "top", "height": 40 },
+  "bar": { "position": "top", "height": 36 },
   "slots": {
     "bar.left":   ["bar.workspaces", "bar.window-title"],
     "bar.center": ["bar.git", "bar.agents", "bar.containers", "bar.ports"],

@@ -9,7 +9,6 @@ C.Label {
     property string slot: ""
     readonly property int maxLen: K.Settings.get("bar.window-title", "maxLength", 60)
     readonly property var w: S.Workspaces.focusedWindow
-    mono: true
     secondary: true
     elide: Text.ElideRight
     text: {

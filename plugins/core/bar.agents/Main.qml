@@ -9,6 +9,7 @@ C.Pill {
     visible: S.Agents.active > 0 || waiting > 0
     icon: "agent"
     text: String(S.Agents.active) + (waiting ? " !" + waiting : "")
-    accent: waiting ? K.Theme.state.warning : K.Theme.accent.primary
+    fg: waiting ? K.Theme.state.warning : K.Theme.text.primary
+    iconColor: waiting ? K.Theme.state.warning : K.Theme.accent.primary
     onClicked: K.Shell.toggleAgents()
 }

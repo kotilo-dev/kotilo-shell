@@ -6,6 +6,7 @@
   "author": "kotilo",
   "description": "Default sink volume; scroll to adjust, click to mute",
   "kind": "qml",
+  "barGroup": "connectivity",
   "slots": ["bar.right"],
   "permissions": []
 }

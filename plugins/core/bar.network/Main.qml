@@ -9,6 +9,6 @@ C.Pill {
     visible: S.Network.ready
     icon: S.Network.icon()
     text: S.Network.kind === "wifi" ? (showName ? S.Network.name : S.Network.signal + "%") : ""
-    accent: S.Network.limited ? K.Theme.state.warning : (S.Network.connected ? K.Theme.accent.primary : K.Theme.text.muted)
+    fg: S.Network.limited ? K.Theme.state.warning : (S.Network.connected ? K.Theme.text.primary : K.Theme.text.muted)
     tooltip: S.Network.connected ? S.Network.name : "Not connected"
 }

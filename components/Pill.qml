@@ -14,7 +14,9 @@ Rectangle {
     property bool active: false
     property color accent: K.Theme.accent.primary
     property color fg: active ? K.Theme.text.onAccent : K.Theme.text.primary
-    property bool mono: true
+    // Quiet at rest. A plugin sets a colour only when it means something: warning, off, attention.
+    property color iconColor: active || !Qt.colorEqual(fg, K.Theme.text.primary) ? fg : K.Theme.text.secondary
+    property bool mono: false
     default property alias extras: content.data     // placed after the text
     signal clicked()
     signal rightClicked()
@@ -30,7 +32,7 @@ Rectangle {
     FocusRing { visible: pill.activeFocus }
 
     implicitHeight: 26
-    implicitWidth: content.implicitWidth + K.Theme.space.md * 2
+    implicitWidth: content.implicitWidth + K.Theme.space.sm * 2
     radius: K.Theme.radius.sm
     color: active ? accent : (mouse.containsMouse ? K.Theme.surface[0] : "transparent")
     Behavior on color { ColorAnimation { duration: K.Theme.animMs } }
@@ -39,8 +41,15 @@ Rectangle {
         id: content
         anchors.centerIn: parent
         spacing: 6
-        Icon { name: pill.icon; visible: pill.icon.length > 0; color: pill.active ? pill.fg : pill.accent; size: 13; anchors.verticalCenter: parent.verticalCenter }
-        Label { text: pill.text; visible: pill.text.length > 0; color: pill.fg; mono: pill.mono; anchors.verticalCenter: parent.verticalCenter }
+        Icon { name: pill.icon; visible: pill.icon.length > 0; color: pill.iconColor; size: 16; anchors.verticalCenter: parent.verticalCenter }
+        Label {
+            text: pill.text
+            visible: pill.text.length > 0
+            color: pill.fg
+            mono: pill.mono
+            font.features: { "tnum": 1 }               // digits keep their width as values change
+            anchors.verticalCenter: parent.verticalCenter
+        }
     }
 
     MouseArea {

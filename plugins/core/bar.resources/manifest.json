@@ -6,6 +6,7 @@
   "author": "kotilo",
   "description": "CPU, memory and network use",
   "kind": "qml",
+  "barGroup": "system",
   "slots": [
     "bar.right"
   ],

@@ -16,8 +16,8 @@ Row {
     C.Icon {
         anchors.verticalCenter: parent.verticalCenter
         name: "network"
-        size: 13
-        color: K.Theme.accent.primary
+        size: 16
+        color: K.Theme.text.secondary
     }
 
     Repeater {

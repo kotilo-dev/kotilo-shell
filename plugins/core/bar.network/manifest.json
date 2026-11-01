@@ -6,6 +6,7 @@
   "author": "kotilo",
   "description": "Wi-Fi or wired connection state",
   "kind": "qml",
+  "barGroup": "connectivity",
   "slots": [
     "bar.right"
   ],

@@ -6,6 +6,7 @@
   "author": "kotilo",
   "description": "Branch, changed files and ahead or behind counts",
   "kind": "qml",
+  "barGroup": "dev",
   "slots": ["bar.center"],
   "permissions": ["process"],
   "settingsSchema": "settings.schema.json"

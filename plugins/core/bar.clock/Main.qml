@@ -43,8 +43,8 @@ Row {
     }
 
     C.Label {
-        mono: true
         font.weight: Font.DemiBold
+        font.features: { "tnum": 1 }
         text: Qt.formatTime(clock.date, root.format) + (root.localLabel ? " " : "")
         anchors.verticalCenter: parent.verticalCenter
     }

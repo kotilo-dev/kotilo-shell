@@ -8,7 +8,11 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 - Dashboard with a `dashboard.card` slot, a Focus card and an open pull requests card (API 1.7, ADR-0015)
 - Settings panel with general settings and forms generated from each plugin's schema (API 1.6, ADR-0004)
 
+### Changed
+- Bar: neutral colours at rest, UI font with mono for git, 16 px icons, 36 px height, and related modules grouped (`barGroup`, API 1.8)
+
 ### Fixed
+- A hidden bar plugin no longer leaves an extra gap
 - Extra time zones in `bar.clock` show the zone's time; they always showed local time before
 - Tooltips open above a bottom bar instead of off the screen
 

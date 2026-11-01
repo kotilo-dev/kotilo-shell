@@ -15,5 +15,6 @@ C.Pill {
     visible: S.Git.ready
     icon: "git-branch"
     text: (S.Git.name + " " + S.Git.branch + " " + counts()).trim()
-    accent: S.Git.dirty ? K.Theme.state.warning : K.Theme.accent.primary
+    mono: true
+    iconColor: S.Git.dirty ? K.Theme.state.warning : K.Theme.text.secondary
 }

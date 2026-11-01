@@ -8,6 +8,6 @@ C.Pill {
     visible: S.Notifications.ready
     icon: "bell"
     text: S.Notifications.count > 0 ? String(S.Notifications.count) : ""
-    accent: S.Notifications.count > 0 ? K.Theme.accent.primary : K.Theme.text.muted
+    fg: S.Notifications.count > 0 ? K.Theme.text.primary : K.Theme.text.muted
     onClicked: S.Notifications.open()
 }

@@ -10,7 +10,7 @@ C.Pill {
     visible: S.Battery.ready
     icon: S.Battery.charging ? "battery-charging" : "battery"
     text: S.Battery.percent + "%"
-    accent: K.Theme.stateColor(S.Battery.stateClass())
-    fg: accent
+    fg: S.Battery.low && !S.Battery.charging ? K.Theme.state.error : K.Theme.text.primary
+    iconColor: S.Battery.charging ? K.Theme.state.success : (S.Battery.low ? K.Theme.state.error : K.Theme.text.secondary)
     tooltip: S.Battery.charging ? ("Full in " + S.Battery.timeToFull) : ("Empty in " + S.Battery.timeToEmpty)
 }

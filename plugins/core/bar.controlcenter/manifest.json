@@ -6,6 +6,7 @@
   "author": "kotilo",
   "description": "Opens the control center",
   "kind": "qml",
+  "barGroup": "shell",
   "slots": ["bar.right"],
   "permissions": []
 }

@@ -6,6 +6,7 @@
   "author": "kotilo",
   "description": "Running coding agents and waiting approvals",
   "kind": "qml",
+  "barGroup": "dev",
   "slots": ["bar.center"],
   "permissions": []
 }

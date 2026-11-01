@@ -59,7 +59,7 @@ Item {
                 propagate: { type: "boolean", title: "Apply the theme to other apps", default: true },
                 animations: { type: "boolean", title: "Animations", default: true },
                 position: { title: "Bar position", enum: ["top", "bottom"], default: "top" },
-                height: { type: "integer", title: "Bar height", default: 40, minimum: 28, maximum: 64 }
+                height: { type: "integer", title: "Bar height", default: 36, minimum: 28, maximum: 64 }
             } })
             readonly property var generalWriters: ({
                 theme: v => K.Settings.setTheme(v),

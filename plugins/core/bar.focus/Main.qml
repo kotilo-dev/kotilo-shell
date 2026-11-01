@@ -8,6 +8,6 @@ C.Pill {
     visible: S.Focus.active
     icon: "clock"
     text: S.Focus.clock
-    accent: S.Focus.phase === "work" ? K.Theme.accent.primary : K.Theme.state.success
+    iconColor: S.Focus.phase === "work" ? K.Theme.accent.primary : K.Theme.state.success
     onClicked: S.Focus.stop()
 }

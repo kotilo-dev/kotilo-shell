@@ -6,6 +6,7 @@
   "author": "kotilo",
   "description": "StatusNotifier tray icons",
   "kind": "qml",
+  "barGroup": "shell",
   "slots": [
     "bar.right"
   ],

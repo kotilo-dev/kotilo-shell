@@ -18,7 +18,6 @@ Row {
         anchors.verticalCenter: parent.verticalCenter
         icon: "cpu"
         text: S.Resources.cpu + "% " + S.Resources.ram + "%"
-        accent: root.high ? K.Theme.state.warning : K.Theme.accent.primary
         fg: root.high ? K.Theme.state.warning : K.Theme.text.primary
         tooltip: "CPU " + S.Resources.cpu + "%, memory " + S.Resources.ramUsedGb.toFixed(1) + " GB"
 
@@ -27,7 +26,7 @@ Row {
             visible: K.Settings.get("bar.resources", "sparkline", true)
             count: S.Resources.historySize
             values: S.Resources.history
-            color: root.high ? K.Theme.state.warning : K.Theme.accent.primary
+            color: root.high ? K.Theme.state.warning : K.Theme.text.secondary
         }
     }
 

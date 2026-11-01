@@ -6,7 +6,6 @@ import "../Shell" as K
 // Renders a `kind: "script"` plugin: runs widget.json's exec on an interval and shows the JSON result.
 Pill {
     id: w
-    mono: true
 
     property var spec: ({})          // parsed widget.json
     property var last: ({})          // last parsed output
@@ -16,6 +15,7 @@ Pill {
     icon: last.icon || spec.icon || ""
     tooltip: error.length ? error : (last.tooltip || "")
     accent: K.Theme.stateColor(last["class"] || "info")
+    iconColor: last["class"] ? accent : K.Theme.text.secondary
 
     onPluginChanged: if (plugin) loadSpec()
     onClicked: if (spec.onClick) K.Shell.run(spec.onClick)

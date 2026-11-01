@@ -6,6 +6,7 @@
   "author": "kotilo",
   "description": "Time left in the Focus Mode session",
   "kind": "qml",
+  "barGroup": "shell",
   "slots": ["bar.right"],
   "permissions": []
 }

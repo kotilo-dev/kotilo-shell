@@ -6,6 +6,7 @@
   "author": "kotilo",
   "description": "Notification count from a running daemon",
   "kind": "qml",
+  "barGroup": "shell",
   "slots": [
     "bar.right"
   ],

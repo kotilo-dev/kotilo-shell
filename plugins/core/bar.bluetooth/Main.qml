@@ -8,7 +8,7 @@ C.Pill {
     visible: S.Bluetooth.ready
     icon: S.Bluetooth.icon()
     text: S.Bluetooth.connected.length > 0 ? String(S.Bluetooth.connected.length) : ""
-    accent: S.Bluetooth.enabled ? K.Theme.accent.primary : K.Theme.text.muted
+    fg: S.Bluetooth.enabled ? K.Theme.text.primary : K.Theme.text.muted
     tooltip: S.Bluetooth.connected.map(d => d.name).join(", ")
     onClicked: S.Bluetooth.toggle()
 }
