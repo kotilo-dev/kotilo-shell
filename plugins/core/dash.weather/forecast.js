@@ -20,7 +20,8 @@ function geocodeUrl(city) {
 
 function forecastUrl(place, unit) {
     return "https://api.open-meteo.com/v1/forecast?latitude=" + Number(place.latitude) + "&longitude=" + Number(place.longitude)
-        + "&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=4"
+        + "&current=temperature_2m,weather_code&hourly=temperature_2m,weather_code&forecast_hours=7"
+        + "&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=6"
         + (unit === "fahrenheit" ? "&temperature_unit=fahrenheit" : "");
 }
 
@@ -31,14 +32,23 @@ function place(reply) {
     return { name: String(r.name || ""), latitude: r.latitude, longitude: r.longitude };
 }
 
-// A forecast reply -> { temperature, code, days: [{ date, code, high, low }] }, or null.
+// A forecast reply -> { temperature, code, hours: [{ label, code, temperature }], days: [{ date, code,
+// high, low }] }, or null. Times are the place's own, so hours after `current.time` are the next ones.
 function summary(reply) {
-    const now = reply && reply.current, daily = reply && reply.daily;
+    const now = reply && reply.current, daily = reply && reply.daily, hourly = reply && reply.hourly;
     if (!now || typeof now.temperature_2m !== "number" || !daily || !Array.isArray(daily.time)) return null;
+    const hours = [];
+    if (hourly && Array.isArray(hourly.time)) {
+        hourly.time.forEach((time, i) => {
+            if (hours.length < 5 && time > now.time)
+                hours.push({ label: time.slice(11, 16), code: hourly.weather_code[i], temperature: Math.round(hourly.temperature_2m[i]) });
+        });
+    }
     return {
         temperature: Math.round(now.temperature_2m),
         code: now.weather_code,
-        days: daily.time.slice(1).map((date, i) => ({
+        hours: hours,
+        days: daily.time.slice(1, 6).map((date, i) => ({
             date: date, code: daily.weather_code[i + 1],
             high: Math.round(daily.temperature_2m_max[i + 1]), low: Math.round(daily.temperature_2m_min[i + 1])
         }))

@@ -154,8 +154,19 @@ const where = w.place({ results: [{ name: "Istanbul", latitude: 41.01, longitude
 assert.ok(w.forecastUrl(where, "celsius").includes("latitude=41.01&longitude=28.95"));
 assert.ok(!w.forecastUrl(where, "celsius").includes("fahrenheit"));
 assert.ok(w.forecastUrl(where, "fahrenheit").includes("temperature_unit=fahrenheit"));
-const s = plain(w.summary({ current: { temperature_2m: 18.6, weather_code: 3 }, daily: { time: ["a", "b", "c"], weather_code: [1, 2, 3], temperature_2m_max: [20, 21.4, 22], temperature_2m_min: [10, 11, 12.5] } }));
+const reply = { current: { time: "2026-11-01T22:15", temperature_2m: 18.6, weather_code: 3 },
+    hourly: { time: ["2026-11-01T22:00", "2026-11-01T23:00", "2026-11-02T00:00", "2026-11-02T01:00", "2026-11-02T02:00", "2026-11-02T03:00", "2026-11-02T04:00"],
+              temperature_2m: [18, 17.6, 17, 16, 15, 14, 13], weather_code: [3, 3, 61, 61, 3, 2, 1] },
+    daily: { time: ["2026-11-01", "2026-11-02", "2026-11-03", "2026-11-04", "2026-11-05", "2026-11-06"], weather_code: [1, 2, 3, 61, 0, 1],
+             temperature_2m_max: [20, 21.4, 22, 19, 18, 17], temperature_2m_min: [10, 11, 12.5, 9, 8, 7] } };
+const s = plain(w.summary(reply));
 assert.equal(s.temperature, 19);
-assert.deepEqual(s.days, [{ date: "b", code: 2, high: 21, low: 11 }, { date: "c", code: 3, high: 22, low: 13 }]);
+assert.deepEqual(s.hours.map(h => h.label), ["23:00", "00:00", "01:00", "02:00", "03:00"], "the next five hours, not the current one");
+assert.equal(s.hours[0].temperature, 18);
+assert.equal(s.hours[1].code, 61);
+assert.equal(s.days.length, 5, "five days after today");
+assert.deepEqual(s.days[0], { date: "2026-11-02", code: 2, high: 21, low: 11 });
+assert.equal(s.days[4].date, "2026-11-06");
+assert.equal(plain(w.summary({ current: reply.current, daily: reply.daily })).hours.length, 0, "no hourly data is not an error");
 assert.equal(w.summary({}), null);
 console.log("  dashboard card checks pass");

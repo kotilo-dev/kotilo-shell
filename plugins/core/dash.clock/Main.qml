@@ -7,7 +7,7 @@ import qs.components as C
 // The time, stacked.
 C.Card {
     id: card
-    readonly property var area: ({ x: 0, y: 0.27, w: 0.14, h: 0.73 })
+    readonly property var area: ({ x: 0, y: 0.36, w: 0.14, h: 0.64 })
 
     SystemClock { id: clock; precision: SystemClock.Minutes }
 

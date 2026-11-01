@@ -6,7 +6,7 @@ import qs.components as C
 
 C.Card {
     id: card
-    readonly property var area: ({ x: 0.64, y: 0.27, w: 0.12, h: 0.73 })
+    readonly property var area: ({ x: 0.64, y: 0.36, w: 0.12, h: 0.64 })
     property int disk: 0
 
     Component.onCompleted: K.Shell.run(["df", "--output=pcent", "/"]).then(r => {

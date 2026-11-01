@@ -8,7 +8,7 @@ import "forecast.js" as Forecast
 // looks up a location from the IP address.
 C.Card {
     id: card
-    readonly property var area: ({ x: 0, y: 0, w: 0.36, h: 0.27 })
+    readonly property var area: ({ x: 0, y: 0, w: 0.52, h: 0.36 })
     centered: true
     readonly property string city: K.Settings.get("dash.weather", "city", "")
     readonly property string unit: K.Settings.get("dash.weather", "unit", "celsius")
@@ -37,16 +37,68 @@ C.Card {
 
     C.Label { visible: !card.weather; width: parent.width; wrapMode: Text.Wrap; secondary: true; textFormat: Text.PlainText; text: card.status }
 
-    Row {
-        anchors.horizontalCenter: parent.horizontalCenter
-        visible: !!card.weather
-        spacing: K.Theme.space.lg
+    component Slot: Column {
+        id: cell
+        property string label: ""
+        property string icon: ""
+        property string value: ""
+        width: parent.width / 5
+        spacing: 1
 
-        C.Icon { anchors.verticalCenter: parent.verticalCenter; size: 48; color: K.Theme.text.primary; name: card.weather ? Forecast.describe(card.weather.code).icon : "" }
+        C.Label { anchors.horizontalCenter: parent.horizontalCenter; secondary: true; font.pixelSize: K.Theme.font.size - 3; textFormat: Text.PlainText; text: cell.label }
+        C.Icon { anchors.horizontalCenter: parent.horizontalCenter; size: 15; color: K.Theme.text.secondary; name: cell.icon }
+        C.Label { anchors.horizontalCenter: parent.horizontalCenter; font.pixelSize: K.Theme.font.size - 2; font.features: { "tnum": 1 }; textFormat: Text.PlainText; text: cell.value }
+    }
+
+    Row {
+        width: parent.width
+        visible: !!card.weather
+        spacing: K.Theme.space.md
+
+        Column {
+            id: now
+            anchors.verticalCenter: parent.verticalCenter
+            width: 112
+            spacing: K.Theme.space.xs
+
+            C.Label { width: parent.width; elide: Text.ElideRight; color: K.Theme.accent.primary; font.weight: Font.DemiBold; textFormat: Text.PlainText; text: card.place ? card.place.name : "" }
+            Row {
+                spacing: K.Theme.space.sm
+                C.Icon { anchors.verticalCenter: parent.verticalCenter; size: 30; color: K.Theme.text.primary; name: card.weather ? Forecast.describe(card.weather.code).icon : "" }
+                C.Label { anchors.verticalCenter: parent.verticalCenter; font.pixelSize: K.Theme.font.size + 13; font.weight: Font.DemiBold; text: card.weather ? card.weather.temperature + "°" : "" }
+            }
+            C.Label { width: parent.width; elide: Text.ElideRight; secondary: true; font.pixelSize: K.Theme.font.size - 1; text: card.weather ? Forecast.describe(card.weather.code).label : "" }
+        }
+
         Column {
             anchors.verticalCenter: parent.verticalCenter
-            C.Label { color: K.Theme.accent.primary; font.pixelSize: K.Theme.font.size + 15; font.weight: Font.DemiBold; text: card.weather ? card.weather.temperature + (card.unit === "fahrenheit" ? "°F" : "°C") : "" }
-            C.Label { secondary: true; text: card.weather ? Forecast.describe(card.weather.code).label : "" }
+            width: parent.width - now.width - parent.spacing
+            spacing: K.Theme.space.sm
+
+            Row {
+                width: parent.width
+                Repeater {
+                    model: card.weather ? card.weather.hours : []
+                    delegate: Slot {
+                        required property var modelData
+                        label: modelData.label
+                        icon: Forecast.describe(modelData.code).icon
+                        value: modelData.temperature + "°"
+                    }
+                }
+            }
+            Row {
+                width: parent.width
+                Repeater {
+                    model: card.weather ? card.weather.days : []
+                    delegate: Slot {
+                        required property var modelData
+                        label: Qt.formatDate(new Date(modelData.date + "T12:00:00"), "ddd")
+                        icon: Forecast.describe(modelData.code).icon
+                        value: modelData.high + "° " + modelData.low + "°"
+                    }
+                }
+            }
         }
     }
 }
