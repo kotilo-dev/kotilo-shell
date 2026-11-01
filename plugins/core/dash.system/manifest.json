@@ -1,0 +1,14 @@
+{
+  "id": "dash.system",
+  "name": "Profile card",
+  "version": "0.2.0",
+  "apiVersion": "^1.13",
+  "author": "kotilo",
+  "description": "Your picture, operating system, compositor and uptime",
+  "kind": "qml",
+  "slots": [
+    "dashboard.card"
+  ],
+  "permissions": [],
+  "settingsSchema": "settings.schema.json"
+}

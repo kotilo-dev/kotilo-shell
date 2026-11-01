@@ -8,7 +8,7 @@ import qs.components as C
 // The local time, with up to two world clocks below it.
 C.Card {
     id: card
-    readonly property var area: ({ x: 0, y: 0.36, w: 0.24, h: 0.64 })
+    readonly property var area: ({ x: 0, y: 0.36, w: 0.3, h: 0.64 })
     readonly property var zones: K.Settings.get("dash.clock", "zones", []).slice(0, 2)
     property var offsets: ({})                  // tz -> minutes east of UTC
 

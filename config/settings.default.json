@@ -8,7 +8,7 @@
     "bar.left":   ["bar.logo", "bar.workspaces", "bar.windows", "bar.window-title"],
     "bar.center": ["bar.clock", "bar.git", "bar.agents", "bar.containers", "bar.ports"],
     "bar.right":  ["bar.resources", "bar.network", "bar.bluetooth", "bar.audio", "bar.battery", "bar.notifications", "bar.tray"],
-    "dashboard.card": ["dash.weather", "dash.clock", "dash.calendar", "dash.resources", "dash.media"],
+    "dashboard.card": ["dash.system", "dash.weather", "dash.clock", "dash.calendar", "dash.media"],
     "dashboard.tab": ["dash.performance", "dash.agents", "dash.github", "dash.rss"]
   },
   "plugins": {

@@ -8,7 +8,7 @@ import "forecast.js" as Forecast
 // looks up a location from the IP address.
 C.Card {
     id: card
-    readonly property var area: ({ x: 0, y: 0, w: 0.76, h: 0.36 })
+    readonly property var area: ({ x: 0.3, y: 0, w: 0.46, h: 0.36 })
     centered: true
     readonly property string city: K.Settings.get("dash.weather", "city", "")
     readonly property string unit: K.Settings.get("dash.weather", "unit", "celsius")

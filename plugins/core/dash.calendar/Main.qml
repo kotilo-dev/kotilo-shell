@@ -7,7 +7,7 @@ import "month.js" as Month
 
 C.Card {
     id: card
-    readonly property var area: ({ x: 0.24, y: 0.36, w: 0.4, h: 0.64 })
+    readonly property var area: ({ x: 0.3, y: 0.36, w: 0.46, h: 0.64 })
 
     SystemClock { id: clock; precision: SystemClock.Hours }
     readonly property date today: clock.date

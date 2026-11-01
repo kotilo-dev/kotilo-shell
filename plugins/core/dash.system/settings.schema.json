@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Profile card",
+  "type": "object",
+  "properties": {
+    "image": { "type": "string", "default": "", "title": "Picture file, for example ~/Pictures/me.png" }
+  }
+}
