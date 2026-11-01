@@ -1,0 +1,11 @@
+{
+  "id": "dashboard",
+  "name": "Dashboard",
+  "version": "0.1.0",
+  "apiVersion": "^1.7",
+  "author": "kotilo",
+  "description": "A panel of cards for the working day",
+  "kind": "qml",
+  "slots": ["shell.overlay"],
+  "permissions": []
+}

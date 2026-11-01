@@ -43,6 +43,12 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 - [x] Settings panel (ADR-0004): forms from plugin schemas, keyboard first, saving refused while `settings.json` does not parse
 - [x] General settings in the panel: theme, propagation, animations, bar position and height
 - [x] Array and object settings: edited as JSON, checked against the schema
+- [x] Dashboard (ADR-0015): panel, `dashboard.card` slot, Focus and pull request cards
+- [ ] More dashboard cards: CI status, calendar, todo
+- [ ] Plugin Store: needs the public `kotilo-plugins` index repo, which is the owner's decision
+- [ ] Lock screen: needs a decision, since a bug here locks the user out or lets someone in, and Omarchy has one
+- [ ] Monitor profiles
+- [ ] COPR and Nix publishing
 
 ## Parking lot
 - More theme targets from SPEC §4.3, and a real render check in ghostty and kitty, which the dev machine does not have

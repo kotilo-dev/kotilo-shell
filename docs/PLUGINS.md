@@ -96,7 +96,7 @@ Registers into a non-visual slot. There are no base types: each contract is a re
 | `theme.target` | root is `C.ThemeTarget`, with `template.conf` beside `Main.qml` |
 | `notification.handler` | `Shell.registerNotificationHandler(item)`: `match(n)` returns whether to act, `handle(n)` returns true to hold the popup. Runs only while Kotilo Shell is the notification daemon |
 
-`wm.adapter`, `dashboard.card` and `lock.widget` are reserved: manifests may name them, but nothing mounts them yet.
+`wm.adapter` and `lock.widget` are reserved: manifests may name them, but nothing mounts them yet.
 
 ## 3. Slots
 
@@ -104,7 +104,7 @@ Registers into a non-visual slot. There are no base types: each contract is a re
 |---|---|---|
 | `bar.left` / `bar.center` / `bar.right` | Row in the bar | order set in `settings.slots.<slot>`; unlisted plugins follow, sorted by id |
 | `controlcenter.tile` | 3-column grid | root is `C.Tile`: set `title`, `subtitle`, `icon`, `active`, `available`, handle `activated()` (ADR-0009) |
-| `dashboard.card` | masonry | cards |
+| `dashboard.card` | two-column flow | root is `C.Card`: set `title`, children go below it. Exists only while the panel is open, so fetch on load (ADR-0015) |
 | `lock.widget` | lock screen | below the clock |
 | `osd.kind` | OSD stack | custom OSD types |
 | `shell.overlay` | hidden host | plugins that own a full-screen window, such as the palette |

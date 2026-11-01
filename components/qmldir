@@ -1,5 +1,6 @@
 module Kotilo.Components
 SlotRow 1.0 SlotRow.qml
+Card 1.0 Card.qml
 FocusRing 1.0 FocusRing.qml
 Pill 1.0 Pill.qml
 Tile 1.0 Tile.qml
