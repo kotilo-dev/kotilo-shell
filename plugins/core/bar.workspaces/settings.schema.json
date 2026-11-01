@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Workspaces",
+  "type": "object",
+  "properties": {
+    "showEmpty": { "type": "boolean", "default": true, "title": "Show empty workspaces" },
+    "showNames": { "type": "boolean", "default": false, "title": "Show names instead of numbers" }
+  }
+}

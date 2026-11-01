@@ -1,0 +1,6 @@
+{
+  "exec": ["sh", "-c", "u=$(cut -d. -f1 /proc/uptime); h=$((u/3600)); m=$(((u%3600)/60)); printf '{\"text\":\"%dh %02dm\",\"icon\":\"clock\",\"tooltip\":\"System uptime\",\"class\":\"%s\"}' $h $m $([ $h -gt 72 ] && echo warn || echo ok)"],
+  "interval": 60,
+  "format": "json",
+  "onClick": ["sh", "-c", "notify-send Uptime \"$(uptime -p)\""]
+}

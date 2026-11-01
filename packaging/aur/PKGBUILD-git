@@ -1,0 +1,27 @@
+# Maintainer: Mustafa <kotilo.dev>
+# -git variant: tracks main. Publish as package `kotilo-shell-git`.
+pkgname=kotilo-shell-git
+pkgver=0.1.0.r0.g0000000
+pkgrel=1
+pkgdesc="Developer-focused Wayland desktop shell for Niri and Hyprland, built on Quickshell (git)"
+arch=('any')
+url="https://github.com/kotilo/kotilo-shell"
+license=('GPL-3.0-or-later')
+depends=('quickshell-git' 'qt6-declarative' 'qt6-wayland' 'qt6-svg' 'qt6-5compat'
+         'pipewire' 'wireplumber' 'upower' 'networkmanager' 'bluez' 'brightnessctl' 'playerctl'
+         'wl-clipboard' 'jq' 'python' 'inter-font' 'ttf-jetbrains-mono-nerd')
+optdepends=('cliphist' 'swww' 'matugen' 'niri' 'hyprland')
+provides=('kotilo-shell')
+conflicts=('kotilo-shell')
+makedepends=('git')
+source=("git+$url.git")
+sha256sums=('SKIP')
+
+pkgver() { cd kotilo-shell; printf "%s.r%s.g%s" "$(grep -oP 'version: "\K[^"]+' Shell/Shell.qml | sed 's/-dev//')" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"; }
+
+package() {
+  cd kotilo-shell
+  install -dm755 "$pkgdir/usr/share/kotilo-shell"
+  cp -r shell.qml Shell components services plugins themes assets config scripts "$pkgdir/usr/share/kotilo-shell/"
+  install -Dm644 README.md "$pkgdir/usr/share/doc/kotilo-shell/README.md"
+}

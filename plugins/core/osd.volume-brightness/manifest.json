@@ -1,0 +1,12 @@
+{
+  "id": "osd.volume-brightness",
+  "name": "Volume and brightness OSD",
+  "version": "0.1.0",
+  "apiVersion": "^1.0",
+  "author": "kotilo",
+  "description": "Shows volume and brightness changes on the focused monitor",
+  "kind": "qml",
+  "slots": ["osd.kind"],
+  "permissions": [],
+  "settingsSchema": "settings.schema.json"
+}

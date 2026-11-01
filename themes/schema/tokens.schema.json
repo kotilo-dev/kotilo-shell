@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kotilo.dev/schemas/theme-tokens.json",
+  "title": "Kotilo Shell theme tokens",
+  "type": "object",
+  "required": ["id", "name", "variant", "bg", "surface", "text", "accent", "state", "radius", "space", "font", "ansi"],
+  "$defs": { "color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" } },
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+    "name": { "type": "string" },
+    "variant": { "enum": ["dark", "light"] },
+    "source": { "enum": ["first-class", "base16", "base24", "matugen", "omarchy", "user"] },
+    "upstream": { "type": "string" },
+    "bg": { "type": "object", "required": ["base", "mantle", "crust"], "properties": { "base": { "$ref": "#/$defs/color" }, "mantle": { "$ref": "#/$defs/color" }, "crust": { "$ref": "#/$defs/color" } } },
+    "surface": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/color" } },
+    "text": { "type": "object", "required": ["primary", "secondary", "muted", "onAccent"], "additionalProperties": { "$ref": "#/$defs/color" } },
+    "accent": { "type": "object", "required": ["primary", "secondary"], "additionalProperties": { "$ref": "#/$defs/color" } },
+    "state": { "type": "object", "required": ["success", "warning", "error", "info"], "additionalProperties": { "$ref": "#/$defs/color" } },
+    "palette": { "type": "object", "additionalProperties": { "$ref": "#/$defs/color" } },
+    "radius": { "type": "object", "required": ["sm", "md", "lg"], "additionalProperties": { "type": "integer", "minimum": 0 } },
+    "space": { "type": "object", "required": ["xs", "sm", "md", "lg", "xl"], "additionalProperties": { "type": "integer", "minimum": 0 } },
+    "font": { "type": "object", "required": ["ui", "mono", "size"], "properties": { "ui": { "type": "string" }, "mono": { "type": "string" }, "display": { "type": "string" }, "size": { "type": "integer" } } },
+    "shadow": { "type": "object", "additionalProperties": { "type": "string" } },
+    "ansi": { "type": "array", "minItems": 16, "maxItems": 16, "items": { "$ref": "#/$defs/color" } },
+    "wallpaper": { "type": ["string", "null"] }
+  }
+}

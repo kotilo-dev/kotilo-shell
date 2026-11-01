@@ -1,0 +1,11 @@
+{
+  "id": "example.uptime",
+  "name": "Uptime (script plugin example)",
+  "version": "0.1.0",
+  "apiVersion": "^1.0",
+  "author": "kotilo",
+  "description": "Shows system uptime. Copy this folder to ~/.config/kotilo/shell/plugins/ to try script plugins.",
+  "kind": "script",
+  "slots": ["bar.right"],
+  "permissions": ["process"]
+}

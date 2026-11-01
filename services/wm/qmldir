@@ -1,0 +1,4 @@
+module Kotilo.Services.Wm
+Interface 1.0 Interface.qml
+Niri 1.0 Niri.qml
+Hyprland 1.0 Hyprland.qml

@@ -1,0 +1,12 @@
+{
+  "id": "bar.workspaces",
+  "name": "Workspaces",
+  "version": "0.1.0",
+  "apiVersion": "^1.0",
+  "author": "kotilo",
+  "description": "Workspace pills for Niri and Hyprland; scroll to switch, click to focus",
+  "kind": "qml",
+  "slots": ["bar.left"],
+  "permissions": [],
+  "settingsSchema": "settings.schema.json"
+}

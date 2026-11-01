@@ -1,0 +1,38 @@
+name: CI
+on:
+  push: { branches: [main] }
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Validate JSON, manifests, themes
+        run: |
+          chmod +x scripts/*.sh install/*.sh
+          scripts/test.sh
+
+  arch-install:
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dry-run deps + install script syntax
+        run: |
+          pacman -Sy --noconfirm bash git jq python
+          bash -n install/deps.sh && bash -n install/install.sh && bash -n install/uninstall.sh
+          bash install/deps.sh --dry-run
+
+  fedora-install:
+    runs-on: ubuntu-latest
+    container: fedora:latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          dnf install -y bash git jq python3
+          bash install/deps.sh --dry-run
+
+  # Real QML smoke test needs a Wayland session; run it in a nested compositor later (TODO 0.2: cage + niri in CI).

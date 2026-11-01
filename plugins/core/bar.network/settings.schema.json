@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Network",
+  "type": "object",
+  "properties": {
+    "showName": {
+      "type": "boolean",
+      "default": false,
+      "title": "Show the network name instead of signal strength"
+    }
+  }
+}

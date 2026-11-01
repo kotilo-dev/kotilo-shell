@@ -1,0 +1,15 @@
+{
+  "id": "bar.notifications",
+  "name": "Notifications",
+  "version": "0.1.0",
+  "apiVersion": "^1.0",
+  "author": "kotilo",
+  "description": "Notification count from a running daemon",
+  "kind": "qml",
+  "slots": [
+    "bar.right"
+  ],
+  "permissions": [
+    "process"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "bar.network",
+  "name": "Network",
+  "version": "0.1.0",
+  "apiVersion": "^1.0",
+  "author": "kotilo",
+  "description": "Wi-Fi or wired connection state",
+  "kind": "qml",
+  "slots": [
+    "bar.right"
+  ],
+  "permissions": [],
+  "settingsSchema": "settings.schema.json"
+}

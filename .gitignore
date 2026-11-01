@@ -1,0 +1,21 @@
+# reference repos (read-only inspiration, never committed)
+ref/
+
+# local state
+*.log
+.cache/
+settings.json
+!config/settings.default.json
+
+# build / packaging output
+dist/
+*.tar.gz
+*.pkg.tar.*
+result
+result-*
+
+# editors
+.vscode/
+.idea/
+*.swp
+.DS_Store

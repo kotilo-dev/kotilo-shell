@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Volume and brightness OSD",
+  "type": "object",
+  "properties": {
+    "timeout": { "type": "integer", "default": 1200, "minimum": 200, "title": "Time on screen in milliseconds" }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": "bar.window-title",
+  "name": "Window title",
+  "version": "0.1.0",
+  "apiVersion": "^1.0",
+  "author": "kotilo",
+  "description": "Focused window app id and title",
+  "kind": "qml",
+  "slots": ["bar.left"],
+  "permissions": []
+}

@@ -1,0 +1,22 @@
+# Current tinted-theming layout, with the comment forms the parser must survive.
+system: "base16"
+name: "Sample #1"   # a hash inside quotes is not a comment
+author: 'Kotilo tests'
+variant: "light"
+palette:
+  base00: "#FAFAFA"  # background
+  base01: "#EEEEEE"
+  base02: "#DDDDDD"
+  base03: "#777777"
+  base04: "#555555"
+  base05: "#222222"
+  base06: "#111111"
+  base07: "#000000"
+  base08: "#AA0000"
+  base09: "#AA5500"
+  base0A: "#AAAA00"
+  base0B: "#00AA00"
+  base0C: "#00AAAA"
+  base0D: "#0000AA"
+  base0E: "#AA00AA"
+  base0F: "#550000"

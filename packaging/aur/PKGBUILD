@@ -1,0 +1,36 @@
+# Maintainer: Mustafa <kotilo.dev>
+pkgname=kotilo-shell
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Developer-focused Wayland desktop shell for Niri and Hyprland, built on Quickshell"
+arch=('any')
+url="https://github.com/kotilo/kotilo-shell"
+license=('GPL-3.0-or-later')   # TODO: align with ADR-0001
+depends=('quickshell' 'qt6-declarative' 'qt6-wayland' 'qt6-svg' 'qt6-5compat'
+         'pipewire' 'wireplumber' 'upower' 'networkmanager' 'bluez' 'brightnessctl' 'playerctl'
+         'wl-clipboard' 'jq' 'python' 'inter-font' 'ttf-jetbrains-mono-nerd')
+optdepends=('cliphist: clipboard history' 'swww: wallpaper' 'matugen: dynamic Material You theme'
+            'niri: supported compositor' 'hyprland: supported compositor')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+package() {
+  cd "$pkgname-$pkgver"
+  install -dm755 "$pkgdir/usr/share/kotilo-shell"
+  cp -r shell.qml Shell components services plugins themes assets config "$pkgdir/usr/share/kotilo-shell/"
+  install -Dm755 scripts/plugin.sh "$pkgdir/usr/share/kotilo-shell/scripts/plugin.sh"
+  install -Dm755 install/install.sh "$pkgdir/usr/share/kotilo-shell/install/install.sh"
+  install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
+  install -Dm644 docs/SPEC.md "$pkgdir/usr/share/doc/$pkgname/SPEC.md"
+  # System-wide quickshell config: users run `qs -c kotilo` after `kotilo-shell-setup` copies defaults.
+  install -Dm755 /dev/stdin "$pkgdir/usr/bin/kotilo-shell-setup" <<'EOF'
+#!/usr/bin/env bash
+# Links the packaged shell into the user's quickshell config and seeds settings.
+set -e
+C="${XDG_CONFIG_HOME:-$HOME/.config}"
+mkdir -p "$C/quickshell" "$C/kotilo/shell"
+ln -sfn /usr/share/kotilo-shell "$C/quickshell/kotilo"
+[ -f "$C/kotilo/shell/settings.json" ] || cp /usr/share/kotilo-shell/config/settings.default.json "$C/kotilo/shell/settings.json"
+echo "Kotilo Shell linked. Start with: qs -c kotilo"
+EOF
+}

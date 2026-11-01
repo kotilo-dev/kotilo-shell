@@ -1,0 +1,11 @@
+{
+  "id": "bar.battery",
+  "name": "Battery",
+  "version": "0.1.0",
+  "apiVersion": "^1.0",
+  "author": "kotilo",
+  "description": "Battery level and charging state; hidden on desktops",
+  "kind": "qml",
+  "slots": ["bar.right"],
+  "permissions": []
+}

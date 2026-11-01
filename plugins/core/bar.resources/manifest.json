@@ -1,0 +1,14 @@
+{
+  "id": "bar.resources",
+  "name": "Resources",
+  "version": "0.1.0",
+  "apiVersion": "^1.0",
+  "author": "kotilo",
+  "description": "CPU and memory use",
+  "kind": "qml",
+  "slots": [
+    "bar.right"
+  ],
+  "permissions": [],
+  "settingsSchema": "settings.schema.json"
+}

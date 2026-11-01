@@ -1,0 +1,23 @@
+{
+  "$schema": "https://kotilo.dev/schemas/settings.json",
+  "version": 1,
+  "theme": { "id": "catppuccin-mocha", "autoVariant": "off", "propagate": true },
+  "animations": true,
+  "bar": { "position": "top", "height": 40 },
+  "slots": {
+    "bar.left":   ["bar.workspaces", "bar.window-title"],
+    "bar.center": ["bar.git", "bar.agents", "bar.containers", "bar.ports"],
+    "bar.right":  ["bar.resources", "bar.network", "bar.bluetooth", "bar.audio", "bar.battery", "bar.clock", "bar.notifications", "bar.tray"]
+  },
+  "plugins": {
+    "bar.workspaces": { "showEmpty": true, "showNames": false },
+    "bar.clock": { "format": "HH:mm", "localLabel": "", "zones": [] },
+    "bar.battery": { "lowAt": 15 },
+    "bar.window-title": { "maxLength": 60 }
+  },
+  "keybinds": {
+    "palette": "Super+Space",
+    "controlCenter": "Super+Shift+C",
+    "focusMode": "Super+Shift+F"
+  }
+}

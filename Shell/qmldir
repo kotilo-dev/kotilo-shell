@@ -1,0 +1,7 @@
+module Shell
+singleton Shell 1.0 Shell.qml
+singleton Log 1.0 Log.qml
+singleton Theme 1.0 Theme.qml
+singleton Settings 1.0 Settings.qml
+PluginHost 1.0 PluginHost.qml
+Bar 1.0 Bar.qml

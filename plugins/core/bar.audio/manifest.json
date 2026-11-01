@@ -1,0 +1,11 @@
+{
+  "id": "bar.audio",
+  "name": "Audio",
+  "version": "0.1.0",
+  "apiVersion": "^1.0",
+  "author": "kotilo",
+  "description": "Default sink volume; scroll to adjust, click to mute",
+  "kind": "qml",
+  "slots": ["bar.right"],
+  "permissions": []
+}
