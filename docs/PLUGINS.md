@@ -28,7 +28,7 @@ Everything visible in Kotilo Shell is a plugin, including the built-in modules u
   "slots": ["bar.center"],
   "permissions": ["process"],
   "settingsSchema": "settings.schema.json",
-  "homepage": "https://github.com/kotilo/plugin-git"
+  "homepage": "https://github.com/kotilo-dev/plugin-git"
 }
 ```
 
@@ -141,7 +141,7 @@ Kotilo Shell is GPL-3.0-or-later, but your plugin does not have to be: plugins a
 
 - `kotilo-shell plugin install <git-url | owner/repo>` clones into `~/.config/kotilo/shell/plugins/<id>`
 - `kotilo-shell plugin list|update|remove`
-- Index: `github.com/kotilo/kotilo-plugins` — a JSON list of manifests; the in-shell Plugin Store reads it
+- Index: `github.com/kotilo-dev/kotilo-plugins` — a JSON list of manifests; the in-shell Plugin Store reads it
 
 ## 7. Security model (read this before publishing)
 

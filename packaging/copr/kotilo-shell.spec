@@ -3,7 +3,7 @@ Version:        0.1.0
 Release:        1%{?dist}
 Summary:        Developer-focused Wayland desktop shell for Niri and Hyprland (Quickshell)
 License:        GPL-3.0-or-later
-URL:            https://github.com/kotilo/kotilo-shell
+URL:            https://github.com/kotilo-dev/kotilo-shell
 Source0:        %{url}/archive/refs/tags/v%{version}.tar.gz
 BuildArch:      noarch
 

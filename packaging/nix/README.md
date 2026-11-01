@@ -2,7 +2,7 @@
 
 ```nix
 # flake.nix inputs
-inputs.kotilo-shell.url = "github:kotilo/kotilo-shell?dir=packaging/nix";
+inputs.kotilo-shell.url = "github:kotilo-dev/kotilo-shell?dir=packaging/nix";
 
 # home-manager
 imports = [ inputs.kotilo-shell.homeManagerModules.default ];

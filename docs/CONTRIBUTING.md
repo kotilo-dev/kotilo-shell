@@ -5,7 +5,7 @@ Thanks for helping. Short version: small PRs, no hardcoded colours, test on Niri
 ## Setup
 
 ```bash
-git clone https://github.com/kotilo/kotilo-shell && cd kotilo-shell
+git clone https://github.com/kotilo-dev/kotilo-shell && cd kotilo-shell
 ./install/deps.sh            # Quickshell + deps for pacman/dnf/apt
 ./scripts/dev.sh             # runs `qs -c kotilo` with live reload + log tail
 ```
@@ -36,7 +36,7 @@ Reference repos for Quickshell idioms (not committed): `git clone … ref/<name>
 ## Themes and plugins from the community
 
 - Themes: see `docs/THEMES.md` §7. Upstream palette is the source of truth.
-- Plugins: publish in your own repo; submit the manifest to `kotilo/kotilo-plugins` for the index.
+- Plugins: publish in your own repo; submit the manifest to `kotilo-dev/kotilo-plugins` for the index.
 
 ## Code of conduct
 

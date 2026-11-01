@@ -2,11 +2,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Installs Kotilo Shell for the current user.
 #   - from a clone:  ./install/install.sh
-#   - via curl:      curl -fsSL https://raw.githubusercontent.com/kotilo/kotilo-shell/main/install/install.sh | bash
+#   - via curl:      curl -fsSL https://raw.githubusercontent.com/kotilo-dev/kotilo-shell/main/install/install.sh | bash
 # Layout: shell files -> $XDG_CONFIG_HOME/quickshell/kotilo ; user config -> $XDG_CONFIG_HOME/kotilo/shell
 set -euo pipefail
 
-REPO_URL="https://github.com/kotilo/kotilo-shell"
+REPO_URL="https://github.com/kotilo-dev/kotilo-shell"
 CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 QS_DIR="$CONFIG_HOME/quickshell/kotilo"
 KOTILO_DIR="$CONFIG_HOME/kotilo/shell"

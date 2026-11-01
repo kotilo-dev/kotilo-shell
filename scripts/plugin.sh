@@ -16,7 +16,7 @@ case "${1:-}" in
     id=$(jq -r .id "$tmp/p/manifest.json"); perms=$(jq -r '.permissions // [] | join(", ")' "$tmp/p/manifest.json")
     echo "Plugin: $id  ($(jq -r .name "$tmp/p/manifest.json") $(jq -r .version "$tmp/p/manifest.json"))"
     echo "Declared permissions: ${perms:-none}"
-    echo "Source is UNVERIFIED unless listed in kotilo/kotilo-plugins. QML plugins can run any command you can."
+    echo "Source is UNVERIFIED unless listed in kotilo-dev/kotilo-plugins. QML plugins can run any command you can."
     read -r -p "Install? [y/N] " a; [[ "$a" == [yY] ]] || { rm -rf "$tmp"; exit 1; }
     rm -rf "$DIR/$id"; mv "$tmp/p" "$DIR/$id"; rm -rf "$tmp"
     echo "installed to $DIR/$id — restart the shell: kotilo-shell restart" ;;

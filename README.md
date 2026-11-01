@@ -11,7 +11,7 @@ Part of the [Kotilo](https://kotilo.dev) family: Kotilo Desktop (AI-agent worksp
 ## Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kotilo/kotilo-shell/main/install/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/kotilo-dev/kotilo-shell/main/install/install.sh | bash
 ```
 
 Or from your distribution:
@@ -43,7 +43,7 @@ After a package install, run `kotilo-shell-setup` once (`install.sh` does this f
 ## Develop
 
 ```bash
-git clone https://github.com/kotilo/kotilo-shell && cd kotilo-shell
+git clone https://github.com/kotilo-dev/kotilo-shell && cd kotilo-shell
 ./install/deps.sh          # install Quickshell + runtime deps for your distro
 ./scripts/dev.sh           # run with live reload and log tail
 ```
