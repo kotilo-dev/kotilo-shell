@@ -36,11 +36,10 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 ## Parking lot
 - More theme targets from SPEC §4.3, and a real render check in ghostty and kitty, which the dev machine does not have
 - One broken service file disables every plugin, because all of them import the services module
-- Idle CPU is about 1 % of one core with the polling services; measure against the budget on a machine without Omarchy's shell
 - Control center tiles for night light, VPN and screen share (need a compositor-neutral backend)
 - Keyboard access to a notification's second action
 - Adapters for agent CLIs (Claude Code hooks first) and the agents list in the control center
-- Memory: 0.1 already starts at 235 MB RSS against the 150 MB budget; the palette retains about 35 MB after first open
+- Memory budget: 150 MB RSS cannot be met, because an empty Quickshell with one window is 208 MB RSS (108 MB PSS). Kotilo is 247 MB RSS, 137 MB PSS. Decide whether the budget should be PSS. Opening a panel adds about 35 MB PSS that stays; the image cache is not the cause
 - CPU sparkline and net up/down in `bar.resources` (SPEC §3.1)
 - Keyboard access to bar plugins (definition of done)
 - Vertical bar option

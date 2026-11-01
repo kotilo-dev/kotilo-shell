@@ -21,5 +21,8 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 - Example plugins: bar.workspaces, bar.clock, script-plugin example
 - Install scripts (pacman/dnf/apt), dev/test/package scripts, AUR/COPR/Nix stubs, CI
 
+### Changed
+- Idle CPU cut from about 3 % to 0.9 % of one core: ports read from `/proc`, containers polled every 2 minutes, git every 10 s
+
 ### Security
 - `plugin install` and `plugin remove` reject ids that are not valid, which could otherwise delete paths outside the plugin folder

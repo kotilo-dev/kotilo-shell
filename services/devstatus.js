@@ -15,18 +15,31 @@ function parseGit(text) {
     return status;
 }
 
-// Parses `ss -ltnH` into sorted, unique dev ports.
-function parseListeners(text, exclude) {
+// Parses /proc/net/tcp or tcp6 text into { host, port } listeners. State 0A is LISTEN.
+function parseProcNet(text) {
+    const listeners = [];
+    for (const line of String(text).split("\n")) {
+        const f = line.trim().split(/\s+/);
+        if (f.length < 4 || f[3] !== "0A") continue;
+        const parts = f[1].split(":");
+        if (parts.length === 2) listeners.push({ host: parts[0].toUpperCase(), port: parseInt(parts[1], 16) });
+    }
+    return listeners;
+}
+
+// Addresses are kernel words in host byte order, so 127.0.0.1 reads 0100007F.
+function isLocalOrAny(host) {
+    if (host.length === 8) return host === "00000000" || host.endsWith("7F");
+    return /^0+$/.test(host) || host === "00000000000000000000000001000000"
+        || (host.startsWith("0000000000000000FFFF0000") && host.endsWith("7F"));
+}
+
+// Sorted, unique dev ports from any number of /proc/net texts.
+function devPorts(texts, exclude) {
     const skip = exclude || [];
     const ports = new Set();
-    for (const line of String(text).split("\n")) {
-        const local = line.trim().split(/\s+/)[3];
-        if (!local) continue;
-        const i = local.lastIndexOf(":");
-        const host = local.slice(0, i).replace(/%.*$/, "");
-        const port = Number(local.slice(i + 1));
-        const reachable = host === "*" || host === "0.0.0.0" || host === "[::]" || host === "[::1]" || host.startsWith("127.");
-        if (reachable && port >= 1024 && port < 32768 && skip.indexOf(port) < 0) ports.add(port);
-    }
+    for (const text of texts)
+        for (const l of parseProcNet(text))
+            if (isLocalOrAny(l.host) && l.port >= 1024 && l.port < 32768 && skip.indexOf(l.port) < 0) ports.add(l.port);
     return Array.from(ports).sort((a, b) => a - b);
 }

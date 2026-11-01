@@ -18,18 +18,14 @@ assert.deepEqual(plain(ctx.parseGit(`# branch.oid abc
 `)), { branch: "main", ahead: 2, behind: 1, dirty: 2 });
 assert.deepEqual(plain(ctx.parseGit("# branch.oid (initial)\n# branch.head (detached)\n")), { branch: "(detached)", ahead: 0, behind: 0, dirty: 0 });
 
-const ss = `LISTEN 0 4096 127.0.0.54:53 0.0.0.0:*
-LISTEN 0 4096 127.0.0.53%lo:53 0.0.0.0:*
-LISTEN 0 128 127.0.0.1:5173 0.0.0.0:*
-LISTEN 0 128 [::1]:5173 [::]:*
-LISTEN 0 128 0.0.0.0:3000 0.0.0.0:*
-LISTEN 0 128 *:8080 *:*
-LISTEN 0 128 192.168.1.5:9000 0.0.0.0:*
-LISTEN 0 128 127.0.0.1:45871 0.0.0.0:*
-LISTEN 0 128 127.0.0.1:631 0.0.0.0:*
-`;
-assert.deepEqual(plain(ctx.parseListeners(ss, [])), [3000, 5173, 8080]);
-assert.deepEqual(plain(ctx.parseListeners(ss, [8080])), [3000, 5173]);
-assert.deepEqual(plain(ctx.parseListeners("", [])), []);
+const head = "  sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode\n";
+const row = (addr, port, st) => `   0: ${addr}:${port.toString(16).toUpperCase().padStart(4, "0")} 00000000:0000 ${st} 00000000:00000000 00:00000000 00000000  1000 0 1 1\n`;
+const v4 = head + row("3500007F", 53, "0A") + row("0100007F", 5173, "0A") + row("00000000", 3000, "0A")
+    + row("0501A8C0", 9000, "0A") + row("0100007F", 45871, "0A") + row("0100007F", 631, "0A") + row("0100007F", 4000, "01");
+const v6 = head + row("00000000000000000000000001000000", 5173, "0A") + row("00000000000000000000000000000000", 8080, "0A")
+    + row("0000000000000000FFFF00000100007F", 7000, "0A") + row("B80D0120000000000000000001000000", 9100, "0A");
+assert.deepEqual(plain(ctx.devPorts([v4, v6], [])), [3000, 5173, 7000, 8080]);
+assert.deepEqual(plain(ctx.devPorts([v4, v6], [8080])), [3000, 5173, 7000]);
+assert.deepEqual(plain(ctx.devPorts(["", ""], [])), []);
 
 console.log("  devstatus checks pass");

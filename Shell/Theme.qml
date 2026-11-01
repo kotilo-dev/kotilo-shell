@@ -56,7 +56,7 @@ Singleton {
 
     // FileView cannot watch a file that does not exist, so look for a new override slowly.
     Timer {
-        interval: 3000
+        interval: 10000
         repeat: true
         running: root.useBundled
         onTriggered: userFile.reload()

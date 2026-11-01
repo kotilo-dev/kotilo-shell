@@ -41,6 +41,6 @@ Singleton {
     onSettingsReadyChanged: if (settingsReady) locate()
     onPinnedChanged: if (settingsReady) locate()
 
-    Timer { interval: 5000; repeat: true; running: git.repo.length > 0; onTriggered: git.poll() }
+    Timer { interval: 10000; repeat: true; running: git.repo.length > 0; onTriggered: git.poll() }
     Timer { interval: 60000; repeat: true; running: git.settingsReady; onTriggered: git.locate() }
 }
