@@ -1,41 +1,109 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S python3 -I
 # SPDX-License-Identifier: GPL-3.0-or-later
 """Speak the agent protocol (ADR-0003) from a hook or wrapper.
 
   kotilo-agent status ID STATE [--tool T] [--project P]    STATE: running, awaiting, idle, done
-  kotilo-agent approve ID COMMAND [--cwd DIR]              waits for the answer
+  kotilo-agent approve ID COMMAND [--cwd DIR] [--agent ID]  waits for the answer
+  kotilo-agent hook claude                                 Claude Code hook, reads its JSON on stdin (ADR-0013)
 
 approve prints allow or deny and exits 0 for allow, 1 for deny, 2 when no answer can come."""
-import argparse, json, os, socket, sys, time
+import argparse, json, os, socket, sys, time, uuid
+
+MAX_FIELD = 8192                            # services/agentprotocol.js drops longer fields
 
 def connect():
     path = os.environ.get("KOTILO_AGENT_SOCKET") or os.path.join(os.environ.get("XDG_RUNTIME_DIR", "/tmp"), "kotilo-agents.sock")
     client = socket.socket(socket.AF_UNIX)
+    client.settimeout(2)                    # a frozen shell must not stall the caller
     client.connect(path)
     return client
 
 def send(client, message):
     client.sendall((json.dumps(message) + "\n").encode())
 
-def status(args):
+def publish(id, state, tool, project):
     with connect() as client:
-        send(client, {"type": "agent.status", "id": args.id, "tool": args.tool, "project": args.project,
-                      "state": args.state, "since": int(time.time())})
+        send(client, {"type": "agent.status", "id": id, "tool": tool, "project": project,
+                      "state": state, "since": int(time.time())})
         client.shutdown(socket.SHUT_WR)
         client.recv(1)                      # the shell has read it once it closes
+
+def ask(id, command, cwd, agent=""):
+    """True or False from the shell, None when no answer can come."""
+    with connect() as client:
+        send(client, {"type": "agent.approval", "id": id, "agent": agent, "command": command, "cwd": cwd})
+        client.settimeout(None)             # a person is reading it
+        for line in client.makefile():
+            reply = json.loads(line)
+            if reply.get("type") == "agent.approval.reply" and reply.get("id") == id:
+                return reply.get("allow") is True
+    return None
+
+def status(args):
+    publish(args.id, args.state, args.tool, args.project)
     return 0
 
 def approve(args):
-    with connect() as client:
-        send(client, {"type": "agent.approval", "id": args.id, "command": args.command, "cwd": args.cwd})
-        reader = client.makefile()
-        for line in reader:
-            reply = json.loads(line)
-            if reply.get("type") == "agent.approval.reply" and reply.get("id") == args.id:
-                print("allow" if reply.get("allow") is True else "deny")
-                return 0 if reply.get("allow") is True else 1
-    print("no answer", file=sys.stderr)
-    return 2
+    allowed = ask(args.id, args.command, args.cwd, args.agent)
+    if allowed is None:
+        print("no answer", file=sys.stderr)
+        return 2
+    print("allow" if allowed else "deny")
+    return 0 if allowed else 1
+
+CLAUDE_STATES = {"SessionStart": "idle", "UserPromptSubmit": "running", "PostToolUse": "running",
+                 "PostToolUseFailure": "running", "Stop": "idle", "StopFailure": "idle", "SessionEnd": "done"}
+
+def fits(text):
+    return len(text.encode("utf-16-le")) // 2 <= MAX_FIELD
+
+def claude_request(event):
+    """What the person judges: everything the tool will receive, or None when it cannot all be sent."""
+    tool, given = event.get("tool_name"), event.get("tool_input")
+    if not isinstance(tool, str) or not isinstance(given, dict):
+        return None
+    command = given.get("command")
+    if tool != "Bash" or not isinstance(command, str) or not command:
+        command = tool + "\n" + json.dumps(given, indent=2, ensure_ascii=False)
+    return command if fits(command) else None
+
+def claude_permission(event, id, cwd):
+    # Claude Code's own dialog is already open, so stepping aside loses nothing.
+    if os.environ.get("AGENTHUB_PANE_ID"):  # Kotilo Desktop answers for its own panes
+        return
+    command = claude_request(event)
+    if command is None or not fits(cwd):
+        return
+    allowed = ask(f"{id}:{uuid.uuid4().hex[:8]}", command, cwd, id)  # subagents ask at the same time
+    if allowed is None:
+        return
+    decision = {"behavior": "allow"} if allowed else {"behavior": "deny", "message": "Denied in Kotilo Shell"}
+    print(json.dumps({"hookSpecificOutput": {"hookEventName": "PermissionRequest", "decision": decision}}))
+
+def claude_hook():
+    """Silent on every failure: a hook that misbehaves must never decide for the person."""
+    if os.environ.get("AGENTHUB_INTERNAL") == "1":
+        return 0
+    try:
+        event = json.load(sys.stdin)
+        name, id = event["hook_event_name"], event["session_id"][:100]
+        cwd = event.get("cwd") or ""
+        state = "awaiting" if name == "PermissionRequest" else CLAUDE_STATES.get(name)
+        if name == "Notification" and event.get("notification_type") == "idle_prompt":
+            state = "idle"
+    except (ValueError, KeyError, TypeError, AttributeError):
+        return 0
+    try:
+        if state:
+            publish(id, state, "Claude Code", os.path.basename(cwd.rstrip("/")))
+        if name == "PermissionRequest":
+            claude_permission(event, id, cwd)
+    except (OSError, ValueError):
+        pass
+    return 0
+
+def hook(args):
+    return claude_hook()
 
 parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
 commands = parser.add_subparsers(dest="action", required=True)
@@ -43,8 +111,11 @@ s = commands.add_parser("status")
 s.add_argument("id"); s.add_argument("state"); s.add_argument("--tool", default=""); s.add_argument("--project", default="")
 s.set_defaults(run=status)
 a = commands.add_parser("approve")
-a.add_argument("id"); a.add_argument("command"); a.add_argument("--cwd", default=os.getcwd())
+a.add_argument("id"); a.add_argument("command"); a.add_argument("--cwd", default=os.getcwd()); a.add_argument("--agent", default="")
 a.set_defaults(run=approve)
+h = commands.add_parser("hook")
+h.add_argument("agent", choices=["claude"])
+h.set_defaults(run=hook)
 args = parser.parse_args()
 try:
     sys.exit(args.run(args))

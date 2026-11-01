@@ -18,7 +18,7 @@ Item {
     readonly property var targetScreen: Quickshell.screens.find(s => s.name === S.Workspaces.focusedOutput) || null
 
     function title(request) {
-        const agent = S.Agents.agentFor(request.id);
+        const agent = S.Agents.agentFor(request.agent);
         return agent ? (agent.tool + (agent.project ? " · " + agent.project : "")) : "Agent";
     }
 

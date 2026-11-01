@@ -19,8 +19,8 @@ function parse(line) {
                  since: typeof m.since === "number" ? m.since : 0 };
     }
     if (m.type === "agent.approval") {
-        if (!isText(m.command, true) || !isText(m.cwd || "")) return null;
-        return { type: m.type, id: m.id, command: m.command, cwd: m.cwd || "" };
+        if (!isText(m.command, true) || !isText(m.cwd || "") || !isText(m.agent || "") || (m.agent || "").length > 128) return null;
+        return { type: m.type, id: m.id, command: m.command, cwd: m.cwd || "", agent: m.agent || "" };
     }
     return null;
 }

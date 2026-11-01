@@ -112,7 +112,7 @@ shell.qml
 Principles: singletons own state, modules are pure views; every panel is a `LazyLoader`; all shell-outs go through `Shell/Process` with timeouts and caching; no module may block the UI thread.
 
 ### Agent protocol (shared with Kotilo Desktop)
-Unix socket `$XDG_RUNTIME_DIR/kotilo-agents.sock`, JSON lines. Messages carry a `type`: `agent.status {id, tool, project, state: running|awaiting|idle|done, since}`, `agent.approval {id, command, cwd}`, `agent.approval.reply {id, allow}`. See ADR-0003 for the rules, and `scripts/kotilo-agent` for a client. A tiny adapter (hook/wrapper) per agent CLI publishes to the socket; Kotilo Desktop speaks the same protocol over the network.
+Unix socket `$XDG_RUNTIME_DIR/kotilo-agents.sock`, JSON lines. Messages carry a `type`: `agent.status {id, tool, project, state: running|awaiting|idle|done, since}`, `agent.approval {id, agent?, command, cwd}`, `agent.approval.reply {id, allow}`. See ADR-0003 for the rules, and `scripts/kotilo-agent` for a client. A tiny adapter (hook/wrapper) per agent CLI publishes to the socket; Kotilo Desktop speaks the same protocol over the network.
 
 ## 7. Distribution
 
@@ -141,7 +141,7 @@ Unix socket `$XDG_RUNTIME_DIR/kotilo-agents.sock`, JSON lines. Messages carry a 
 
 ## 10. Current milestone — 0.3 (checklist complete)
 
-0.1 and 0.2 are complete except for the AUR publish, which waits on AUR registration. The 0.3 checklist in `TODO.md` is complete. Agent CLI adapters, the agents list in the control center and further theme targets are in its parking lot.
+0.1 and 0.2 are complete except for the AUR publish, which waits on AUR registration. The 0.3 checklist in `TODO.md` is complete. Further agent CLI adapters, the agents list in the control center and further theme targets are in its parking lot.
 
 ## 11. Open decisions (ADRs to write)
 

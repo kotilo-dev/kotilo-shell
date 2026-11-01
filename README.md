@@ -52,6 +52,16 @@ Kotilo Shell is your notification daemon unless another one is already running. 
 - Plugin system: script plugins (bash + JSON), QML widgets, providers
 - See `docs/SPEC.md` for the full picture.
 
+## Claude Code in the bar
+
+`kotilo-agent hook claude` shows your Claude Code sessions in the bar and lets you answer permission prompts there. Claude Code's own prompt stays open, and the first answer wins. To turn it on, add this to `~/.claude/settings.json`, and repeat the entry for `SessionStart`, `UserPromptSubmit`, `PostToolUse`, `PostToolUseFailure`, `Notification`, `Stop`, `StopFailure` and `SessionEnd`:
+
+```json
+{ "hooks": { "PermissionRequest": [ { "hooks": [ { "type": "command", "command": "kotilo-agent hook claude" } ] } ] } }
+```
+
+Claude Code only asks when its permission mode needs a person, so auto mode shows few or no prompts. Sessions inside Kotilo Desktop show their status here and are answered in Desktop.
+
 ## Develop
 
 ```bash

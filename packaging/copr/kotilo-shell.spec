@@ -26,9 +26,12 @@ the bar; a pluggable command palette; a theme engine with Base16 and first-class
 %install
 install -dm755 %{buildroot}%{_datadir}/kotilo-shell
 cp -r shell.qml Shell components services plugins themes assets config scripts %{buildroot}%{_datadir}/kotilo-shell/
+install -dm755 %{buildroot}%{_bindir}
+ln -s ../share/kotilo-shell/scripts/kotilo-agent %{buildroot}%{_bindir}/kotilo-agent
 install -Dm644 README.md %{buildroot}%{_docdir}/%{name}/README.md
 
 %files
+%{_bindir}/kotilo-agent
 %{_datadir}/kotilo-shell
 %doc %{_docdir}/%{name}/README.md
 

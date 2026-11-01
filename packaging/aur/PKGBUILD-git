@@ -23,6 +23,8 @@ package() {
   cd kotilo-shell
   install -dm755 "$pkgdir/usr/share/kotilo-shell"
   cp -r shell.qml Shell components services plugins themes assets config scripts "$pkgdir/usr/share/kotilo-shell/"
+  install -dm755 "$pkgdir/usr/bin"
+  ln -s ../share/kotilo-shell/scripts/kotilo-agent "$pkgdir/usr/bin/kotilo-agent"
   install -Dm644 README.md "$pkgdir/usr/share/doc/kotilo-shell/README.md"
   # Quickshell only finds configs by name under the user's config dir, so link it there.
   install -Dm755 /dev/stdin "$pkgdir/usr/bin/kotilo-shell-setup" <<'EOF'

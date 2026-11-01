@@ -59,6 +59,7 @@ case "${1:-}" in
 esac
 EOF
 chmod +x "$BIN_DIR/kotilo-shell"
+ln -sf "$QS_DIR/scripts/kotilo-agent" "$BIN_DIR/kotilo-agent"
 
 # Compositor autostart hints
 cat <<EOF

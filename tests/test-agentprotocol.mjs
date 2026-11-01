@@ -13,12 +13,15 @@ const line = o => JSON.stringify(o);
 
 assert.deepEqual(plain(parse(line({ type: "agent.status", id: "a", tool: "claude", project: "p", state: "running", since: 5, extra: 1 }))),
     { type: "agent.status", id: "a", tool: "claude", project: "p", state: "running", since: 5 });
-assert.deepEqual(plain(parse(line({ type: "agent.approval", id: "a", command: "ls" }))), { type: "agent.approval", id: "a", command: "ls", cwd: "" });
+assert.deepEqual(plain(parse(line({ type: "agent.approval", id: "a", command: "ls" }))), { type: "agent.approval", id: "a", command: "ls", cwd: "", agent: "" });
+assert.equal(parse(line({ type: "agent.approval", id: "a:1", agent: "a", command: "ls" })).agent, "a");
 
 for (const bad of ["", "not json", "null", "[]", "5", line({ type: "other", id: "a" }), line({ type: "agent.status", state: "running" }),
                    line({ type: "agent.status", id: "a", state: "sleeping" }), line({ type: "agent.status", id: 5, state: "running" }),
                    line({ type: "agent.approval", id: "a" }), line({ type: "agent.approval", id: "a", command: "" }),
                    line({ type: "agent.approval", id: "a", command: 7 }), line({ type: "agent.approval", id: "a", command: "x".repeat(8193) }),
+                   line({ type: "agent.approval", id: "a", command: "ls", agent: 5 }),
+                   line({ type: "agent.approval", id: "a", command: "ls", agent: "x".repeat(129) }),
                    line({ type: "agent.status", id: "x".repeat(129), state: "idle" })])
     assert.equal(parse(bad), null, "should reject: " + bad.slice(0, 40));
 

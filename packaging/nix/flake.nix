@@ -23,6 +23,8 @@
           installPhase = ''
             mkdir -p $out/share/kotilo-shell
             cp -r shell.qml Shell components services plugins themes assets config scripts $out/share/kotilo-shell/
+            mkdir -p $out/bin
+            ln -s $out/share/kotilo-shell/scripts/kotilo-agent $out/bin/kotilo-agent
           '';
           meta = with pkgs.lib; { description = "Developer-focused Quickshell desktop shell"; homepage = "https://kotilo.dev"; license = licenses.gpl3Plus; platforms = platforms.linux; };
         };

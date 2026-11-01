@@ -20,6 +20,9 @@ scripts/check-contrast.sh || fail=1
 echo "==> base16 converter"
 python3 -I tests/test-base16.py || fail=1
 
+echo "==> agent hook"
+python3 -I tests/test-kotilo-agent.py || fail=1
+
 echo "==> JS units"
 if command -v node >/dev/null 2>&1; then node tests/test-fuzzy.mjs && node tests/test-devstatus.mjs && node tests/test-agentprotocol.mjs && node tests/test-template.mjs || fail=1; else echo "  node not found — skipping"; fi
 
