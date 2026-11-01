@@ -5,6 +5,7 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 ## [Unreleased]
 
 ### Added
+- Git, Containers and Ports bar modules (ADR-0010)
 - Control center with quick tiles, volume and brightness sliders, per-app audio, theme swatches and a media card (ADR-0009)
 - Notification daemon with popups, a history panel grouped by app, per-app rules and do not disturb (ADR-0002)
 - Command palette with Apps, Windows, Projects, Themes and Clipboard providers, and a palette provider API (API 1.1, ADR-0008)

@@ -1,0 +1,12 @@
+{
+  "id": "bar.ports",
+  "name": "Ports",
+  "version": "0.3.0",
+  "apiVersion": "^1.2",
+  "author": "kotilo",
+  "description": "Listening dev ports; click one to open it in the browser",
+  "kind": "qml",
+  "slots": ["bar.center"],
+  "permissions": ["process"],
+  "settingsSchema": "settings.schema.json"
+}

@@ -141,7 +141,7 @@ Unix socket `$XDG_RUNTIME_DIR/kotilo-agents.sock`, JSON lines. Messages: `agent.
 
 ## 10. Current milestone — 0.3
 
-0.1 and 0.2 are complete except for the AUR publish, which waits on AUR registration. `TODO.md` tracks the details. The 0.3 checklist is still to be written; see §9.
+0.1 and 0.2 are complete except for the AUR publish, which waits on AUR registration. The 0.3 checklist is in `TODO.md`; tick it there and keep this section in sync at milestone end.
 
 ## 11. Open decisions (ADRs to write)
 

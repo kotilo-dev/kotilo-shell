@@ -1,0 +1,11 @@
+{
+  "id": "bar.containers",
+  "name": "Containers",
+  "version": "0.3.0",
+  "apiVersion": "^1.2",
+  "author": "kotilo",
+  "description": "Running podman and docker containers",
+  "kind": "qml",
+  "slots": ["bar.center"],
+  "permissions": ["process"]
+}

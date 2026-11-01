@@ -1,0 +1,6 @@
+{
+  "type": "object",
+  "properties": {
+    "repo": { "type": "string", "title": "Repository to show; empty uses the most recently touched one", "default": "" }
+  }
+}

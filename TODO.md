@@ -25,7 +25,16 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 - [x] Notification daemon (ADR-0002): never takes the D-Bus name from Omarchy's shell
 - [x] Control center (ADR-0009): Wi-Fi, Bluetooth, do not disturb and power tiles, sliders, per-app audio, theme swatches, media
 
+## 0.3 — Dev modules + agents + focus + propagation
+
+- [x] Git, Containers and Ports bar modules (ADR-0010)
+- [ ] Agent protocol (ADR-0003 first), `bar.agents`, approvals with keyboard Allow/Deny
+- [ ] Focus Mode: Pomodoro, DND except approvals, compact bar, control center tile
+- [ ] Theme propagation targets (`theme.target` slot, first apps from SPEC §4.3)
+- [ ] Plugin API v1: finish script plugins, `Shell.openPopup`, `Shell.registerPaletteAction`, `apiVersion` check
+
 ## Parking lot
+- Idle CPU is about 1 % of one core with the polling services; measure against the budget on a machine without Omarchy's shell
 - Control center tiles for night light, VPN and screen share (need a compositor-neutral backend)
 - Keyboard access to a notification's second action, needed for agent approvals in 0.3
 - Check mouse hover and click in the palette, notifications and control center

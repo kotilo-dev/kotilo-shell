@@ -1,0 +1,12 @@
+{
+  "id": "bar.git",
+  "name": "Git status",
+  "version": "0.3.0",
+  "apiVersion": "^1.2",
+  "author": "kotilo",
+  "description": "Branch, changed files and ahead or behind counts",
+  "kind": "qml",
+  "slots": ["bar.center"],
+  "permissions": ["process"],
+  "settingsSchema": "settings.schema.json"
+}

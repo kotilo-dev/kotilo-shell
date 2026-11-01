@@ -123,7 +123,7 @@ Core and third-party plugins use the same imports. Never import the shell by fil
 - signal `changed(pluginId, key)`
 
 ### Services (singletons)
-`Audio`, `Network`, `Bluetooth`, `Battery`, `Brightness`, `Power`, `Workspaces`, `Git`, `Agents`, `Containers`, `Ports`, `Mpris`, `Notifications`, `Clipboard`. Each exposes `ready: bool`, `error: string` and degrades gracefully when its backend is absent.
+`Audio`, `Network`, `Bluetooth`, `Battery`, `Brightness`, `Power`, `Resources`, `Workspaces`, `Git`, `Agents`, `Containers`, `Ports`, `Mpris`, `Notifications`, `Clipboard`. Each exposes `ready: bool`, `error: string` and degrades gracefully when its backend is absent.
 
 ### Shell
 - `Shell.openPopup(plugin, file, anchorItem?)`, `Shell.closePopups()`

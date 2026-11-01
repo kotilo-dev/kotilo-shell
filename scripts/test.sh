@@ -20,8 +20,8 @@ scripts/check-contrast.sh || fail=1
 echo "==> base16 converter"
 python3 -I tests/test-base16.py || fail=1
 
-echo "==> fuzzy ranking"
-if command -v node >/dev/null 2>&1; then node tests/test-fuzzy.mjs || fail=1; else echo "  node not found — skipping"; fi
+echo "==> JS units"
+if command -v node >/dev/null 2>&1; then node tests/test-fuzzy.mjs && node tests/test-devstatus.mjs || fail=1; else echo "  node not found — skipping"; fi
 
 echo "==> QML lint"
 if command -v qmllint >/dev/null 2>&1; then
