@@ -1,11 +1,16 @@
 {
   "id": "dash.clock",
   "name": "Clock card",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "apiVersion": "^1.12",
   "author": "kotilo",
-  "description": "The time and date, large",
+  "description": "The local time and date, and up to two world clocks",
   "kind": "qml",
-  "slots": ["dashboard.card"],
-  "permissions": []
+  "slots": [
+    "dashboard.card"
+  ],
+  "permissions": [
+    "process"
+  ],
+  "settingsSchema": "settings.schema.json"
 }

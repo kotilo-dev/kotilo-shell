@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Clock card",
+  "type": "object",
+  "properties": {
+    "zones": {
+      "type": "array", "title": "World clocks, up to two",
+      "items": { "type": "object", "properties": { "label": { "type": "string" }, "tz": { "type": "string", "description": "IANA zone, e.g. Asia/Tokyo" } }, "required": ["label", "tz"] },
+      "default": []
+    }
+  }
+}

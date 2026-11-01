@@ -45,7 +45,7 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 - [x] Array and object settings: edited as JSON, checked against the schema
 - [x] Dashboard (ADR-0015): panel, `dashboard.card` slot, Focus and pull request cards
 - [x] Dashboard tabs (ADR-0017): Performance, Agents, GitHub, RSS, opened from the date and time in the bar center
-- [x] Dashboard grid: weather, system, clock, calendar, resources, media with cava bars
+- [x] Dashboard grid: weather, clock with world clocks, calendar, resources, media with cava bars
 - [ ] More dashboard cards: CI status, todo
 - [ ] Plugin Store: needs the public `kotilo-plugins` index repo, which is the owner's decision
 - [ ] Lock screen: needs a decision, since a bug here locks the user out or lets someone in, and Omarchy has one
