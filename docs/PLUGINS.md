@@ -100,7 +100,7 @@ Registers into a non-visual slot. Each provider type has an interface QML file t
 | Slot | Container | Notes |
 |---|---|---|
 | `bar.left` / `bar.center` / `bar.right` | Row in the bar | order set in `settings.slots.<slot>`; unlisted plugins follow, sorted by id |
-| `controlcenter.tile` | 3-column grid | toggle tiles |
+| `controlcenter.tile` | 3-column grid | root is `C.Tile`: set `title`, `subtitle`, `icon`, `active`, `available`, handle `activated()` (ADR-0009) |
 | `dashboard.card` | masonry | cards |
 | `lock.widget` | lock screen | below the clock |
 | `osd.kind` | OSD stack | custom OSD types |
@@ -123,13 +123,15 @@ Core and third-party plugins use the same imports. Never import the shell by fil
 - signal `changed(pluginId, key)`
 
 ### Services (singletons)
-`Audio`, `Network`, `Bluetooth`, `Battery`, `Brightness`, `Workspaces`, `Git`, `Agents`, `Containers`, `Ports`, `Mpris`, `Notifications`, `Clipboard`. Each exposes `ready: bool`, `error: string` and degrades gracefully when its backend is absent.
+`Audio`, `Network`, `Bluetooth`, `Battery`, `Brightness`, `Power`, `Workspaces`, `Git`, `Agents`, `Containers`, `Ports`, `Mpris`, `Notifications`, `Clipboard`. Each exposes `ready: bool`, `error: string` and degrades gracefully when its backend is absent.
 
 ### Shell
 - `Shell.openPopup(plugin, file, anchorItem?)`, `Shell.closePopups()`
 - `Shell.notify({summary, body, icon, urgency, actions})`
 - `Shell.registerPaletteAction(plugin, {title, icon, exec})`
 - `Shell.run(argv, {timeout, cwd}) → Promise<{stdout, stderr, code}>` — the only sanctioned way to shell out
+- `Shell.toggleControlCenter()` (API 1.2)
+- A plugin with a `host` property receives the PluginHost, for hosting other slots (API 1.2)
 - `Shell.version`, `Shell.apiVersion`
 
 - `Shell.registerPaletteProvider(item)`, `Shell.unregisterPaletteProvider(item)`, `Shell.paletteDataChanged()`, `Shell.paletteOpened()`, `Shell.paletteClosed()`, `Shell.fuzzyScore(query, text)`, `Shell.fuzzyRank(query, title, keywords)` (API 1.1)

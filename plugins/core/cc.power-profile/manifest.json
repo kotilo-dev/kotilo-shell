@@ -1,0 +1,11 @@
+{
+  "id": "cc.power-profile",
+  "name": "Power profile tile",
+  "version": "0.2.0",
+  "apiVersion": "^1.2",
+  "author": "kotilo",
+  "description": "Cycles the power profile",
+  "kind": "qml",
+  "slots": ["controlcenter.tile"],
+  "permissions": []
+}

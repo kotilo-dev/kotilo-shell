@@ -1,0 +1,11 @@
+{
+  "id": "bar.controlcenter",
+  "name": "Control center button",
+  "version": "0.2.0",
+  "apiVersion": "^1.2",
+  "author": "kotilo",
+  "description": "Opens the control center",
+  "kind": "qml",
+  "slots": ["bar.right"],
+  "permissions": []
+}

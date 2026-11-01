@@ -139,21 +139,11 @@ Unix socket `$XDG_RUNTIME_DIR/kotilo-agents.sock`, JSON lines. Messages: `agent.
 | **0.4** | Settings GUI · Plugin Store · Lock screen · Dashboard · Monitor profiles · COPR + Nix |
 | **1.0** | API freeze · docs site · Omarchy theme import · stability pass |
 
-## 10. Current milestone — 0.1 checklist
+## 10. Current milestone — 0.3
 
-- [ ] Repo skeleton per `CLAUDE.md` layout; `scripts/dev.sh`, `scripts/test.sh`
-- [ ] `services/wm/Interface.qml` + Niri adapter (event stream, workspaces, focused window)
-- [ ] Hyprland adapter (socket2 events)
-- [ ] ThemeEngine: load Base16 YAML → tokens; `Theme` singleton; Catppuccin Mocha, Gruvbox Dark, Tokyo Night, Rosé Pine, Nord, Everforest first-class
-- [ ] PluginHost with `bar.*` slots; manifest schema + validator
-- [ ] Core bar plugins: workspaces, window title, clock (multi-tz), audio, network, battery, tray, cpu/ram, notifications badge
-- [ ] OSD for volume/brightness
-- [ ] `install/deps.sh` for pacman/dnf/apt; `install.sh`; starter `settings.json`
-- [ ] README with GIF, one-command install, compatibility matrix
-- [ ] AUR `kotilo-shell-git` PKGBUILD
+0.1 and 0.2 are complete except for the AUR publish, which waits on AUR registration. `TODO.md` tracks the details. The 0.3 checklist is still to be written; see §9.
 
 ## 11. Open decisions (ADRs to write)
 
-- ADR-0002 Notification daemon: own implementation vs integrate swaync
 - ADR-0003 Agent protocol transport: Unix socket vs D-Bus
 - ADR-0004 Settings GUI: inside shell (QML) vs separate app

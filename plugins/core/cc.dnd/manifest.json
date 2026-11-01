@@ -1,0 +1,11 @@
+{
+  "id": "cc.dnd",
+  "name": "Do not disturb tile",
+  "version": "0.2.0",
+  "apiVersion": "^1.2",
+  "author": "kotilo",
+  "description": "Hides notification popups except critical ones",
+  "kind": "qml",
+  "slots": ["controlcenter.tile"],
+  "permissions": []
+}

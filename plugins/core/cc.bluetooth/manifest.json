@@ -1,0 +1,11 @@
+{
+  "id": "cc.bluetooth",
+  "name": "Bluetooth tile",
+  "version": "0.2.0",
+  "apiVersion": "^1.2",
+  "author": "kotilo",
+  "description": "Turns Bluetooth on or off",
+  "kind": "qml",
+  "slots": ["controlcenter.tile"],
+  "permissions": []
+}

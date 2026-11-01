@@ -23,9 +23,12 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 - [x] Palette core and Apps provider (ADR-0008): window, fuzzy ranking, Tab actions, IPC
 - [x] Palette providers: Windows, Projects, Themes, Clipboard
 - [x] Notification daemon (ADR-0002): never takes the D-Bus name from Omarchy's shell
-- [ ] Control center
+- [x] Control center (ADR-0009): Wi-Fi, Bluetooth, do not disturb and power tiles, sliders, per-app audio, theme swatches, media
 
 ## Parking lot
+- Control center tiles for night light, VPN and screen share (need a compositor-neutral backend)
+- Keyboard access to a notification's second action, needed for agent approvals in 0.3
+- Check mouse hover and click in the palette, notifications and control center
 - Memory: 0.1 already starts at 235 MB RSS against the 150 MB budget; the palette retains about 35 MB after first open
 - CPU sparkline and net up/down in `bar.resources` (SPEC §3.1)
 - Keyboard access to bar plugins (definition of done)
