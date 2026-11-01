@@ -13,10 +13,10 @@ Item {
     property string slot: ""
     property bool current: false
     readonly property string title: "Trade"
-    readonly property int maxItems: 20
+    readonly property int maxItems: 100
 
     // Panels come from Settings: their names, their number, and what each one holds.
-    readonly property var panels: K.Settings.get("dash.trade", "panels", []).slice(0, 4).map(p => ({
+    readonly property var panels: K.Settings.get("dash.trade", "panels", []).slice(0, 12).map(p => ({
         title: String(p.title || ""),
         items: (Array.isArray(p.items) ? p.items : []).slice(0, maxItems).map(Market.source).filter(i => i !== null)
     }))
@@ -27,6 +27,8 @@ Item {
         for (const item of stops) for (const need of item.needs) seen[need.kind + ":" + need.symbol] = need;
         return Object.keys(seen).map(k => seen[k]);
     }
+    // Two rows fit; more panels scroll.
+    readonly property real panelHeight: (pages.height - (panels.length > 2 ? row.spacing : 0)) / (panels.length > 2 ? 2 : 1)
     property var quotes: ({})                   // source key -> quote, or { error }
     property int selected: 0
     property bool reading: false
@@ -34,6 +36,17 @@ Item {
 
     function quoteOf(item) {
         return item.terms ? Market.compute(item, quotes) : (quotes[item.key] || null);
+    }
+    // Brings the panel holding the selection into view when there are more panels than fit.
+    onSelectedChanged: {
+        for (let i = 0, start = 0; i < panels.length; start += panels[i].items.length, i++) {
+            if (selected < start + panels[i].items.length) {
+                const top = Math.floor(i / 2) * (panelHeight + row.spacing);
+                if (top < pages.contentY) pages.contentY = top;
+                else if (top + panelHeight > pages.contentY + pages.height) pages.contentY = top + panelHeight - pages.height;
+                return;
+            }
+        }
     }
     function offsetOf(index) {
         return panels.slice(0, index).reduce((sum, p) => sum + p.items.length, 0);
@@ -92,7 +105,7 @@ Item {
         property var items: []
         property int offset: 0
         width: tab.panels.length === 1 ? row.width : (row.width - row.spacing) / 2
-        height: (row.height - (tab.panels.length > 2 ? row.spacing : 0)) / (tab.panels.length > 2 ? 2 : 1)
+        height: tab.panelHeight
 
         C.Label {
             width: parent.width
@@ -110,7 +123,20 @@ Item {
             clip: true
             boundsBehavior: Flickable.StopAtBounds
             model: panel.items
-            currentIndex: Math.max(-1, tab.selected - panel.offset)
+            readonly property int chosen: tab.selected - panel.offset
+            onChosenChanged: if (chosen >= 0 && chosen < count) positionViewAtIndex(chosen, ListView.Contain)
+
+            // A thin mark, shown only when the list is longer than its panel.
+            Rectangle {
+                z: 1
+                anchors.right: parent.right
+                visible: view.contentHeight > view.height
+                width: 3
+                radius: 1.5
+                y: view.contentHeight > 0 ? view.contentY / view.contentHeight * view.height : 0
+                height: view.contentHeight > 0 ? view.height * view.height / view.contentHeight : 0
+                color: K.Theme.surface[1]
+            }
 
             delegate: Rectangle {
                 id: line
@@ -122,7 +148,7 @@ Item {
                 readonly property color tone: !ready || quote.change === null || quote.change === 0 ? K.Theme.text.secondary
                     : quote.change > 0 ? K.Theme.state.success : K.Theme.state.error
                 width: ListView.view.width
-                height: 44
+                height: 36
                 radius: K.Theme.radius.sm
                 color: panel.offset + index === tab.selected ? K.Theme.surface[1] : "transparent"
 
@@ -142,7 +168,7 @@ Item {
                     linear: true
                     count: 22
                     barWidth: 1
-                    height: 24
+                    height: 20
                     values: points
                     color: line.tone
                 }
@@ -177,25 +203,33 @@ Item {
         }
     }
 
-    Flow {
-        id: row
+    Flickable {
+        id: pages
         anchors { top: parent.top; bottom: note.top; left: parent.left; right: parent.right; bottomMargin: K.Theme.space.xs }
-        spacing: K.Theme.space.sm
+        clip: true
+        contentHeight: row.height
+        boundsBehavior: Flickable.StopAtBounds
 
-        Repeater {
-            model: tab.panels
-            delegate: Panel {
-                required property var modelData
-                required property int index
-                title: modelData.title
-                items: modelData.items
-                offset: tab.offsetOf(index)
+        Flow {
+            id: row
+            width: pages.width
+            spacing: K.Theme.space.sm
+
+            Repeater {
+                model: tab.panels
+                delegate: Panel {
+                    required property var modelData
+                    required property int index
+                    title: modelData.title
+                    items: modelData.items
+                    offset: tab.offsetOf(index)
+                }
             }
         }
     }
 
     C.Label {
-        anchors.centerIn: row
+        anchors.centerIn: pages
         width: parent.width - 2 * K.Theme.space.xl
         visible: tab.panels.length === 0
         horizontalAlignment: Text.AlignHCenter

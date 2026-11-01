@@ -148,9 +148,9 @@ assert.equal(ratio.price, 2);
 assert.ok(Math.abs(ratio.change) < 1e-9, "dividing cancels equal moves");
 assert.ok(market.dataUrl({ kind: "yahoo", symbol: "EURUSD=X" }).includes("/chart/EURUSD%3DX?"));
 assert.equal(market.pageUrl({ kind: "tefas", symbol: "AFT" }), "https://www.tefas.gov.tr/tr/fon-detayli-analiz/AFT");
-const chart = plain(market.parseChart(JSON.stringify({ chart: { result: [{ meta: { shortName: "Apple", currency: "USD", regularMarketPrice: 110, chartPreviousClose: 50 },
+const chart = plain(market.parseChart(JSON.stringify({ chart: { result: [{ meta: { shortName: "Apple     Inc   ", currency: "USD", regularMarketPrice: 110, chartPreviousClose: 50 },
     indicators: { quote: [{ close: [90, null, 100, 110] }] } }] } })));
-assert.equal(chart.name, "Apple");
+assert.equal(chart.name, "Apple Inc");
 assert.equal(chart.change, 10, "against the previous close, not the start of the range");
 assert.deepEqual(chart.history, [90, 100, 110]);
 assert.equal(market.parseChart('{"chart":{"result":null,"error":{"code":"Not Found"}}}'), null);

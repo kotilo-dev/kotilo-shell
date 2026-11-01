@@ -98,7 +98,7 @@ function parseChart(text) {
     const quote = result.indicators && result.indicators.quote && result.indicators.quote[0];
     const closes = (quote && quote.close ? quote.close : []).filter(c => typeof c === "number");
     const before = closes.length >= 2 ? closes[closes.length - 2] : null;
-    return { name: String(meta.shortName || meta.longName || ""), price: meta.regularMarketPrice, currency: String(meta.currency || ""),
+    return { name: String(meta.shortName || meta.longName || "").replace(/\s+/g, " ").trim(), price: meta.regularMarketPrice, currency: String(meta.currency || ""),
              change: before ? (meta.regularMarketPrice - before) / before * 100 : null, history: closes };
 }
 
