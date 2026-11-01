@@ -1,0 +1,5 @@
+{"WorkspacesChanged":{"workspaces":[{"id":1,"idx":1,"name":"dev","output":"winit","is_urgent":false,"is_active":true,"is_focused":true,"active_window_id":null},{"id":3,"idx":3,"name":null,"output":"winit","is_urgent":false,"is_active":false,"is_focused":false,"active_window_id":null},{"id":2,"idx":2,"name":"web","output":"winit","is_urgent":false,"is_active":false,"is_focused":false,"active_window_id":null}]}}
+{"WindowOpenedOrChanged":{"window":{"id":2,"title":"foot","app_id":"foot","pid":1,"workspace_id":1,"is_focused":true,"is_floating":false,"is_urgent":false,"layout":{"pos_in_scrolling_layout":[1,1],"tile_size":[921.0,2048.0],"window_size":[921,2048],"tile_pos_in_workspace_view":null,"window_offset_in_tile":[0.0,0.0]},"focus_timestamp":{"secs":3928,"nanos":394444087}}}}
+{"WorkspaceActivated":{"id":2,"focused":true}}
+{"WindowFocusChanged":{"id":null}}
+{"WorkspaceUrgencyChanged":{"id":1,"urgent":true}}

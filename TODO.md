@@ -6,7 +6,7 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 
 - [x] Repo skeleton, docs, scripts, packaging stubs
 - [x] Verify Quickshell API of every `// TODO(api)` comment against the pinned version
-- [ ] `services/wm/Niri.qml`: parse `niri msg --json event-stream` (WorkspacesChanged, WorkspaceActivated, WindowFocusChanged)
+- [x] `services/wm/Niri.qml`: parse `niri msg --json event-stream` (WorkspacesChanged, WorkspaceActivated, WindowFocusChanged)
 - [x] `services/wm/Hyprland.qml`: map `Quickshell.Hyprland` to `Interface`
 - [x] `Shell/Theme.qml`: load `tokens.json`, hot reload on change, expose tokens
 - [x] `scripts/base16-to-tokens.py`: Base16 YAML → tokens.json

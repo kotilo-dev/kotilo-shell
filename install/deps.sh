@@ -14,6 +14,7 @@ SUDO=""; [[ $EUID -ne 0 ]] && SUDO="sudo"
 # - networkmanager, bluez (network/bt)         - brightnessctl, playerctl
 # - wl-clipboard, cliphist (clipboard)         - matugen (dynamic theme), swww (wallpaper)
 # - fonts: Inter, JetBrains Mono Nerd Font     - git, jq, python3 (scripts)
+# Not installed here: a compositor (niri or hyprland; pacman/dnf package `niri`). Testing the other one nested needs it too, plus foot.
 
 if have pacman; then
   echo "==> Arch-based system"
