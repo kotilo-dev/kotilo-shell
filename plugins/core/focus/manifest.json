@@ -1,0 +1,12 @@
+{
+  "id": "focus",
+  "name": "Focus Mode",
+  "version": "0.3.0",
+  "apiVersion": "^1.2",
+  "author": "kotilo",
+  "description": "IPC and settings for Focus Mode",
+  "kind": "qml",
+  "slots": ["shell.overlay"],
+  "permissions": [],
+  "settingsSchema": "settings.schema.json"
+}

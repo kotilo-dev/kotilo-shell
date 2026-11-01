@@ -98,7 +98,9 @@ Singleton {
     function receive(n) {
         n.tracked = true;
         const critical = n.urgency === N.NotificationUrgency.Critical;
-        if (rule(n).popup === false || (doNotDisturb && !critical)) {
+        // Focus Mode's own messages must get through the quiet they start.
+        const focusHeld = Focus.quiet && n.appName !== "Kotilo Shell";
+        if (rule(n).popup === false || ((doNotDisturb || focusHeld) && !critical)) {
             if (n.transient) n.expire();
             return;
         }

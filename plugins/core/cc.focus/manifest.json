@@ -1,0 +1,11 @@
+{
+  "id": "cc.focus",
+  "name": "Focus tile",
+  "version": "0.3.0",
+  "apiVersion": "^1.2",
+  "author": "kotilo",
+  "description": "Starts and stops Focus Mode",
+  "kind": "qml",
+  "slots": ["controlcenter.tile"],
+  "permissions": []
+}

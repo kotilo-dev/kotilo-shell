@@ -31,6 +31,8 @@ To use the command palette, bind this in your compositor (for example to `Super+
 qs -c kotilo ipc call palette toggle
 ```
 
+Start Focus Mode from the control center, or bind `qs -c kotilo ipc call focus toggle`.
+
 Open the control center from the bar, or bind `qs -c kotilo ipc call controlcenter toggle`.
 
 Kotilo Shell is your notification daemon unless another one is already running. It never takes over from one: stop the other daemon and the shell picks the name up within 15 s. Open the history with the bell, or with `qs -c kotilo ipc call notifications toggle`.

@@ -4,6 +4,7 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
 import "../components" as C
+import "../services" as S
 
 // The bar: one PanelWindow per screen, three slot regions filled by PluginHost.
 PanelWindow {
@@ -40,7 +41,13 @@ PanelWindow {
 
             C.SlotRow { slotName: "bar.left";   host: bar.host; screen: bar.screen; Layout.alignment: Qt.AlignLeft }
             Item { Layout.fillWidth: true }
-            C.SlotRow { slotName: "bar.center"; host: bar.host; screen: bar.screen; Layout.alignment: Qt.AlignHCenter }
+            C.SlotRow {
+                slotName: "bar.center"
+                host: bar.host
+                screen: bar.screen
+                visible: !(S.Focus.active && S.Focus.compactBar)
+                Layout.alignment: Qt.AlignHCenter
+            }
             Item { Layout.fillWidth: true }
             C.SlotRow { slotName: "bar.right";  host: bar.host; screen: bar.screen; Layout.alignment: Qt.AlignRight }
         }

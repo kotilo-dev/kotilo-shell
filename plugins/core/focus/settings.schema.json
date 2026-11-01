@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "workMinutes": { "type": "number", "title": "Focus length in minutes", "default": 25 },
+    "breakMinutes": { "type": "number", "title": "Break length in minutes", "default": 5 },
+    "compactBar": { "type": "boolean", "title": "Hide the bar's center modules during Focus Mode", "default": true },
+    "mute": { "type": "boolean", "title": "Mute audio during Focus Mode", "default": false }
+  }
+}

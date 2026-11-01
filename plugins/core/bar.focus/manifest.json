@@ -1,0 +1,11 @@
+{
+  "id": "bar.focus",
+  "name": "Focus timer",
+  "version": "0.3.0",
+  "apiVersion": "^1.2",
+  "author": "kotilo",
+  "description": "Time left in the Focus Mode session",
+  "kind": "qml",
+  "slots": ["bar.right"],
+  "permissions": []
+}

@@ -10,6 +10,7 @@ singleton Notifications 1.0 Notifications.qml
 singleton Brightness 1.0 Brightness.qml
 singleton Mpris 1.0 Mpris.qml
 singleton Agents 1.0 Agents.qml
+singleton Focus 1.0 Focus.qml
 singleton Git 1.0 Git.qml
 singleton Ports 1.0 Ports.qml
 singleton Containers 1.0 Containers.qml

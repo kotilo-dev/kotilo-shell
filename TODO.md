@@ -29,7 +29,7 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 
 - [x] Git, Containers and Ports bar modules (ADR-0010)
 - [x] Agent protocol (ADR-0003), `bar.agents`, approvals with keyboard Allow/Deny, `scripts/kotilo-agent`
-- [ ] Focus Mode: Pomodoro, DND except approvals, compact bar, control center tile
+- [x] Focus Mode: Pomodoro, DND except approvals, compact bar, control center tile
 - [ ] Theme propagation targets (`theme.target` slot, first apps from SPEC §4.3)
 - [ ] Plugin API v1: finish script plugins, `Shell.openPopup`, `Shell.registerPaletteAction`, `apiVersion` check
 
