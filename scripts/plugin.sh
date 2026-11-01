@@ -13,9 +13,15 @@ case "${1:-}" in
     [[ "$src" == */* && "$src" != http* && "$src" != git@* ]] && src="https://github.com/$src"
     tmp=$(mktemp -d); git clone --depth 1 "$src" "$tmp/p" >/dev/null
     [[ -f "$tmp/p/manifest.json" ]] || { echo "no manifest.json in repo"; rm -rf "$tmp"; exit 1; }
-    id=$(jq -r .id "$tmp/p/manifest.json"); perms=$(jq -r '.permissions // [] | join(", ")' "$tmp/p/manifest.json")
+    id=$(jq -r .id "$tmp/p/manifest.json")
+    # The id becomes a path below, so it must be the manifest's pattern and nothing else.
+    [[ "$id" =~ ^[a-z][a-z0-9-]*(\.[a-z][a-z0-9-]*)*$ ]] || { echo "invalid plugin id: $id"; rm -rf "$tmp"; exit 1; }
+    perms=$(jq -r '.permissions // [] | join(", ")' "$tmp/p/manifest.json")
     echo "Plugin: $id  ($(jq -r .name "$tmp/p/manifest.json") $(jq -r .version "$tmp/p/manifest.json"))"
     echo "Declared permissions: ${perms:-none}"
+    if ! jq -e '(.permissions // []) | index("process")' "$tmp/p/manifest.json" >/dev/null && { [[ -f "$tmp/p/widget.json" ]] || grep -rqE 'Shell\.run|execDetached|Process' --include='*.qml' "$tmp/p"; }; then
+      echo "WARNING: this plugin runs processes but does not declare the process permission."
+    fi
     echo "Source is UNVERIFIED unless listed in kotilo-dev/kotilo-plugins. QML plugins can run any command you can."
     read -r -p "Install? [y/N] " a; [[ "$a" == [yY] ]] || { rm -rf "$tmp"; exit 1; }
     rm -rf "$DIR/$id"; mv "$tmp/p" "$DIR/$id"; rm -rf "$tmp"
@@ -25,6 +31,7 @@ case "${1:-}" in
   update)
     for d in "$DIR"/*/; do id=$(basename "$d"); [[ -z "${2:-}" || "$2" == "$id" ]] && [[ -d "$d/.git" ]] && { echo "== $id"; git -C "$d" pull --ff-only; }; done ;;
   remove)
-    [[ -n "${2:-}" ]] || usage; rm -rf "$DIR/$2"; echo "removed $2" ;;
+    [[ "${2:-}" =~ ^[a-z][a-z0-9-]*(\.[a-z][a-z0-9-]*)*$ ]] || usage
+    rm -rf "${DIR:?}/$2"; echo "removed $2" ;;
   *) usage ;;
 esac
