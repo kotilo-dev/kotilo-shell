@@ -21,7 +21,7 @@ echo "==> base16 converter"
 python3 -I tests/test-base16.py || fail=1
 
 echo "==> JS units"
-if command -v node >/dev/null 2>&1; then node tests/test-fuzzy.mjs && node tests/test-devstatus.mjs && node tests/test-agentprotocol.mjs || fail=1; else echo "  node not found — skipping"; fi
+if command -v node >/dev/null 2>&1; then node tests/test-fuzzy.mjs && node tests/test-devstatus.mjs && node tests/test-agentprotocol.mjs && node tests/test-template.mjs || fail=1; else echo "  node not found — skipping"; fi
 
 echo "==> QML lint"
 if command -v qmllint >/dev/null 2>&1; then
@@ -33,7 +33,10 @@ fi
 
 echo "==> shell smoke test (needs a Wayland session)"
 if [[ -n "${WAYLAND_DISPLAY:-}" ]] && command -v qs >/dev/null 2>&1; then
-  timeout 8s qs -p "$ROOT" > /tmp/kotilo-smoke.log 2>&1 || true
+  # Its own socket and data folder: a second shell on the real socket would take it from the running one.
+  smoke_dir="$(mktemp -d)"
+  KOTILO_AGENT_SOCKET="$smoke_dir/agents.sock" XDG_DATA_HOME="$smoke_dir" timeout 8s qs -p "$ROOT" > /tmp/kotilo-smoke.log 2>&1 || true
+  rm -rf "$smoke_dir"
   # qt.qpa.services: Qt's portal registration, unrelated to QML; its text contains "Error".
   if grep -v 'qt.qpa.services' /tmp/kotilo-smoke.log | grep -Ei 'error|is not a type|cannot assign'; then echo "  QML errors above"; fail=1; else echo "  started without QML errors"; fi
 else
