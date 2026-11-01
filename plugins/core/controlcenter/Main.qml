@@ -8,7 +8,7 @@ import qs.Shell as K
 import qs.services as S
 import qs.components as C
 
-// Quick tiles from the controlcenter.tile slot, sliders, theme swatches and the media card.
+// Quick tiles from the controlcenter.tile slot, agents, sliders, theme swatches and the media card.
 Item {
     id: root
     property var plugin: null
@@ -51,6 +51,7 @@ Item {
             // Everything the keyboard can reach, in visual order.
             readonly property var stops: {
                 const list = tileEntries.map((t, i) => ({ kind: "tile", index: i }));
+                S.Agents.agents.forEach((a, i) => list.push({ kind: "agent", index: i }));
                 if (S.Audio.ready) list.push({ kind: "volume" });
                 if (S.Brightness.ready) list.push({ kind: "brightness" });
                 S.Audio.streams.forEach((n, i) => list.push({ kind: "stream", index: i }));
@@ -78,8 +79,15 @@ Item {
                 } else move(delta > 0 ? 1 : -1);
             }
 
+            // Approvals are answered in the agents panel only: Enter here must never say yes (ADR-0003).
+            function openAgents() {
+                root.shown = false;
+                K.Shell.toggleAgents();
+            }
+
             function activate() {
                 if (stop.kind === "tile") tileRepeater.itemAt(stop.index).item.activate();
+                else if (stop.kind === "agent") openAgents();
                 else if (stop.kind === "volume") S.Audio.toggleMute();
                 else if (stop.kind === "stream") {
                     const audio = S.Audio.streams[stop.index].audio;
@@ -146,6 +154,51 @@ Item {
                                             item.slot = "controlcenter.tile";
                                             item.selected = Qt.binding(() => win.isAt("tile", index));
                                             item.width = Qt.binding(() => width);
+                                        }
+                                    }
+                                }
+                            }
+
+                            Column {
+                                width: parent.width
+                                visible: S.Agents.agents.length > 0
+
+                                C.Label {
+                                    width: parent.width
+                                    visible: S.Agents.approvals.length > 0
+                                    bottomPadding: K.Theme.space.xs
+                                    color: K.Theme.state.warning
+                                    font.pixelSize: K.Theme.font.size - 2
+                                    text: S.Agents.approvals.length === 1 ? "1 approval waiting" : S.Agents.approvals.length + " approvals waiting"
+                                }
+                                Repeater {
+                                    model: S.Agents.agents
+
+                                    delegate: Rectangle {
+                                        id: agentRow
+                                        required property var modelData
+                                        required property int index
+                                        width: parent.width
+                                        height: 28
+                                        radius: K.Theme.radius.sm
+                                        color: win.isAt("agent", index) ? K.Theme.surface[1] : "transparent"
+
+                                        C.Label {
+                                            anchors { left: parent.left; right: agentState.left; leftMargin: K.Theme.space.sm; rightMargin: K.Theme.space.md; verticalCenter: parent.verticalCenter }
+                                            elide: Text.ElideRight
+                                            textFormat: Text.PlainText
+                                            text: agentRow.modelData.tool + (agentRow.modelData.project ? " · " + agentRow.modelData.project : "")
+                                        }
+                                        C.Label {
+                                            id: agentState
+                                            anchors { right: parent.right; rightMargin: K.Theme.space.sm; verticalCenter: parent.verticalCenter }
+                                            color: agentRow.modelData.state === "awaiting" ? K.Theme.state.warning : K.Theme.text.secondary
+                                            text: agentRow.modelData.state
+                                        }
+                                        MouseArea {
+                                            anchors.fill: parent
+                                            cursorShape: Qt.PointingHandCursor
+                                            onClicked: win.openAgents()
                                         }
                                     }
                                 }

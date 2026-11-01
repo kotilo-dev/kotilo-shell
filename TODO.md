@@ -33,13 +33,14 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 - [x] Theme propagation targets (ADR-0011): `theme.target` slot, ghostty and kitty; more apps from SPEC §4.3 in the parking lot
 - [x] Plugin API v1 (ADR-0012): script plugins, `Shell.openPopup`, `Shell.registerPaletteAction`, tooltips, `notification.handler`, docs match the code
 - [x] Claude Code hook adapter (ADR-0013): `kotilo-agent hook claude`
+- [x] Agents list in the control center; rows open the agents panel and never answer
 
 ## Parking lot
 - More theme targets from SPEC §4.3, and a real render check in ghostty and kitty, which the dev machine does not have
 - One broken service file disables every plugin, because all of them import the services module
 - Control center tiles for night light, VPN and screen share (need a compositor-neutral backend)
 - Keyboard access to a notification's second action
-- Adapters for more agent CLIs and the agents list in the control center
+- Adapters for more agent CLIs
 - Memory budget: 150 MB RSS cannot be met, because an empty Quickshell with one window is 208 MB RSS (108 MB PSS). Kotilo is 247 MB RSS, 137 MB PSS. Decide whether the budget should be PSS. Opening a panel adds about 35 MB PSS that stays; the image cache is not the cause
 - Quickshell logs `PeerClosedError` each time a client closes the agent socket, so every hook event adds a line to the shell log
 - CPU sparkline and net up/down in `bar.resources` (SPEC §3.1)

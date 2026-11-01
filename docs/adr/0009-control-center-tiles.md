@@ -12,4 +12,4 @@ A tile is a `kind: "qml"` plugin in `controlcenter.tile` whose root is `C.Tile`.
 ## Consequences
 - Positive: third-party tiles get mouse and keyboard handling for free. Additive, so `apiVersion` becomes 1.2.0.
 - Negative / risks: a plugin that receives `host` can read every plugin's manifest. QML has no sandbox, so this adds no new exposure.
-- Follow-ups: more tiles, the agents list (0.3).
+- Follow-ups: more tiles.

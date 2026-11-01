@@ -18,4 +18,4 @@ Approvals are shown by the `agents` plugin, not as notifications, so they work b
 ## Consequences
 - Positive: an adapter is a few lines; the runtime directory's 0700 mode limits the socket to the user.
 - Negative / risks: a second shell on the same path deletes the first one's socket, so test and dev instances must set `KOTILO_AGENT_SOCKET`. Any process of the user can post a request, so the shown text is what the requester claims. Changing the wire format means changing Kotilo Desktop too.
-- Follow-ups: the agents list in the control center, adapters for more agent CLIs.
+- Follow-ups: adapters for more agent CLIs.
