@@ -1,0 +1,12 @@
+{
+  "id": "palette.projects",
+  "name": "Projects",
+  "version": "0.2.0",
+  "apiVersion": "^1.1",
+  "author": "kotilo",
+  "description": "Finds git repositories and opens them in an editor or terminal",
+  "kind": "provider",
+  "slots": ["palette.provider"],
+  "permissions": ["process", "fs:read"],
+  "settingsSchema": "settings.schema.json"
+}

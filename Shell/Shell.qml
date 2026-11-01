@@ -49,6 +49,8 @@ Singleton {
     // Palette providers (ADR-0008): each exposes `title` and `items(query)`.
     property var paletteProviders: []
     signal paletteDataChanged()                 // a provider's rows changed while the palette may be open
+    signal paletteOpened()                      // refresh anything that goes stale here
+    signal paletteClosed()
     function registerPaletteProvider(p) { paletteProviders = paletteProviders.concat([p]); }
     function unregisterPaletteProvider(p) { paletteProviders = paletteProviders.filter(x => x !== p); }
 

@@ -132,7 +132,7 @@ Core and third-party plugins use the same imports. Never import the shell by fil
 - `Shell.run(argv, {timeout, cwd}) → Promise<{stdout, stderr, code}>` — the only sanctioned way to shell out
 - `Shell.version`, `Shell.apiVersion`
 
-- `Shell.registerPaletteProvider(item)`, `Shell.unregisterPaletteProvider(item)`, `Shell.paletteDataChanged()`, `Shell.fuzzyScore(query, text)`, `Shell.fuzzyRank(query, title, keywords)` (API 1.1)
+- `Shell.registerPaletteProvider(item)`, `Shell.unregisterPaletteProvider(item)`, `Shell.paletteDataChanged()`, `Shell.paletteOpened()`, `Shell.paletteClosed()`, `Shell.fuzzyScore(query, text)`, `Shell.fuzzyRank(query, title, keywords)` (API 1.1)
 
 ### Palette providers (API 1.1, ADR-0008)
 A provider is a `kind: "provider"` plugin in `palette.provider`. It registers itself on load and unregisters on destruction:
@@ -152,7 +152,9 @@ Item {
 }
 ```
 
-The palette filters and ranks your rows, so return every candidate. The first action runs on `Enter`; `Tab` lists them all. `items()` runs on the UI thread on each keystroke: answer from memory and never start a process there. When your data changes, call `Shell.paletteDataChanged()` so an open palette refreshes.
+The palette filters and ranks your rows, so return every candidate. The first action runs on `Enter`; `Tab` lists them all. `items()` runs on the UI thread on each keystroke: answer from memory and never start a process there. Refresh on the `Shell.paletteOpened()` signal, and call `Shell.paletteDataChanged()` when your data changes so an open palette updates.
+
+Optional: a provider `priority` breaks ties, higher first. A row `score` replaces fuzzy ranking for that row, for text where a subsequence match means nothing; titles rank at 1000 and above. Providers holding private data should clear it on `Shell.paletteClosed()`.
 
 ## 5. Loading and hot reload
 

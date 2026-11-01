@@ -5,7 +5,7 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 ## [Unreleased]
 
 ### Added
-- Command palette with an Apps provider and a palette provider API (API 1.1, ADR-0008)
+- Command palette with Apps, Windows, Projects, Themes and Clipboard providers, and a palette provider API (API 1.1, ADR-0008)
 - Licence: GPL-3.0-or-later, with SPDX headers on all source files
 - Repository skeleton, specification, plugin and theme documentation
 - Core QML skeleton: ShellRoot, Bar, PluginHost, Theme, Settings

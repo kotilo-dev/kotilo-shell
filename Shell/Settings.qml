@@ -62,6 +62,13 @@ Singleton {
         changed(pluginId, key);
     }
 
+    function setTheme(id) {
+        if (!global.theme) global.theme = {};
+        global.theme.id = id;
+        save();
+        changed("", "theme");
+    }
+
     function save() {
         file.setText(JSON.stringify(global, null, 2));
     }

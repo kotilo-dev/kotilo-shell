@@ -14,10 +14,29 @@ Item {
     property string slot: ""
 
     property bool shown: false
+    onShownChanged: shown ? K.Shell.paletteOpened() : K.Shell.paletteClosed()
     readonly property var targetScreen: Quickshell.screens.find(s => s.name === S.Workspaces.focusedOutput) || null
     readonly property int maxResults: K.Settings.get("palette", "maxResults", 50)
 
     function count(n, noun) { return n + " " + noun + (n === 1 ? "" : "s"); }
+
+    // Actions run once the palette is gone: while it holds the keyboard, a compositor would
+    // hand focus straight back to the previous window and undo a Focus action.
+    property var pending: null
+    function runAfterClose(action) {
+        pending = action;
+        shown = false;
+        afterClose.restart();
+    }
+    Timer {
+        id: afterClose
+        interval: 80
+        onTriggered: {
+            try { root.pending.run(); }
+            catch (e) { K.Log.warn("action failed: " + e, "palette"); }
+            root.pending = null;
+        }
+    }
 
     IpcHandler {
         target: "palette"
@@ -57,11 +76,11 @@ Item {
                     try { items = p.items(q) || []; }
                     catch (e) { K.Log.warn(p.title + ": " + e, "palette"); }
                     for (const it of items) {
-                        const s = K.Shell.fuzzyRank(q, it.title, it.keywords);
-                        if (s >= 0) out.push(Object.assign({}, it, { provider: p.title, rank: s }));
+                        const s = it.score !== undefined ? it.score : K.Shell.fuzzyRank(q, it.title, it.keywords);
+                        if (s >= 0) out.push(Object.assign({}, it, { provider: p.title, priority: p.priority || 0, rank: s }));
                     }
                 }
-                out.sort((a, b) => b.rank - a.rank || a.title.localeCompare(b.title));
+                out.sort((a, b) => b.rank - a.rank || b.priority - a.priority || a.title.localeCompare(b.title));
                 total = out.length;
                 results = out.slice(0, root.maxResults);
                 if (keepSelection) {
@@ -76,9 +95,7 @@ Item {
             function run(row) {
                 const action = menuFor ? row : (row.actions || [])[0];
                 if (!action) return;
-                try { action.run(); }
-                catch (e) { K.Log.warn(row.title + ": " + e, "palette"); }
-                root.shown = false;
+                root.runAfterClose(action);
             }
 
             // Rows also pass under a resting pointer as results change, and that must not select one.

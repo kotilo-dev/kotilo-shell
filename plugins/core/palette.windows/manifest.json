@@ -1,0 +1,11 @@
+{
+  "id": "palette.windows",
+  "name": "Windows",
+  "version": "0.2.0",
+  "apiVersion": "^1.1",
+  "author": "kotilo",
+  "description": "Finds open windows, focuses or closes them",
+  "kind": "provider",
+  "slots": ["palette.provider"],
+  "permissions": []
+}

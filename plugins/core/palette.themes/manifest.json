@@ -1,0 +1,11 @@
+{
+  "id": "palette.themes",
+  "name": "Themes",
+  "version": "0.2.0",
+  "apiVersion": "^1.1",
+  "author": "kotilo",
+  "description": "Switches between bundled and user themes",
+  "kind": "provider",
+  "slots": ["palette.provider"],
+  "permissions": ["process", "fs:read"]
+}
