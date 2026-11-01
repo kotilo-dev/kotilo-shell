@@ -2,12 +2,14 @@
 import QtQuick
 import "../Shell" as K
 
-// Recent percentages as small bars, newest on the right. The bars stay and only change height.
+// Recent percentages as small bars over a faint track, newest on the right. The square root keeps
+// a quiet system visible; the exact value belongs in the text beside it. The bars stay and only
+// change height.
 Row {
     id: spark
     property var values: []
     property int count: 10
-    property color color: K.Theme.accent.primary
+    property color color: K.Theme.text.secondary
     height: 14
     spacing: 1
 
@@ -15,12 +17,19 @@ Row {
         model: spark.count
 
         delegate: Rectangle {
+            id: column
             required property int index
             readonly property real value: spark.values[spark.values.length - spark.count + index] || 0
             width: 2
-            height: Math.max(1, Math.min(1, value / 100) * spark.height)
-            y: spark.height - height
-            color: spark.color
+            height: spark.height
+            color: K.Theme.surface[0]
+
+            Rectangle {
+                anchors.bottom: parent.bottom
+                width: parent.width
+                height: column.value > 0 ? Math.max(2, Math.sqrt(Math.min(1, column.value / 100)) * parent.height) : 0
+                color: spark.color
+            }
         }
     }
 }

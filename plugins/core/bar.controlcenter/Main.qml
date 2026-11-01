@@ -4,6 +4,7 @@ import qs.Shell as K
 import qs.components as C
 
 C.Pill {
-    icon: "kotilo"
+    icon: "sliders"
+    tooltip: "Control center"
     onClicked: K.Shell.toggleControlCenter()
 }
