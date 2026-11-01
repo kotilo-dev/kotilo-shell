@@ -26,6 +26,7 @@ Singleton {
     function focus(id) { if (adapter) adapter.focusWorkspace(id); }
     function focusRelative(delta) { if (adapter) adapter.focusWorkspaceRelative(delta); }
     function moveWindowTo(id) { if (adapter) adapter.moveWindowToWorkspace(id); }
+    function focusToplevel(toplevel) { if (adapter) adapter.focusToplevel(toplevel); else toplevel.activate(); }
     function closeFocused() { if (adapter) adapter.closeFocusedWindow(); }
     function dispatch(cmd) { if (adapter) adapter.dispatch(cmd); }
 

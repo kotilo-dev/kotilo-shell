@@ -52,5 +52,11 @@ Interface {
     function focusWorkspaceRelative(delta) { focusTarget(delta > 0 ? "e+1" : "e-1"); }
     function moveWindowToWorkspace(id) { dsp("hl.dsp.window.move({ workspace = " + JSON.stringify(String(id)) + " })", "movetoworkspace " + id); }
     function closeFocusedWindow() { dsp("hl.dsp.window.close()", "killactive"); }
+    function focusToplevel(toplevel) {
+        const top = Hypr.Hyprland.toplevels.values.find(t => t.wayland === toplevel);
+        if (!top) { toplevel.activate(); return; }
+        const target = "address:0x" + top.address;
+        dsp("hl.dsp.focus({ window = " + JSON.stringify(target) + " })", "focuswindow " + target);
+    }
     function dispatch(command) { Hypr.Hyprland.dispatch(command); }   // raw: the caller's syntax, not translated
 }

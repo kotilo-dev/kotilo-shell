@@ -22,5 +22,6 @@ Scope {
     function focusWorkspaceRelative(delta) {}   // +1 / -1
     function moveWindowToWorkspace(id) {}
     function closeFocusedWindow() {}
+    function focusToplevel(toplevel) { toplevel.activate(); }   // a Quickshell Toplevel
     function dispatch(command) {}               // raw passthrough for power users (palette "Shell command")
 }
