@@ -7,7 +7,7 @@ pkgdesc="Developer-focused Wayland desktop shell for Niri and Hyprland, built on
 arch=('any')
 url="https://github.com/kotilo/kotilo-shell"
 license=('GPL-3.0-or-later')
-depends=('quickshell-git' 'qt6-declarative' 'qt6-wayland' 'qt6-svg' 'qt6-5compat'
+depends=('quickshell' 'qt6-declarative' 'qt6-wayland' 'qt6-svg' 'qt6-5compat'
          'pipewire' 'wireplumber' 'upower' 'networkmanager' 'bluez' 'brightnessctl' 'playerctl'
          'wl-clipboard' 'jq' 'python' 'inter-font' 'ttf-jetbrains-mono-nerd')
 optdepends=('cliphist' 'swww' 'matugen' 'niri' 'hyprland')

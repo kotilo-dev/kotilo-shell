@@ -48,8 +48,8 @@ CFG="${XDG_CONFIG_HOME:-$HOME/.config}/kotilo/shell"
 LOG="${XDG_CACHE_HOME:-$HOME/.cache}/kotilo/shell/shell.log"
 case "${1:-}" in
   start)   exec qs -c kotilo >>"$LOG" 2>&1 ;;
-  stop)    pkill -f 'qs -c kotilo' || true ;;
-  restart) pkill -f 'qs -c kotilo' || true; sleep 0.3; setsid qs -c kotilo >>"$LOG" 2>&1 < /dev/null & disown; echo restarted ;;
+  stop)    pkill -f '^(\S*/)?(qs|quickshell) .*-c kotilo' || true ;;
+  restart) pkill -f '^(\S*/)?(qs|quickshell) .*-c kotilo' || true; sleep 0.3; setsid qs -c kotilo >>"$LOG" 2>&1 < /dev/null & disown; echo restarted ;;
   log)     tail -f "$LOG" ;;
   theme)   [[ -n "${2:-}" ]] || { echo "usage: kotilo-shell theme <id>"; exit 1; }
            tmp=$(mktemp); jq --arg id "$2" '.theme.id=$id' "$CFG/settings.json" >"$tmp" && mv "$tmp" "$CFG/settings.json"; echo "theme -> $2" ;;

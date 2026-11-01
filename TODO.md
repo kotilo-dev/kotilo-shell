@@ -14,7 +14,7 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 - [x] `Shell/PluginHost.qml`: scan dirs, validate manifests, mount slots
 - [x] Core bar plugins: workspaces, window-title, clock, audio, network, bluetooth, battery, tray, resources, notifications
 - [x] OSD (volume/brightness)
-- [ ] `install/install.sh` end-to-end on Arch, Fedora, Ubuntu (distrobox)
+- [x] `install/install.sh` end-to-end on Arch, Fedora, Ubuntu (distrobox)
 - [ ] README GIF
 - [ ] AUR `kotilo-shell-git` publish
 

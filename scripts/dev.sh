@@ -12,14 +12,15 @@ export KOTILO_DEV=1
 export KOTILO_LOG="${KOTILO_LOG:-debug}"
 export QT_LOGGING_RULES="${QT_LOGGING_RULES:-qt.qml.*.warning=true}"
 
-pkill -f 'qs -p' 2>/dev/null || true
-pkill -f 'qs -c kotilo' 2>/dev/null || true
+# Anchored to the program: a bare pattern would also match any command line that mentions it.
+pkill -f '^(\S*/)?(qs|quickshell) .*-p '"$ROOT" 2>/dev/null || true
+pkill -f '^(\S*/)?(qs|quickshell) .*-c kotilo' 2>/dev/null || true
 
 echo "==> qs -p $ROOT  (log: $LOG)"
 : > "$LOG"
 ( qs -p "$ROOT" 2>&1 | tee -a "$LOG" ) &
 QS_PID=$!
-trap 'kill $QS_PID 2>/dev/null || true; pkill -f "qs -p $ROOT" 2>/dev/null || true' EXIT
+trap 'kill $QS_PID 2>/dev/null || true; pkill -f "^(\S*/)?(qs|quickshell) .*-p $ROOT" 2>/dev/null || true' EXIT
 
 # Fail loudly on QML warnings so Claude Code sees them.
 tail -n +1 -f "$LOG" | grep --line-buffered -E 'warning|error|\[kotilo\]' &

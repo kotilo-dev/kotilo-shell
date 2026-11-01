@@ -3,7 +3,7 @@
 # Everything else under the kotilo directories belongs to Kotilo Desktop: never remove it.
 set -euo pipefail
 CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
-pkill -f 'qs -c kotilo' || true
+pkill -f '^(\S*/)?(qs|quickshell) .*-c kotilo' || true
 rm -rf "$CONFIG_HOME/quickshell/kotilo"
 rm -f "${XDG_BIN_HOME:-$HOME/.local/bin}/kotilo-shell"
 rm -rf "${XDG_CACHE_HOME:-$HOME/.cache}/kotilo/shell"
