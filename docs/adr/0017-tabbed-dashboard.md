@@ -14,4 +14,5 @@ The Agents tab shows state and pending requests but cannot answer: it opens the 
 ## Consequences
 - Positive: third-party tabs, with no idle cost. Additive, so `apiVersion` becomes 1.12.0.
 - Weather stays offline until the user sets a city, and never looks up a location from the IP address, which would send the address to another service unasked.
+- Trade uses Yahoo Finance's unofficial chart endpoint and reads TEFAS from its web page, since neither has a keyless API. Either can change or stop, so a failure shows Unavailable, never a guessed price. Symbols are checked before they reach a URL.
 - Negative / risks: tab order for existing users comes from `settings.slots`. The first open of a tab pays its fetch. A feed reveals the user's address to its host, which is what a feed reader does.

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Trade",
+  "type": "object",
+  "properties": {
+    "panels": {
+      "type": "array",
+      "title": "Panels, up to four, for example [{\"title\":\"Currency\",\"items\":[\"USDTRY=X\"]}]",
+      "description": "An item is a Yahoo symbol, tefas:CODE, { symbol, label } or { formula, label, currency }, such as GC=F*USDTRY=X/31.1035",
+      "items": { "type": "object", "required": ["title", "items"], "properties": { "title": { "type": "string" }, "items": { "type": "array" } } },
+      "default": []
+    }
+  }
+}

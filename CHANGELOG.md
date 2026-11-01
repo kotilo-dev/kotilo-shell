@@ -5,6 +5,7 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 ## [Unreleased]
 
 ### Added
+- Trade tab: up to four panels you define in Settings, for stocks, funds, currencies and metals from Yahoo Finance and TEFAS, with labels and simple formulas such as gram gold
 - GitHub tab with separate panels for notifications, your pull requests, review requests and the repositories on this machine with their commit status, each with a More link to its GitHub page
 - Dashboard grid with a profile card with your own picture, weather, a clock with up to two world clocks, calendar and media with a cava spectrum (API 1.13). Weather uses Open-Meteo and stays offline until you set a city
 - Panel with tabs, opened from the date and time: Overview, System, Agents, GitHub and RSS. System is a task manager for CPU, memory, disk, network and GPU, with processes grouped by name (`dashboard.tab`, API 1.12, ADR-0017)

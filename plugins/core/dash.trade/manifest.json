@@ -1,0 +1,13 @@
+{
+  "id": "dash.trade",
+  "name": "Trade tab",
+  "version": "0.1.0",
+  "apiVersion": "^1.13",
+  "author": "kotilo",
+  "description": "Prices for the stocks and funds you list, from Yahoo Finance and TEFAS",
+  "kind": "qml",
+  "icon": "trade",
+  "slots": ["dashboard.tab"],
+  "permissions": ["process"],
+  "settingsSchema": "settings.schema.json"
+}
