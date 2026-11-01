@@ -4,6 +4,7 @@
   "type": "object",
   "properties": {
     "showEmpty": { "type": "boolean", "default": true, "title": "Show empty workspaces" },
-    "showNames": { "type": "boolean", "default": false, "title": "Show names instead of numbers" }
+    "style": { "type": "string", "enum": ["numbers", "roman", "dots", "circles"], "default": "numbers", "title": "Indicator style" },
+    "showNames": { "type": "boolean", "default": false, "title": "Show names instead of the indicator style" }
   }
 }
