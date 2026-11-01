@@ -87,6 +87,9 @@ Singleton {
         }
     }
 
+    readonly property bool doNotDisturb: K.Settings.get("notifications", "doNotDisturb", false)
+    function toggleDoNotDisturb() { K.Settings.set("notifications", "doNotDisturb", !doNotDisturb); }
+
     function rule(n) {
         const rules = K.Settings.get("notifications", "rules", {});
         return rules[n.appName] || {};
@@ -94,9 +97,8 @@ Singleton {
 
     function receive(n) {
         n.tracked = true;
-        const dnd = K.Settings.get("notifications", "doNotDisturb", false);
         const critical = n.urgency === N.NotificationUrgency.Critical;
-        if (rule(n).popup === false || (dnd && !critical)) {
+        if (rule(n).popup === false || (doNotDisturb && !critical)) {
             if (n.transient) n.expire();
             return;
         }

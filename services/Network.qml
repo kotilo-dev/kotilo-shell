@@ -25,5 +25,9 @@ Singleton {
         || Qs.Networking.connectivity === Qs.NetworkConnectivity.Limited
         || Qs.Networking.connectivity === Qs.NetworkConnectivity.Portal)
 
+    readonly property bool wifiAvailable: wifiDevice !== null && Qs.Networking.wifiHardwareEnabled
+    readonly property bool wifiEnabled: ready && Qs.Networking.wifiEnabled
+    function toggleWifi() { if (wifiAvailable) Qs.Networking.wifiEnabled = !Qs.Networking.wifiEnabled; }
+
     function icon() { return kind === "wired" ? "network" : (kind === "wifi" ? "wifi" : "wifi-off"); }
 }

@@ -20,6 +20,7 @@ Row {
                 if (item.hasOwnProperty("plugin")) item.plugin = modelData;
                 if (item.hasOwnProperty("slot")) item.slot = row.slotName;
                 if (item.hasOwnProperty("screen")) item.screen = row.screen;
+                if (item.hasOwnProperty("host")) item.host = row.host;
             }
             onStatusChanged: if (status === Loader.Error) K.Log.error("failed to mount " + modelData.id + " in " + row.slotName, "slot")
         }

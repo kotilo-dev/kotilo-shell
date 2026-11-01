@@ -9,7 +9,7 @@ Singleton {
     id: root
 
     readonly property string version: "0.1.0-dev"
-    readonly property string apiVersion: "1.1.0"
+    readonly property string apiVersion: "1.2.0"
 
     // Resolved config/data dirs (XDG-compliant; never assume a distro layout).
     // The shell/ level keeps these apart from Kotilo Desktop's own files: see docs/adr/0005.
@@ -57,6 +57,9 @@ Singleton {
     // -1 for no match, otherwise higher is better.
     function fuzzyScore(query, text) { return Fuzzy.score(query, text); }
     function fuzzyRank(query, title, keywords) { return Fuzzy.rank(query, title, keywords); }
+
+    signal controlCenterToggled()
+    function toggleControlCenter() { controlCenterToggled(); }
 
     // Notifications: sent through the Notifications service.
     signal notifyRequested(var notification)

@@ -8,4 +8,6 @@ singleton Resources 1.0 Resources.qml
 singleton Tray 1.0 Tray.qml
 singleton Notifications 1.0 Notifications.qml
 singleton Brightness 1.0 Brightness.qml
-# 0.3 TODO: Git, Agents, Containers, Ports, Mpris, Clipboard
+singleton Mpris 1.0 Mpris.qml
+singleton Power 1.0 Power.qml
+# 0.3 TODO: Git, Agents, Containers, Ports, Clipboard

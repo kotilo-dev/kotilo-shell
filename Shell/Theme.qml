@@ -76,6 +76,23 @@ Singleton {
         }
     }
 
+    // Every theme with a tokens.json, as { id, bg, accent }. User themes replace bundled ones of the same id.
+    property var schemes: []
+    function scan() {
+        Shell.run(["find", "-L", Quickshell.shellPath("themes"), Shell.configDir + "/themes", "-mindepth", "2", "-maxdepth", "2", "-name", "tokens.json"])
+            .then(r => Promise.all(r.stdout.trim().split("\n").filter(l => l.length).map(path =>
+                Shell.run(["cat", path]).then(c => {
+                    const t = JSON.parse(c.stdout);
+                    return { id: path.split("/").slice(-2)[0], bg: t.bg.base, accent: t.accent.primary };
+                }))))
+            .then(found => {
+                const byId = {};
+                for (const s of found) byId[s.id] = s;
+                schemes = Object.keys(byId).sort().map(id => byId[id]);
+            })
+            .catch(e => Log.warn("theme scan failed: " + e, "theme"));
+    }
+
     // Convenience for state classes used by script plugins: ok|warn|error|info|muted
     function stateColor(cls) {
         switch (cls) {

@@ -23,6 +23,11 @@ Singleton {
     function step(delta) { setVolume(volume + delta); }
     function toggleMute() { if (ready) sink.audio.muted = !sink.audio.muted; }
 
+    // Apps playing audio: Quickshell reports playback streams as sinks. Their volumes stay
+    // unbound until a PwObjectTracker holds them.
+    readonly property var streams: Pipewire.nodes.values.filter(n => n.isStream && n.isSink && n.audio)
+    function streamName(n) { return n.properties["application.name"] || n.nickname || n.description || n.name; }
+
     function icon() {
         if (!ready || muted || percent === 0) return "volume-x";
         return percent < 50 ? "volume-1" : "volume-2";
