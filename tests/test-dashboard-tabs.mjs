@@ -67,9 +67,35 @@ assert.equal(gh.age("2027-01-01T00:00:00Z", now), "now", "a future date");
 assert.equal(gh.age(undefined, now), "");
 const pulls = plain(gh.pullRows([{ title: "T", url: "https://github.com/a/b/pull/1", number: 1, updatedAt: "2026-11-01T09:00:00Z", repository: { nameWithOwner: "a/b" } }], now));
 assert.deepEqual(pulls[0], { title: "T", url: "https://github.com/a/b/pull/1", trailing: "3h", detail: "a/b#1" });
-const repos = plain(gh.repositoryRows([{ nameWithOwner: "a/b", url: "https://github.com/a/b", isPrivate: true, pushedAt: "2026-11-01T09:00:00Z" }], now));
-assert.equal(repos[0].trailing, "private  3h");
-assert.equal(repos[0].detail, "");
+for (const remote of ["git@github.com:a/b.git", "https://github.com/a/b.git", "https://github.com/a/b", "ssh://git@github.com/a/b.git"]) assert.equal(gh.remotePage(remote), "https://github.com/a/b", remote);
+for (const remote of ["", "git@gitlab.com:a/b.git", "https://github.com.evil.example/a/b", "file:///a/b"]) assert.equal(gh.remotePage(remote), "", remote);
+const local = plain(gh.localRows(`### /home/me/dev/clean
+time 200
+remote git@github.com:a/clean.git
+# branch.head main
+# branch.ab +0 -0
+### /home/me/dev/work
+time 100
+remote https://gitlab.com/a/work.git
+# branch.oid abc
+# branch.head feature
+# branch.upstream origin/feature
+# branch.ab +2 -1
+1 .M N... 100644 100644 100644 abc abc file.txt
+? new.txt
+### /srv/other
+time
+remote
+`, "/home/me"));
+assert.deepEqual(local.map(r => r.title), ["work", "clean", "other"], "attention first");
+assert.equal(local[0].trailing, "2 changed  ↑2  ↓1");
+assert.equal(local[0].detail, "feature  ~/dev/work");
+assert.equal(local[0].attention, true);
+assert.equal(local[0].url, "", "not on GitHub");
+assert.equal(local[1].trailing, "clean");
+assert.equal(local[1].url, "https://github.com/a/clean");
+assert.equal(local[2].detail, "/srv/other");
+assert.equal(gh.localRows("", "/h").length, 0);
 
 const rss = load("dash.rss/feed.js");
 const r = rss.parse(`<?xml version="1.0"?><rss><channel><title>Blog &amp; News</title><link>https://b.example</link>

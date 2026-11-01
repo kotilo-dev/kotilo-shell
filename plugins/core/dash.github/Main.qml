@@ -25,7 +25,7 @@ Item {
         { key: "notifications", title: "Notifications", empty: "You are all caught up.", more: "https://github.com/notifications", rows: [], status: "Loading…" },
         { key: "pulls", title: "Your pull requests", empty: "No open pull requests.", more: "https://github.com/pulls", rows: [], status: "Loading…" },
         { key: "reviews", title: "Review requests", empty: "Nothing to review.", more: "https://github.com/pulls/review-requested", rows: [], status: "Loading…" },
-        { key: "repos", title: "Repositories", empty: "No repositories.", more: "https://github.com/", rows: [], status: "Loading…" }
+        { key: "repos", title: "Local repositories", empty: "No repositories in the folders set under Projects.", more: "https://github.com/", rows: [], status: "Loading…" }
     ]
 
     // Every place the keyboard can land, in reading order.
@@ -55,6 +55,16 @@ Item {
         return true;
     }
 
+    // Repositories on this machine, from the folders the Projects palette provider searches.
+    function readLocal() {
+        const home = Quickshell.env("HOME");
+        const roots = K.Settings.get("palette.projects", "roots", ["~/dev", "~/src", "~/projects", "~/code"]).map(r => r.replace(/^~(?=\/|$)/, home));
+        K.Shell.run(["sh", plugin.dir + "/local-repos.sh"].concat(roots), { timeout: 15000 }).then(r => {
+            const list = Links.localRows(r.stdout, home);
+            update("repos", { rows: list, status: list.length ? "" : "empty" });
+        }, () => { update("repos", { status: "Could not read the repositories." }); });
+    }
+
     function update(key, change) {
         sections = sections.map(s => s.key === key ? Object.assign({}, s, change) : s);
     }
@@ -79,7 +89,7 @@ Item {
         fetch("notifications", ["api", "notifications"], d => Links.notificationRows(d));
         fetch("pulls", ["search", "prs", "--author=@me", "--state=open", "--limit", "20", "--sort", "updated", "--json", pullFields], d => Links.pullRows(d, now));
         fetch("reviews", ["search", "prs", "--review-requested=@me", "--state=open", "--limit", "20", "--sort", "updated", "--json", pullFields], d => Links.pullRows(d, now));
-        fetch("repos", ["repo", "list", "--limit", "20", "--json", "nameWithOwner,description,url,isPrivate,pushedAt"], d => Links.repositoryRows(d, now));
+        readLocal();
         K.Shell.run(["gh", "api", "user"], { timeout: 15000 }).then(r => {
             try { update("repos", { more: Links.repositoriesPage(JSON.parse(r.stdout).login) }); } catch (e) {}
         }, () => {});
@@ -145,6 +155,7 @@ Item {
                                     secondary: true
                                     textFormat: Text.PlainText
                                     font.pixelSize: K.Theme.font.size - 2
+                                    color: row.modelData.attention ? K.Theme.state.warning : K.Theme.text.secondary
                                     text: row.modelData.trailing
                                 }
                                 MouseArea {
