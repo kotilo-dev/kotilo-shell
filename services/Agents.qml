@@ -33,7 +33,10 @@ Singleton {
     function handle(line, connection) {
         const m = Protocol.parse(line);
         if (!m) { K.Log.warn("dropped an invalid agent message", "agents"); return; }
-        if (m.type === "agent.status") updateAgent(m);
+        if (m.type === "agent.status") {
+            updateAgent(m);
+            if (m.once) connection.connected = false;   // closing first keeps Quickshell from logging the peer's exit
+        }
         else if (approvals.some(a => a.id === m.id)) K.Log.warn("dropped a repeated approval id", "agents");
         else approvals = approvals.concat([{ id: m.id, agent: m.agent || m.id, command: Protocol.display(m.command), cwd: Protocol.display(m.cwd), connection: connection }]);
     }

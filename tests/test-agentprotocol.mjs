@@ -12,7 +12,8 @@ const plain = v => JSON.parse(JSON.stringify(v));
 const line = o => JSON.stringify(o);
 
 assert.deepEqual(plain(parse(line({ type: "agent.status", id: "a", tool: "claude", project: "p", state: "running", since: 5, extra: 1 }))),
-    { type: "agent.status", id: "a", tool: "claude", project: "p", state: "running", since: 5 });
+    { type: "agent.status", id: "a", tool: "claude", project: "p", state: "running", since: 5, once: false });
+assert.equal(parse(line({ type: "agent.status", id: "a", state: "idle", once: true })).once, true);
 assert.deepEqual(plain(parse(line({ type: "agent.approval", id: "a", command: "ls" }))), { type: "agent.approval", id: "a", command: "ls", cwd: "", agent: "" });
 assert.equal(parse(line({ type: "agent.approval", id: "a:1", agent: "a", command: "ls" })).agent, "a");
 

@@ -112,7 +112,7 @@ shell.qml
 Principles: singletons own state, modules are pure views; every panel is a `LazyLoader`; all shell-outs go through `Shell/Process` with timeouts and caching; no module may block the UI thread.
 
 ### Agent protocol (shared with Kotilo Desktop)
-Unix socket `$XDG_RUNTIME_DIR/kotilo-agents.sock`, JSON lines. Messages carry a `type`: `agent.status {id, tool, project, state: running|awaiting|idle|done, since}`, `agent.approval {id, agent?, command, cwd}`, `agent.approval.reply {id, allow}`. See ADR-0003 for the rules, and `scripts/kotilo-agent` for a client. A tiny adapter (hook/wrapper) per agent CLI publishes to the socket; Kotilo Desktop speaks the same protocol over the network.
+Unix socket `$XDG_RUNTIME_DIR/kotilo-agents.sock`, JSON lines. Messages carry a `type`: `agent.status {id, tool, project, state: running|awaiting|idle|done, since, once?}`, `agent.approval {id, agent?, command, cwd}`, `agent.approval.reply {id, allow}`. See ADR-0003 for the rules, and `scripts/kotilo-agent` for a client. A tiny adapter (hook/wrapper) per agent CLI publishes to the socket; Kotilo Desktop speaks the same protocol over the network.
 
 ## 7. Distribution
 

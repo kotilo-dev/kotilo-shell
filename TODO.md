@@ -42,7 +42,6 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 - Keyboard access to a notification's second action
 - Adapters for more agent CLIs
 - Memory budget: 150 MB PSS, because an empty Quickshell with one window is already 208 MB RSS (108 MB PSS). In a nested shell Kotilo starts at 142 MB PSS and settles at 151-160 MB after panels have been opened, so it is over budget once used. This is not a leak: it stays flat over 40 reopens. A tighter glibc allocator (`MALLOC_ARENA_MAX=1`, lower trim threshold) did not help (156-159 MB). The live bar read 176 MB after a hot reload; a fresh start on the real desktop is not measured
-- Quickshell logs `PeerClosedError` each time a client closes the agent socket, so every hook event adds a line to the shell log
 - CPU sparkline and net up/down in `bar.resources` (SPEC §3.1)
 - Keyboard access to bar plugins (definition of done)
 - Vertical bar option

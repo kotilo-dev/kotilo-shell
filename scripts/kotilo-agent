@@ -24,8 +24,7 @@ def send(client, message):
 def publish(id, state, tool, project):
     with connect() as client:
         send(client, {"type": "agent.status", "id": id, "tool": tool, "project": project,
-                      "state": state, "since": int(time.time())})
-        client.shutdown(socket.SHUT_WR)
+                      "state": state, "since": int(time.time()), "once": True})
         client.recv(1)                      # the shell has read it once it closes
 
 def ask(id, command, cwd, agent=""):

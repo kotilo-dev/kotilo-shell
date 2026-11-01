@@ -16,7 +16,7 @@ function parse(line) {
     if (m.type === "agent.status") {
         if (states.indexOf(m.state) < 0 || !isText(m.tool || "") || !isText(m.project || "")) return null;
         return { type: m.type, id: m.id, tool: m.tool || "", project: m.project || "", state: m.state,
-                 since: typeof m.since === "number" ? m.since : 0 };
+                 since: typeof m.since === "number" ? m.since : 0, once: m.once === true };
     }
     if (m.type === "agent.approval") {
         if (!isText(m.command, true) || !isText(m.cwd || "") || !isText(m.agent || "") || (m.agent || "").length > 128) return null;
