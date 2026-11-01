@@ -4,7 +4,15 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-01
+
 ### Added
+- CPU sparkline and network down/up in `bar.resources`, each with a setting; `Pill` takes child items
+- `scripts/check-modules.sh` names a missing Quickshell module at install and on `kotilo-shell start`
+- Every notification action can be reached from the keyboard
+- Bar keyboard mode: `qs -c kotilo ipc call bar toggle`, with `Shell.barKey` for custom items (API 1.5, ADR-0014)
+- Agents list in the control center
+- Claude Code hook adapter: `kotilo-agent hook claude` shows sessions in the bar and answers permission prompts from it (ADR-0013)
 - Plugin API 1.4: popups, palette actions, tooltips, notification handlers, script actions and timeouts (ADR-0012)
 - Theme targets for ghostty and kitty: generated colour files you include from your own config (ADR-0011)
 - Focus Mode: Pomodoro cycle, popups held back except critical ones and approvals, compact bar, optional mute
@@ -22,6 +30,9 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 - Install scripts (pacman/dnf/apt), dev/test/package scripts, AUR/COPR/Nix stubs, CI
 
 ### Changed
+- Memory budget is now 150 MB PSS, since an empty Quickshell is already over 150 MB RSS
+- Agent protocol: optional `agent` on approvals and `once` on status, and a request is withdrawn when its agent reports another state (ADR-0003)
+- `kotilo-agent` is installed on `PATH`
 - Idle CPU cut from about 3 % to 0.9 % of one core: ports read from `/proc`, containers polled every 2 minutes, git every 10 s
 
 ### Security

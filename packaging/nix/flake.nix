@@ -13,7 +13,7 @@
     let
       systems = [ "x86_64-linux" "aarch64-linux" ];
       forAll = f: nixpkgs.lib.genAttrs systems (s: f nixpkgs.legacyPackages.${s});
-      version = "0.1.0";
+      version = "0.3.0";
     in {
       packages = forAll (pkgs: rec {
         kotilo-shell = pkgs.stdenvNoCC.mkDerivation {

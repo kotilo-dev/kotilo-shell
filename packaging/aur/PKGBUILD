@@ -1,6 +1,6 @@
 # Maintainer: Mustafa <kotilo.dev>
 pkgname=kotilo-shell
-pkgver=0.1.0
+pkgver=0.3.0
 pkgrel=1
 pkgdesc="Developer-focused Wayland desktop shell for Niri and Hyprland, built on Quickshell"
 arch=('any')

@@ -43,7 +43,7 @@ Kotilo Shell is your notification daemon unless another one is already running. 
 
 | Kotilo Shell | Quickshell | Niri | Hyprland |
 |---|---|---|---|
-| 0.1.x | 0.3.x | ≥ 25.08 | ≥ 0.50 |
+| 0.1.x – 0.3.x | 0.3.x | ≥ 25.08 | ≥ 0.50 |
 
 ## Features (0.1 → 1.0)
 

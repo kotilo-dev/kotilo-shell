@@ -139,9 +139,9 @@ Unix socket `$XDG_RUNTIME_DIR/kotilo-agents.sock`, JSON lines. Messages carry a 
 | **0.4** | Settings GUI · Plugin Store · Lock screen · Dashboard · Monitor profiles · COPR + Nix |
 | **1.0** | API freeze · docs site · Omarchy theme import · stability pass |
 
-## 10. Current milestone — 0.3 (checklist complete)
+## 10. Current milestone — 0.4 (not started; 0.3.0 released)
 
-0.1 and 0.2 are complete except for the AUR publish, which waits on AUR registration. The 0.3 checklist in `TODO.md` is complete. Further agent CLI adapters and theme targets are in its parking lot.
+0.1 and 0.2 are complete except for the AUR publish, which waits on AUR registration. 0.3.0 is released. 0.4 starts with the Settings GUI, which needs ADR-0004. Further agent CLI adapters and theme targets are in its parking lot.
 
 ## 11. Open decisions (ADRs to write)
 

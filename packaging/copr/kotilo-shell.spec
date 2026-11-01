@@ -1,5 +1,5 @@
 Name:           kotilo-shell
-Version:        0.1.0
+Version:        0.3.0
 Release:        1%{?dist}
 Summary:        Developer-focused Wayland desktop shell for Niri and Hyprland (Quickshell)
 License:        GPL-3.0-or-later
@@ -36,5 +36,7 @@ install -Dm644 README.md %{buildroot}%{_docdir}/%{name}/README.md
 %doc %{_docdir}/%{name}/README.md
 
 %changelog
+* Sun Nov 01 2026 Mustafa <kotilo.dev> - 0.3.0-1
+- Release 0.3.0
 * Fri Oct 31 2026 Mustafa <kotilo.dev> - 0.1.0-1
 - Initial package

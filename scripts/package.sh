@@ -16,7 +16,8 @@ sed -i -E "s/version = \"[^\"]+\";/version = \"$VER\";/" packaging/nix/flake.nix
 mkdir -p dist
 tar --exclude='./ref' --exclude='./dist' --exclude='./.git' --exclude='*.log' \
     --transform "s,^\.,kotilo-shell-$VER," -czf "dist/kotilo-shell-$VER.tar.gz" .
+# PKGBUILD and the COPR spec fetch GitHub's tag archive, which has a different hash from this
+# tarball and cannot be known inside the tag. Set sha256sums when publishing to the AUR.
 sha=$(sha256sum "dist/kotilo-shell-$VER.tar.gz" | cut -d' ' -f1)
-sed -i -E "s/^sha256sums=.*/sha256sums=('$sha')/" packaging/aur/PKGBUILD
 echo "dist/kotilo-shell-$VER.tar.gz  sha256 $sha"
 echo "Next: update CHANGELOG.md, git tag v$VER, push, publish AUR/COPR, run nix flake update."

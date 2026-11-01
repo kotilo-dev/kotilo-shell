@@ -8,7 +8,7 @@ import "internal/fuzzy.js" as Fuzzy
 Singleton {
     id: root
 
-    readonly property string version: "0.1.0-dev"
+    readonly property string version: "0.3.0"
     readonly property string apiVersion: "1.5.0"
 
     // Resolved config/data dirs (XDG-compliant; never assume a distro layout).
