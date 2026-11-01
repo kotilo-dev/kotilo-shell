@@ -1,0 +1,12 @@
+{
+  "id": "palette",
+  "name": "Command palette",
+  "version": "0.2.0",
+  "apiVersion": "^1.1",
+  "author": "kotilo",
+  "description": "Fuzzy search across every palette provider, keyboard first",
+  "kind": "qml",
+  "slots": ["shell.overlay"],
+  "permissions": [],
+  "settingsSchema": "settings.schema.json"
+}

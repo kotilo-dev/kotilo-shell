@@ -1,0 +1,6 @@
+{
+  "type": "object",
+  "properties": {
+    "maxResults": { "type": "integer", "title": "Maximum results", "default": 50 }
+  }
+}

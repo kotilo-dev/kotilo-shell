@@ -25,6 +25,12 @@ Or from your distribution:
 
 After a package install, run `kotilo-shell-setup` once (`install.sh` does this for you). Then add to your compositor autostart: `qs -c kotilo`.
 
+To use the command palette, bind this in your compositor (for example to `Super+Space`):
+
+```bash
+qs -c kotilo ipc call palette toggle
+```
+
 ## Compatibility
 
 | Kotilo Shell | Quickshell | Niri | Hyprland |

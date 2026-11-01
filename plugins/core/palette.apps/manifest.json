@@ -1,0 +1,11 @@
+{
+  "id": "palette.apps",
+  "name": "Applications",
+  "version": "0.2.0",
+  "apiVersion": "^1.1",
+  "author": "kotilo",
+  "description": "Finds and launches installed desktop applications",
+  "kind": "provider",
+  "slots": ["palette.provider"],
+  "permissions": ["process"]
+}
