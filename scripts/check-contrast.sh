@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-or-later
 # Validates every themes/*/tokens.json against the schema subset and WCAG contrast rules (docs/THEMES.md §2).
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"

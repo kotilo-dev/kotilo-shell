@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-or-later
 # CI-friendly checks: manifests, themes, contrast, QML syntax (qmllint if available), JSON validity.
 set -euo pipefail
 # Terminals inside an AppImage (such as Kotilo Desktop) leak its libraries, which breaks qs.

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-or-later
 # kotilo-shell plugin <install|list|update|remove> — manages ~/.config/kotilo/shell/plugins
 set -euo pipefail
 DIR="${XDG_CONFIG_HOME:-$HOME/.config}/kotilo/shell/plugins"

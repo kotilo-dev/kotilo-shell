@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-or-later
 # Installs Kotilo Shell for the current user.
 #   - from a clone:  ./install/install.sh
 #   - via curl:      curl -fsSL https://raw.githubusercontent.com/kotilo/kotilo-shell/main/install/install.sh | bash

@@ -1,4 +1,5 @@
 //@ pragma UseQApplication
+// SPDX-License-Identifier: GPL-3.0-or-later
 // Kotilo Shell — entry point. Run with: qs -c kotilo  (after install) or ./scripts/dev.sh
 import QtQuick
 import Quickshell

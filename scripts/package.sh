@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-or-later
 # Builds a release tarball and bumps version strings in packaging metadata.
 # Usage: scripts/package.sh <version>   e.g. scripts/package.sh 0.1.0
 set -euo pipefail

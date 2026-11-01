@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-or-later
 # Removes Kotilo Shell files. Keeps ~/.config/kotilo/shell (your settings, themes, plugins) unless --purge.
 # Everything else under the kotilo directories belongs to Kotilo Desktop: never remove it.
 set -euo pipefail

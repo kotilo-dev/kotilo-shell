@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Validate every plugins/**/manifest.json against plugins/schema/manifest.schema.json.
 Pure-stdlib validator covering the subset of JSON Schema we use (required, enum, pattern, type,
 additionalProperties, array items/uniqueItems, allOf if/then). Exit 1 on any failure."""

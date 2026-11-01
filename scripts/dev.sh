@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-or-later
 # Development loop: run the shell from this checkout with live reload and tail its log.
 # Quickshell reloads QML on file change by itself; this script adds env, logging and clean restarts.
 set -euo pipefail

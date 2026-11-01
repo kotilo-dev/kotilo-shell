@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: GPL-3.0-or-later
 # Installs Quickshell and runtime dependencies for Kotilo Shell on pacman, dnf or apt systems.
 # Idempotent. Re-run safely. Use --dry-run to print the commands only.
 set -euo pipefail

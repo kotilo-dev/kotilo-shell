@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Regression test for scripts/base16-to-tokens.py against tests/fixtures/base16-sample.yaml."""
 import json, subprocess, sys
 from pathlib import Path

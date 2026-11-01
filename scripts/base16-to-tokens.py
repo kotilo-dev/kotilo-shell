@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
 """Convert a Base16/Base24 scheme YAML (tinted-theming format) into a Kotilo tokens.json.
 Usage: scripts/base16-to-tokens.py scheme.yaml [--id my-theme] > themes/my-theme/tokens.json
 Mapping per docs/THEMES.md §3. Minimal YAML parsing on purpose (schemes are flat key: value files)."""
