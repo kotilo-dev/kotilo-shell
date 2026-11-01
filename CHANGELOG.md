@@ -5,6 +5,7 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 ## [Unreleased]
 
 ### Added
+- GitHub tab with separate panels for notifications, your pull requests, review requests and repositories, each with a More link to its GitHub page
 - Dashboard grid with weather, system, stacked clock, calendar, resource bars and media with a cava spectrum (API 1.13). Weather uses Open-Meteo and stays offline until you set a city
 - Dashboard panel with tabs, opened from the date and time: Dashboard, Performance with processes grouped by name, Agents, GitHub and RSS (`dashboard.tab`, API 1.12, ADR-0017)
 - Windows list in the bar: pick a window to switch to its workspace and focus it (`Workspaces.workspaceOf`, API 1.11)

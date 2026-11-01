@@ -54,6 +54,23 @@ assert.equal(rows[0].url, "https://github.com/a/b/pull/1");
 assert.equal(rows[0].trailing, "review requested");
 assert.equal(rows[1].url, "https://github.com/a/b", "falls back to the repository");
 
+assert.equal(gh.repositoriesPage("xmsadik"), "https://github.com/xmsadik?tab=repositories");
+assert.equal(gh.repositoriesPage("../evil"), "https://github.com/");
+assert.equal(gh.repositoriesPage(undefined), "https://github.com/");
+const now = Date.parse("2026-11-01T12:00:00Z");
+assert.equal(gh.age("2026-11-01T11:59:40Z", now), "now");
+assert.equal(gh.age("2026-11-01T11:55:00Z", now), "5m");
+assert.equal(gh.age("2026-11-01T09:00:00Z", now), "3h");
+assert.equal(gh.age("2026-10-30T12:00:00Z", now), "2d");
+assert.equal(gh.age("2026-07-01T12:00:00Z", now), "4mo");
+assert.equal(gh.age("2027-01-01T00:00:00Z", now), "now", "a future date");
+assert.equal(gh.age(undefined, now), "");
+const pulls = plain(gh.pullRows([{ title: "T", url: "https://github.com/a/b/pull/1", number: 1, updatedAt: "2026-11-01T09:00:00Z", repository: { nameWithOwner: "a/b" } }], now));
+assert.deepEqual(pulls[0], { title: "T", url: "https://github.com/a/b/pull/1", trailing: "3h", detail: "a/b#1" });
+const repos = plain(gh.repositoryRows([{ nameWithOwner: "a/b", url: "https://github.com/a/b", isPrivate: true, pushedAt: "2026-11-01T09:00:00Z" }], now));
+assert.equal(repos[0].trailing, "private  3h");
+assert.equal(repos[0].detail, "");
+
 const rss = load("dash.rss/feed.js");
 const r = rss.parse(`<?xml version="1.0"?><rss><channel><title>Blog &amp; News</title><link>https://b.example</link>
 <item><title><![CDATA[First & <b>bold</b>]]></title><link>https://b.example/1</link><pubDate>Sun, 01 Nov 2026 10:00:00 GMT</pubDate><description>&lt;p&gt;Hello &amp;amp; bye&lt;/p&gt;</description></item>
