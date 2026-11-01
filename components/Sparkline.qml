@@ -11,6 +11,7 @@ Row {
     property int count: 10
     property color color: K.Theme.text.secondary
     property int barWidth: 2
+    property bool track: true                   // the faint column behind each bar
     property bool linear: false                 // true height, for a panel with room
     height: K.Theme.barSize(14)
     spacing: 1
@@ -24,7 +25,7 @@ Row {
             readonly property real value: spark.values[spark.values.length - spark.count + index] || 0
             width: spark.barWidth
             height: spark.height
-            color: K.Theme.surface[0]
+            color: spark.track ? K.Theme.surface[0] : "transparent"
 
             Rectangle {
                 anchors.bottom: parent.bottom

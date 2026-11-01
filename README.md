@@ -35,7 +35,7 @@ Start Focus Mode from the control center, or bind `qs -c kotilo ipc call focus t
 
 Open the control center from the bar, or bind `qs -c kotilo ipc call controlcenter toggle`.
 
-Open the dashboard from the palette, or bind `qs -c kotilo ipc call dashboard toggle`.
+Open the overview from the palette, or bind `qs -c kotilo ipc call dashboard toggle`.
 
 Open settings from the palette, or bind `qs -c kotilo ipc call settings toggle`. Plugins get a form from their `settings.schema.json`.
 

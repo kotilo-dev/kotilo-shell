@@ -7,7 +7,7 @@ import qs.components as C
 // Clock with extra zones: settings.plugins["bar.clock"].zones = [{"label":"SFO","tz":"America/Los_Angeles"}]
 C.Pill {
     id: root
-    tooltip: "Open the dashboard"
+    tooltip: "Open the overview"
     onClicked: K.Shell.toggleDashboard()
 
     readonly property string format: K.Settings.get("bar.clock", "format", "ddd d MMM  HH:mm")

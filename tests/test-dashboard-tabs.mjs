@@ -39,6 +39,88 @@ assert.equal(proc.memory(512), "512 KB");
 assert.equal(proc.memory(2048), "2 MB");
 assert.equal(proc.memory(3 * 1048576), "3.0 GB");
 
+const sys = load("dash.performance/system.js");
+const sample = `=== meminfo
+MemTotal:       16000000 kB
+MemAvailable:   12000000 kB
+Buffers:          100000 kB
+Cached:           900000 kB
+SwapTotal:       2000000 kB
+SwapFree:        1500000 kB
+=== loadavg
+0.50 0.40 0.30 1/900 1234
+=== uptime
+3700.5 1000.0
+=== cpufreq
+cpu MHz		: 1000.0
+cpu MHz		: 3000.0
+=== cpumodel
+model name	: Intel(R) Core(TM) i5-10300H CPU @ 2.50GHz
+=== diskstats
+ 259 0 nvme1n1 100 0 2000 0 50 0 4000 0 0 0 0
+ 259 1 nvme1n1p1 100 0 2000 0 50 0 4000 0 0 0 0
+   7 0 loop0 9 0 9000 0 9 0 9000 0 0 0 0
+   8 0 sda 1 0 1000 0 1 0 2000 0 0 0 0
+=== df
+Filesystem 1B-blocks Used
+/dev/mapper/root[/@home] /home 500 100
+/dev/mapper/root[/@log] /var/log 500 100
+/dev/mapper/root / 500 100
+/dev/nvme1n1p1 /boot 200 50
+tmpfs /run 100 1
+=== net
+enp4s0 down 10 20
+wlo1 up 1000 2000
+veth1 up 9 9
+=== temps
+acpitz 40000
+coretemp 62500
+nvme 38000
+=== gpus
+nvidia|active|||||||NVIDIA Corporation TU117M [GeForce GTX 1650 Ti] (rev a1)
+nvidia|active||||||30, 512, 4096, 55|NVIDIA GPU
+nvidia|suspended||||||
+i915|active||||350|1050||Intel UHD|with bar
+amdgpu|active|42|1048576|2097152|||
+`;
+const machine = plain(sys.parse(sample));
+assert.equal(machine.memory.total, 16000000);
+assert.equal(machine.memory.cached, 1000000);
+assert.equal(machine.memory.swapUsed, 500000);
+assert.equal(machine.load, "0.50  0.40  0.30");
+assert.equal(machine.uptime, 3700.5);
+assert.equal(machine.cpuModel, "Intel Core i5-10300H CPU @ 2.50GHz");
+assert.equal(machine.cores, 2);
+assert.equal(machine.cpuMhz, 2000);
+assert.deepEqual(machine.disk, { read: 3000 * 512, written: 6000 * 512 }, "whole disks only");
+assert.deepEqual(machine.filesystems.map(f => f.mount), ["/", "/boot"], "subvolumes are one filesystem");
+assert.deepEqual(machine.net.map(i => i.name), ["enp4s0", "wlo1"]);
+assert.equal(machine.cpuTemperature, 63);
+assert.equal(machine.diskTemperature, 38);
+const [plainNvidia, awake, asleep, intel, amd] = machine.gpus;
+assert.equal(plainNvidia.busy, null, "no reading unless asked");
+assert.equal(plainNvidia.name, "NVIDIA TU117M [GeForce GTX 1650 Ti]");
+assert.equal(awake.busy, 30);
+assert.equal(awake.memoryTotal, 4096 * 1048576);
+assert.equal(awake.temperature, 55);
+assert.equal(asleep.asleep, true);
+assert.equal(asleep.name, "nvidia");
+assert.equal(intel.busy, null);
+assert.equal(intel.frequency, 350);
+assert.equal(intel.name, "Intel UHD|with bar");
+assert.equal(amd.busy, 42);
+assert.equal(amd.memoryUsed, 1048576);
+assert.equal(plain(sys.parse("")).gpus.length, 0);
+assert.equal(sys.rate(100, 300, 2), 100);
+assert.equal(sys.rate(300, 100, 2), 0, "a restarted counter");
+assert.equal(sys.bytes(512), "512 B");
+assert.equal(sys.bytes(2048), "2.0 KB");
+assert.equal(sys.bytes(1048576 * 500), "500 MB");
+assert.equal(sys.duration(3700), "1h 1m");
+assert.equal(sys.duration(90000), "1d 1h");
+assert.deepEqual(plain(sys.scaled([1, 2, 4])), [25, 50, 100]);
+assert.deepEqual(plain(sys.scaled([])), []);
+
 const gh = load("dash.github/links.js");
 assert.equal(gh.pageFor("https://api.github.com/repos/a/b/pulls/12"), "https://github.com/a/b/pull/12");
 assert.equal(gh.pageFor("https://api.github.com/repos/a/b/issues/3"), "https://github.com/a/b/issues/3");

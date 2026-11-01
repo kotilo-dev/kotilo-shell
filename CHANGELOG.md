@@ -7,7 +7,7 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 ### Added
 - GitHub tab with separate panels for notifications, your pull requests, review requests and the repositories on this machine with their commit status, each with a More link to its GitHub page
 - Dashboard grid with a profile card with your own picture, weather, a clock with up to two world clocks, calendar and media with a cava spectrum (API 1.13). Weather uses Open-Meteo and stays offline until you set a city
-- Dashboard panel with tabs, opened from the date and time: Dashboard, Performance with processes grouped by name, Agents, GitHub and RSS (`dashboard.tab`, API 1.12, ADR-0017)
+- Panel with tabs, opened from the date and time: Overview, System, Agents, GitHub and RSS. System is a task manager for CPU, memory, disk, network and GPU, with processes grouped by name (`dashboard.tab`, API 1.12, ADR-0017)
 - Windows list in the bar: pick a window to switch to its workspace and focus it (`Workspaces.workspaceOf`, API 1.11)
 - Bar scale setting: small, normal and large (API 1.10)
 - Kotilo shell icon at the left of the bar, which opens settings

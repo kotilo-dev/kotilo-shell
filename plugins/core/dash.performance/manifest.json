@@ -1,12 +1,16 @@
 {
   "id": "dash.performance",
-  "name": "Performance tab",
-  "version": "0.1.0",
+  "name": "System tab",
+  "version": "0.2.0",
   "apiVersion": "^1.12",
   "author": "kotilo",
-  "description": "CPU and memory history, and processes grouped by name",
+  "description": "A task manager: CPU, memory, disk, network, GPU and processes",
   "kind": "qml",
-  "icon": "gauge",
-  "slots": ["dashboard.tab"],
-  "permissions": ["process"]
+  "icon": "cpu",
+  "slots": [
+    "dashboard.tab"
+  ],
+  "permissions": [
+    "process"
+  ]
 }

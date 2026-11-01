@@ -26,7 +26,7 @@ Item {
         function close(): void { root.shown = false; }
     }
 
-    onPluginChanged: if (plugin) K.Shell.registerPaletteAction(plugin, { title: "Open dashboard", exec: () => { root.shown = true; } })
+    onPluginChanged: if (plugin) K.Shell.registerPaletteAction(plugin, { title: "Open overview", exec: () => { root.shown = true; } })
     Component.onDestruction: if (plugin) K.Shell.unregisterPaletteActions(plugin)
 
     Connections {
@@ -51,7 +51,7 @@ Item {
             WlrLayershell.keyboardFocus: reveal.open ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
             readonly property var tabEntries: root.host && root.host.ready ? root.host.slot("dashboard.tab") : []
-            readonly property var titles: [{ name: "Dashboard", icon: "dashboard" }]
+            readonly property var titles: [{ name: "Overview", icon: "dashboard" }]
                 .concat(tabEntries.map(t => ({ name: t.manifest.name.replace(/ tab$/, ""), icon: t.manifest.icon || "dashboard" })))
             readonly property int barInset: {
                 const bar = K.Settings.global.bar || {};
