@@ -40,7 +40,7 @@ SUDO=""; [[ $EUID -ne 0 ]] && SUDO="sudo"
 if have pacman; then
   echo "==> Arch-based system"
   PKGS=(qt6-declarative qt6-wayland qt6-svg qt6-5compat pipewire wireplumber upower networkmanager bluez bluez-utils
-        brightnessctl playerctl wl-clipboard cliphist awww dbus libnotify git jq python3 inter-font ttf-jetbrains-mono-nerd)
+        brightnessctl playerctl wl-clipboard cliphist awww dbus libnotify iproute2 git jq python3 inter-font ttf-jetbrains-mono-nerd)
   run $SUDO pacman -S --needed --noconfirm "${PKGS[@]}"
   have qs || run $SUDO pacman -S --needed --noconfirm quickshell
   if have paru; then run paru -S --needed --noconfirm matugen-bin
@@ -53,14 +53,14 @@ elif have dnf; then
   # Quickshell COPR — see https://copr.fedorainfracloud.org (errornointernet/quickshell or current maintainer)
   run $SUDO dnf copr enable -y errornointernet/quickshell
   PKGS=(quickshell qt6-qtdeclarative qt6-qtwayland qt6-qtsvg qt6-qt5compat pipewire wireplumber upower NetworkManager bluez
-        brightnessctl playerctl wl-clipboard dbus-tools libnotify git jq python3 rsms-inter-fonts jetbrains-mono-fonts-all)
+        brightnessctl playerctl wl-clipboard dbus-tools libnotify iproute git jq python3 rsms-inter-fonts jetbrains-mono-fonts-all)
   run $SUDO dnf install -y "${PKGS[@]}"
   echo "!! Optional: cliphist, swww, matugen (not used in 0.1) are not in Fedora's repos"
 
 elif have apt-get; then
   echo "==> Debian/Ubuntu-based system"
   PKGS=(qt6-declarative-dev qt6-wayland libqt6svg6 qt6-5compat-dev pipewire wireplumber upower network-manager bluez
-        brightnessctl playerctl wl-clipboard dbus libnotify-bin git jq python3 fonts-inter fonts-jetbrains-mono
+        brightnessctl playerctl wl-clipboard dbus libnotify-bin iproute2 git jq python3 fonts-inter fonts-jetbrains-mono
         qt6-svg-plugins qml6-module-qtquick qml6-module-qtquick-effects qml6-module-qtquick-layouts
         qml6-module-qtquick-window qml6-module-qtquick-controls qml6-module-qtqml-workerscript)
   run $SUDO apt-get update
