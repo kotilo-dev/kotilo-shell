@@ -58,5 +58,9 @@ Interface {
         const target = "address:0x" + top.address;
         dsp("hl.dsp.focus({ window = " + JSON.stringify(target) + " })", "focuswindow " + target);
     }
+    function workspaceOf(toplevel) {
+        const match = Hypr.Hyprland.toplevels.values.find(t => t.wayland === toplevel);
+        return match && match.workspace ? String(match.workspace.name) : "";
+    }
     function dispatch(command) { Hypr.Hyprland.dispatch(command); }   // raw: the caller's syntax, not translated
 }

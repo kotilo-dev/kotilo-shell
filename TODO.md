@@ -49,6 +49,7 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 - [ ] Lock screen: needs a decision, since a bug here locks the user out or lets someone in, and Omarchy has one
 - [ ] Monitor profiles
 - [ ] COPR and Nix publishing
+- [x] Windows list in the bar, beside the workspaces
 
 ## Parking lot
 - More theme targets from SPEC §4.3, and a real render check in ghostty and kitty, which the dev machine does not have

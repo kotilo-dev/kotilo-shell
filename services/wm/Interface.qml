@@ -23,5 +23,6 @@ Scope {
     function moveWindowToWorkspace(id) {}
     function closeFocusedWindow() {}
     function focusToplevel(toplevel) { toplevel.activate(); }   // a Quickshell Toplevel
+    function workspaceOf(toplevel) { return ""; }               // its workspace label, "" when unknown
     function dispatch(command) {}               // raw passthrough for power users (palette "Shell command")
 }

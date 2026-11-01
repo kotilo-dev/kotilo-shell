@@ -1,0 +1,12 @@
+{
+  "id": "bar.windows",
+  "name": "Windows",
+  "version": "0.1.0",
+  "apiVersion": "^1.11",
+  "author": "kotilo",
+  "description": "Lists every open window; choosing one switches to its workspace and focuses it",
+  "kind": "qml",
+  "barGroup": "navigation",
+  "slots": ["bar.left"],
+  "permissions": []
+}

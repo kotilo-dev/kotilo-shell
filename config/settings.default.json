@@ -5,7 +5,7 @@
   "animations": true,
   "bar": { "position": "top", "height": 36 },
   "slots": {
-    "bar.left":   ["bar.logo", "bar.workspaces", "bar.window-title"],
+    "bar.left":   ["bar.logo", "bar.workspaces", "bar.windows", "bar.window-title"],
     "bar.center": ["bar.git", "bar.agents", "bar.containers", "bar.ports"],
     "bar.right":  ["bar.resources", "bar.network", "bar.bluetooth", "bar.audio", "bar.battery", "bar.clock", "bar.notifications", "bar.tray"]
   },

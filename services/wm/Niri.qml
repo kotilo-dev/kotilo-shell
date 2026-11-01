@@ -102,5 +102,15 @@ Interface {
     function focusWorkspaceRelative(delta) { act(delta > 0 ? { FocusWorkspaceDown: {} } : { FocusWorkspaceUp: {} }); }
     function moveWindowToWorkspace(id) { act({ MoveWindowToWorkspace: { window_id: null, reference: { Id: Number(id) }, focus: true } }); }
     function closeFocusedWindow() { act({ CloseWindow: { id: null } }); }
+    // Niri's stream and the Wayland protocol share no window id, so this matches on app and title.
+    function workspaceOf(toplevel) {
+        for (const id in _windows) {
+            const w = _windows[id];
+            if (w.app_id !== toplevel.appId || w.title !== toplevel.title) continue;
+            const space = workspaces.find(s => s.id === String(w.workspace_id));
+            return space ? String(space.index) : "";
+        }
+        return "";
+    }
     function dispatch(command) { K.Shell.run(["niri", "msg", "action"].concat(command.split(" "))); }
 }
