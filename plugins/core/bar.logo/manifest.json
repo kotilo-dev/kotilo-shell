@@ -6,6 +6,7 @@
   "author": "kotilo",
   "description": "The Kotilo shell; opens settings",
   "kind": "qml",
+  "barGroup": "navigation",
   "slots": ["bar.left"],
   "permissions": []
 }

@@ -17,8 +17,8 @@ Row {
         delegate: Item {
             id: entry
             required property var modelData
-            implicitWidth: 26
-            implicitHeight: 26
+            implicitWidth: K.Theme.barSize(26)
+            implicitHeight: K.Theme.barSize(26)
             activeFocusOnTab: true
             Keys.onPressed: event => {
                 const action = K.Shell.barKey(event, entry);
@@ -30,7 +30,7 @@ Row {
 
             IconImage {
                 anchors.centerIn: parent
-                implicitSize: 16
+                implicitSize: K.Theme.barSize(16)
                 source: entry.modelData.icon
             }
 

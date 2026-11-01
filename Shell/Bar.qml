@@ -11,7 +11,7 @@ PanelWindow {
     id: bar
     required property var host
 
-    readonly property int barHeight: Settings.ready && Settings.global.bar ? (Settings.global.bar.height || 36) : 36
+    readonly property int barHeight: Theme.barSize(Settings.ready && Settings.global.bar ? (Settings.global.bar.height || 36) : 36)
     readonly property string position: Settings.ready && Settings.global.bar ? (Settings.global.bar.position || "top") : "top"
 
     anchors { top: position === "top"; bottom: position === "bottom"; left: true; right: true }

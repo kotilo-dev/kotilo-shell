@@ -31,8 +31,8 @@ Rectangle {
 
     FocusRing { visible: pill.activeFocus }
 
-    implicitHeight: 26
-    implicitWidth: content.implicitWidth + K.Theme.space.sm * 2
+    implicitHeight: K.Theme.barSize(26)
+    implicitWidth: content.implicitWidth + K.Theme.barSize(K.Theme.space.sm) * 2
     radius: K.Theme.radius.sm
     color: active ? accent : "transparent"
     Behavior on color { ColorAnimation { duration: K.Theme.fastMs } }
@@ -42,13 +42,14 @@ Rectangle {
     Row {
         id: content
         anchors.centerIn: parent
-        spacing: 6
-        Icon { name: pill.icon; visible: pill.icon.length > 0; color: pill.iconColor; size: 16; anchors.verticalCenter: parent.verticalCenter }
+        spacing: K.Theme.barSize(6)
+        Icon { name: pill.icon; visible: pill.icon.length > 0; color: pill.iconColor; size: K.Theme.barSize(16); anchors.verticalCenter: parent.verticalCenter }
         Label {
             text: pill.text
             visible: pill.text.length > 0
             color: pill.fg
             mono: pill.mono
+            font.pixelSize: K.Theme.barFontSize - (pill.mono ? 1 : 0)
             font.features: { "tnum": 1 }               // digits keep their width as values change
             anchors.verticalCenter: parent.verticalCenter
         }

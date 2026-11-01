@@ -5,6 +5,7 @@ import qs.services as S
 import qs.components as C
 
 C.Label {
+    font.pixelSize: K.Theme.barFontSize
     property var plugin: null
     property string slot: ""
     readonly property int maxLen: K.Settings.get("bar.window-title", "maxLength", 60)

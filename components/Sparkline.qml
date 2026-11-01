@@ -10,7 +10,7 @@ Row {
     property var values: []
     property int count: 10
     property color color: K.Theme.text.secondary
-    height: 14
+    height: K.Theme.barSize(14)
     spacing: 1
 
     Repeater {

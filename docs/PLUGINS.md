@@ -96,6 +96,8 @@ Registers into a non-visual slot. There are no base types: each contract is a re
 | `theme.target` | root is `C.ThemeTarget`, with `template.conf` beside `Main.qml` |
 | `notification.handler` | `Shell.registerNotificationHandler(item)`: `match(n)` returns whether to act, `handle(n)` returns true to hold the popup. Runs only while Kotilo Shell is the notification daemon |
 
+A custom bar item sizes itself with `Theme.barSize(n)` and `Theme.barFontSize`, so it follows Bar scale; `Pill` already does.
+
 In the bar, `barGroup` in the manifest places a plugin close to others in the same group; a plugin with no group stands alone. A `Pill` icon is neutral at rest: set `fg` or `iconColor` only when the colour means something.
 
 `wm.adapter` and `lock.widget` are reserved: manifests may name them, but nothing mounts them yet.

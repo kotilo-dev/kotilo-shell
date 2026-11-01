@@ -33,14 +33,14 @@ Row {
             active: modelData.focused && !root.glyphs
             accent: modelData.urgent ? K.Theme.state.error : K.Theme.accent.primary
             fg: modelData.focused ? K.Theme.text.onAccent : (modelData.active ? K.Theme.text.primary : (modelData.windows > 0 ? K.Theme.text.secondary : K.Theme.text.muted))
-            implicitWidth: root.glyphs ? 20 : Math.max(26, implicitHeight) + (text.length > 1 ? (text.length - 1) * 7 : 0)
+            implicitWidth: root.glyphs ? K.Theme.barSize(20) : Math.max(implicitHeight, 0) + (text.length > 1 ? (text.length - 1) * K.Theme.barSize(7) : 0)
             onClicked: S.Workspaces.focus(modelData.id)
 
             // Dots use colour alone. Circles also show content: a ring is empty, a disc has windows.
             Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 visible: root.glyphs
-                width: entry.modelData.focused ? 10 : 8
+                width: K.Theme.barSize(entry.modelData.focused ? 10 : 8)
                 height: width
                 radius: width / 2
                 border.width: 2

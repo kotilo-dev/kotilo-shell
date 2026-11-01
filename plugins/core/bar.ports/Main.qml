@@ -16,7 +16,7 @@ Row {
     C.Icon {
         anchors.verticalCenter: parent.verticalCenter
         name: "network"
-        size: 16
+        size: K.Theme.barSize(16)
         color: K.Theme.text.secondary
     }
 
@@ -32,6 +32,7 @@ Row {
     }
 
     C.Label {
+        font.pixelSize: K.Theme.barFontSize
         anchors.verticalCenter: parent.verticalCenter
         visible: root.hidden > 0
         secondary: true

@@ -10,8 +10,8 @@ Row {
     required property string slotName
     required property var host
     property var screen: null
-    readonly property int itemGap: K.Theme.space.xs
-    readonly property int groupGap: K.Theme.space.lg
+    readonly property int itemGap: K.Theme.barSize(K.Theme.space.xs)
+    readonly property int groupGap: K.Theme.barSize(K.Theme.space.lg)
 
     function arrange() {
         let previous = null;
@@ -22,6 +22,8 @@ Row {
             previous = cell.group;
         }
     }
+
+    onItemGapChanged: arrange()
 
     Repeater {
         id: cells

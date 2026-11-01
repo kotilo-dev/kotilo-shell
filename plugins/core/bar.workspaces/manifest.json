@@ -6,6 +6,7 @@
   "author": "kotilo",
   "description": "Workspace pills for Niri and Hyprland; scroll to switch, click to focus",
   "kind": "qml",
+  "barGroup": "navigation",
   "slots": ["bar.left"],
   "permissions": [],
   "settingsSchema": "settings.schema.json"

@@ -66,14 +66,16 @@ Item {
                 propagate: { type: "boolean", title: "Apply the theme to other apps", default: true },
                 animations: { type: "boolean", title: "Animations", default: true },
                 position: { title: "Bar position", enum: ["top", "bottom"], default: "top" },
-                height: { type: "integer", title: "Bar height", default: 36, minimum: 28, maximum: 64 }
+                height: { type: "integer", title: "Bar height", default: 36, minimum: 28, maximum: 64 },
+                scale: { title: "Bar scale", enum: ["small", "normal", "large"], default: "normal" }
             } })
             readonly property var generalWriters: ({
                 theme: v => K.Settings.setTheme(v),
                 propagate: v => K.Settings.setGeneral("theme", "propagate", v),
                 animations: v => K.Settings.setGeneral("", "animations", v),
                 position: v => K.Settings.setGeneral("bar", "position", v),
-                height: v => K.Settings.setGeneral("bar", "height", v)
+                height: v => K.Settings.setGeneral("bar", "height", v),
+                scale: v => K.Settings.setGeneral("bar", "scale", v)
             })
 
             readonly property var rows: {
@@ -82,7 +84,7 @@ Item {
                 const theme = g.theme || {}, bar = g.bar || {};
                 const list = [{ heading: "General" }];
                 for (const f of K.Shell.formFields(generalSchema, { theme: K.Theme.schemeId, propagate: theme.propagate, animations: g.animations,
-                                                                    position: bar.position, height: bar.height }))
+                                                                    position: bar.position, height: bar.height, scale: bar.scale }))
                     list.push({ field: f, pluginId: "" });
                 for (const e of entries) {
                     const fields = K.Shell.formFields(schemas[e.id], plugins[e.id]);

@@ -9,7 +9,7 @@ Row {
     id: root
     property var plugin: null
     property string slot: ""
-    spacing: 8
+    spacing: K.Theme.barSize(8)
 
     readonly property string format: K.Settings.get("bar.clock", "format", "HH:mm")
     readonly property var zones: K.Settings.get("bar.clock", "zones", [])
@@ -43,12 +43,13 @@ Row {
     }
 
     C.Label {
+        font.pixelSize: K.Theme.barFontSize
         font.weight: Font.DemiBold
         font.features: { "tnum": 1 }
         text: Qt.formatTime(clock.date, root.format) + (root.localLabel ? " " : "")
         anchors.verticalCenter: parent.verticalCenter
     }
-    C.Label { visible: root.localLabel.length > 0; text: root.localLabel; secondary: true; mono: true; anchors.verticalCenter: parent.verticalCenter }
+    C.Label { font.pixelSize: K.Theme.barFontSize; visible: root.localLabel.length > 0; text: root.localLabel; secondary: true; mono: true; anchors.verticalCenter: parent.verticalCenter }
 
     Repeater {
         model: root.zones
@@ -56,9 +57,9 @@ Row {
             required property var modelData
             spacing: 4
             anchors.verticalCenter: parent.verticalCenter
-            C.Label { text: "·"; secondary: true; anchors.verticalCenter: parent.verticalCenter }
-            C.Label { mono: true; text: root.fmt(clock.date, modelData.tz); anchors.verticalCenter: parent.verticalCenter }
-            C.Label { mono: true; secondary: true; text: modelData.label; anchors.verticalCenter: parent.verticalCenter }
+            C.Label { font.pixelSize: K.Theme.barFontSize; text: "·"; secondary: true; anchors.verticalCenter: parent.verticalCenter }
+            C.Label { font.pixelSize: K.Theme.barFontSize; mono: true; text: root.fmt(clock.date, modelData.tz); anchors.verticalCenter: parent.verticalCenter }
+            C.Label { font.pixelSize: K.Theme.barFontSize; mono: true; secondary: true; text: modelData.label; anchors.verticalCenter: parent.verticalCenter }
         }
     }
 

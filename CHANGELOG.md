@@ -5,6 +5,7 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 ## [Unreleased]
 
 ### Added
+- Bar scale setting: small, normal and large (API 1.10)
 - Kotilo shell icon at the left of the bar, which opens settings
 - Workspace indicator styles: numbers, Roman numerals, dots and circles
 - Dashboard with a `dashboard.card` slot, a Focus card and an open pull requests card (API 1.7, ADR-0015)

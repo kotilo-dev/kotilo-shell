@@ -30,6 +30,12 @@ Singleton {
     readonly property int animMs: animations ? 200 : 0      // entering
     readonly property int fastMs: animations ? 100 : 0      // leaving, and state changes
 
+    // Bar scale: every size in the bar goes through barSize, so its proportions hold.
+    readonly property string barScaleName: Settings.ready && Settings.global.bar ? (Settings.global.bar.scale || "normal") : "normal"
+    readonly property real barScale: barScaleName === "small" ? 0.875 : (barScaleName === "large" ? 1.125 : 1)
+    function barSize(n) { return Math.round(n * barScale); }
+    readonly property int barFontSize: barSize(font.size)
+
     // ---- loading ----------------------------------------------------------
     // Resolution order: ~/.config/kotilo/shell/themes/<id>/tokens.json, then bundled themes/<id>/tokens.json
     readonly property string userPath: Shell.configDir + "/themes/" + schemeId + "/tokens.json"
