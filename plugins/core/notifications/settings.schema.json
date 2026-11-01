@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "daemon": { "type": "boolean", "title": "Act as the notification daemon when no other daemon is running", "default": true },
+    "timeout": { "type": "integer", "title": "Popup time in ms when the app sets none", "default": 5000 },
+    "doNotDisturb": { "type": "boolean", "title": "Hide popups except critical ones", "default": false },
+    "rules": { "type": "object", "title": "Per-app rules by app name, for example { \"Slack\": { \"popup\": false } }", "default": {} }
+  }
+}

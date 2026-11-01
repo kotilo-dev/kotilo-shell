@@ -1,6 +1,6 @@
 # ADR-0007 — The 0.1 notification badge is passive
 
-- Status: accepted
+- Status: superseded by ADR-0002 while no other daemon runs; still the behaviour beside one
 - Date: 2026-11-01
 
 ## Context

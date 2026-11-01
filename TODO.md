@@ -22,7 +22,7 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 
 - [x] Palette core and Apps provider (ADR-0008): window, fuzzy ranking, Tab actions, IPC
 - [x] Palette providers: Windows, Projects, Themes, Clipboard
-- [ ] Notification daemon (ADR-0002 first; Omarchy's shell owns the D-Bus name on the dev machine)
+- [x] Notification daemon (ADR-0002): never takes the D-Bus name from Omarchy's shell
 - [ ] Control center
 
 ## Parking lot

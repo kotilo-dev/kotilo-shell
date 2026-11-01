@@ -58,7 +58,7 @@ Singleton {
     function fuzzyScore(query, text) { return Fuzzy.score(query, text); }
     function fuzzyRank(query, title, keywords) { return Fuzzy.rank(query, title, keywords); }
 
-    // Notifications: forwarded to the Notifications service when it exists (0.2).
+    // Notifications: sent through the Notifications service.
     signal notifyRequested(var notification)
     function notify(n) { notifyRequested(n); }
 }

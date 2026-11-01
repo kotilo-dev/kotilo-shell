@@ -1,0 +1,12 @@
+{
+  "id": "notifications",
+  "name": "Notifications",
+  "version": "0.2.0",
+  "apiVersion": "^1.1",
+  "author": "kotilo",
+  "description": "Notification popups and a history panel grouped by app",
+  "kind": "qml",
+  "slots": ["shell.overlay"],
+  "permissions": ["dbus", "process"],
+  "settingsSchema": "settings.schema.json"
+}

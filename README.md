@@ -31,6 +31,8 @@ To use the command palette, bind this in your compositor (for example to `Super+
 qs -c kotilo ipc call palette toggle
 ```
 
+Kotilo Shell is your notification daemon unless another one is already running. It never takes over from one: stop the other daemon and the shell picks the name up within 15 s. Open the history with the bell, or with `qs -c kotilo ipc call notifications toggle`.
+
 ## Compatibility
 
 | Kotilo Shell | Quickshell | Niri | Hyprland |
