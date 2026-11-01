@@ -5,7 +5,10 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 ## [Unreleased]
 
 ### Added
-- Settings panel with forms generated from each plugin's schema (API 1.6, ADR-0004)
+- Settings panel with general settings and forms generated from each plugin's schema (API 1.6, ADR-0004)
+
+### Fixed
+- Tooltips open above a bottom bar instead of off the screen
 
 ### Security
 - Nothing is saved while `settings.json` has a syntax error, so a hand edit in progress cannot be overwritten

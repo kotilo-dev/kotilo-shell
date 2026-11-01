@@ -41,7 +41,7 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 ## 0.4 — Settings, store, lock, dashboard
 
 - [x] Settings panel (ADR-0004): forms from plugin schemas, keyboard first, saving refused while `settings.json` does not parse
-- [ ] General settings in the panel: bar, animations, theme
+- [x] General settings in the panel: theme, propagation, animations, bar position and height
 - [ ] Editors for array and object settings
 
 ## Parking lot

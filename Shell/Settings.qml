@@ -64,6 +64,16 @@ Singleton {
         commit(pluginId, key);
     }
 
+    // Settings outside any plugin: a top-level key, or a key in a section such as "bar".
+    function setGeneral(section, key, value) {
+        if (!section) global[key] = value;
+        else {
+            if (!global[section]) global[section] = {};
+            global[section][key] = value;
+        }
+        commit("", key);
+    }
+
     function setTheme(id) {
         if (!global.theme) global.theme = {};
         global.theme.id = id;

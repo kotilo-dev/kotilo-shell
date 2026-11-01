@@ -67,7 +67,9 @@ Rectangle {
 
         PopupWindow {
             anchor.item: pill
-            anchor.rect.y: pill.height + K.Theme.space.xs
+            // Over a bottom bar, where below would be off the screen.
+            anchor.rect.y: K.Settings.global.bar && K.Settings.global.bar.position === "bottom"
+                ? -(implicitHeight + K.Theme.space.xs) : pill.height + K.Theme.space.xs
             implicitWidth: tipLabel.implicitWidth + 2 * K.Theme.space.md
             implicitHeight: tipLabel.implicitHeight + 2 * K.Theme.space.sm
             color: "transparent"

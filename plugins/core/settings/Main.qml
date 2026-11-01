@@ -15,6 +15,7 @@ Item {
     property var host: null
 
     property bool shown: false
+    onShownChanged: if (shown) K.Theme.scan()
     readonly property var targetScreen: Quickshell.screens.find(s => s.name === S.Workspaces.focusedOutput) || null
 
     IpcHandler {
@@ -41,7 +42,7 @@ Item {
             WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
 
             property var schemas: ({})             // plugin id -> parsed schema
-            property int selected: 0
+            property int selected: 1                // row 0 is a heading
             property bool editing: false
             property string refused: ""
 
@@ -52,9 +53,30 @@ Item {
                     .sort((a, b) => a.name.localeCompare(b.name));
             }
 
+            // Settings that belong to the shell. Each key has a writer, since they live outside `plugins`.
+            readonly property var generalSchema: ({ properties: {
+                theme: { title: "Theme", enum: K.Theme.schemes.map(s => s.id) },
+                propagate: { type: "boolean", title: "Apply the theme to other apps", default: true },
+                animations: { type: "boolean", title: "Animations", default: true },
+                position: { title: "Bar position", enum: ["top", "bottom"], default: "top" },
+                height: { type: "integer", title: "Bar height", default: 40, minimum: 28, maximum: 64 }
+            } })
+            readonly property var generalWriters: ({
+                theme: v => K.Settings.setTheme(v),
+                propagate: v => K.Settings.setGeneral("theme", "propagate", v),
+                animations: v => K.Settings.setGeneral("", "animations", v),
+                position: v => K.Settings.setGeneral("bar", "position", v),
+                height: v => K.Settings.setGeneral("bar", "height", v)
+            })
+
             readonly property var rows: {
-                const plugins = K.Settings.global.plugins || {};
-                const list = [];
+                const g = K.Settings.global;
+                const plugins = g.plugins || {};
+                const theme = g.theme || {}, bar = g.bar || {};
+                const list = [{ heading: "General" }];
+                for (const f of K.Shell.formFields(generalSchema, { theme: K.Theme.schemeId, propagate: theme.propagate, animations: g.animations,
+                                                                    position: bar.position, height: bar.height }))
+                    list.push({ field: f, pluginId: "" });
                 for (const e of entries) {
                     const fields = K.Shell.formFields(schemas[e.id], plugins[e.id]);
                     if (!fields.length) continue;
@@ -91,7 +113,8 @@ Item {
 
             function write(value) {
                 if (K.Settings.parseError || !current) return;
-                K.Settings.set(current.pluginId, current.field.key, value);
+                if (current.pluginId) K.Settings.set(current.pluginId, current.field.key, value);
+                else generalWriters[current.field.key](value);
             }
 
             function adjust(delta) {
