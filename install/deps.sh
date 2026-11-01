@@ -32,14 +32,14 @@ SUDO=""; [[ $EUID -ne 0 ]] && SUDO="sudo"
 # - quickshell 0.3.2 (Qt6 QML shell toolkit: Arch extra, Fedora COPR, built from source on apt systems)        - qt6 declarative + wayland + svg
 # - pipewire + wireplumber (audio)             - upower (battery)
 # - networkmanager, bluez (network/bt)         - brightnessctl, playerctl
-# - wl-clipboard, cliphist (clipboard)         - matugen (dynamic theme), swww (wallpaper)
+# - wl-clipboard, cliphist (clipboard)         - matugen (dynamic theme), swww or awww (wallpaper)
 # - fonts: Inter, JetBrains Mono Nerd Font     - git, jq, python3 (scripts)
 # Not installed here: a compositor (niri or hyprland; pacman/dnf package `niri`). Testing the other one nested needs it too, plus foot.
 
 if have pacman; then
   echo "==> Arch-based system"
   PKGS=(qt6-declarative qt6-wayland qt6-svg qt6-5compat pipewire wireplumber upower networkmanager bluez bluez-utils
-        brightnessctl playerctl wl-clipboard cliphist swww git jq python3 inter-font ttf-jetbrains-mono-nerd)
+        brightnessctl playerctl wl-clipboard cliphist awww git jq python3 inter-font ttf-jetbrains-mono-nerd)
   run $SUDO pacman -S --needed --noconfirm "${PKGS[@]}"
   have qs || run $SUDO pacman -S --needed --noconfirm quickshell
   if have paru; then run paru -S --needed --noconfirm matugen-bin
