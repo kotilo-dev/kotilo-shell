@@ -17,10 +17,29 @@ Row {
 
     SystemClock { id: clock; precision: SystemClock.Minutes }
 
+    // QML has no time zones, and toLocaleTimeString ignores a timeZone option without an error.
+    // So the system supplies each zone's offset, read again in time for daylight saving changes.
+    property var offsets: ({})                  // tz -> minutes east of UTC
+
+    function readOffsets() {
+        for (const zone of root.zones) {
+            const tz = zone.tz;
+            K.Shell.run(["env", "TZ=" + tz, "date", "+%z"]).then(r => {
+                const m = /^([+-])(\d\d)(\d\d)$/.exec(r.stdout.trim());
+                if (!m) return;
+                const minutes = (m[1] === "-" ? -1 : 1) * (Number(m[2]) * 60 + Number(m[3]));
+                root.offsets = Object.assign({}, root.offsets, { [tz]: minutes });
+            }, e => K.Log.warn("no offset for " + tz + ": " + e, "bar.clock"));
+        }
+    }
+
+    onZonesChanged: readOffsets()
+    Timer { interval: 15 * 60 * 1000; repeat: true; running: root.zones.length > 0; onTriggered: root.readOffsets() }
+
     function fmt(date, tz) {
-        // Qt's JS Date supports toLocaleTimeString with timeZone in recent Qt; fall back to local.
-        try { return date.toLocaleTimeString(Qt.locale(), { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: tz }); }
-        catch (e) { return Qt.formatTime(date, root.format); }
+        const offset = root.offsets[tz];
+        if (offset === undefined) return "--:--";
+        return Qt.formatTime(new Date(date.getTime() + (date.getTimezoneOffset() + offset) * 60000), root.format);
     }
 
     C.Label {
