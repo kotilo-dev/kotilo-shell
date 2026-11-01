@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import QtQuick
-import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
 import "../components" as C
@@ -48,23 +47,31 @@ PanelWindow {
             color: Theme.surface[0]
         }
 
-        RowLayout {
-            anchors.fill: parent
-            anchors.leftMargin: Theme.space.lg
-            anchors.rightMargin: Theme.space.lg
-            spacing: 0
-
-            C.SlotRow { slotName: "bar.left";   host: bar.host; screen: bar.screen; Layout.alignment: Qt.AlignLeft }
-            Item { Layout.fillWidth: true }
-            C.SlotRow {
-                slotName: "bar.center"
-                host: bar.host
-                screen: bar.screen
-                visible: !(S.Focus.active && S.Focus.compactBar)
-                Layout.alignment: Qt.AlignHCenter
-            }
-            Item { Layout.fillWidth: true }
-            C.SlotRow { slotName: "bar.right";  host: bar.host; screen: bar.screen; Layout.alignment: Qt.AlignRight }
+        C.SlotRow {
+            id: leftSlots
+            anchors { left: parent.left; leftMargin: Theme.barSize(Theme.space.lg); verticalCenter: parent.verticalCenter }
+            slotName: "bar.left"
+            host: bar.host
+            screen: bar.screen
+        }
+        C.SlotRow {
+            id: rightSlots
+            anchors { right: parent.right; rightMargin: Theme.barSize(Theme.space.lg); verticalCenter: parent.verticalCenter }
+            slotName: "bar.right"
+            host: bar.host
+            screen: bar.screen
+        }
+        // On the bar's true center, whatever the sides hold, and moved aside only to avoid them.
+        C.SlotRow {
+            readonly property int gap: Theme.barSize(Theme.space.sm)
+            readonly property real leftLimit: leftSlots.x + leftSlots.width + gap
+            readonly property real rightLimit: rightSlots.x - width - gap
+            x: Math.round(Math.max(leftLimit, Math.min((parent.width - width) / 2, rightLimit)))
+            anchors.verticalCenter: parent.verticalCenter
+            slotName: "bar.center"
+            host: bar.host
+            screen: bar.screen
+            visible: !(S.Focus.active && S.Focus.compactBar)
         }
     }
 }

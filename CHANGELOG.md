@@ -21,6 +21,7 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 
 ### Fixed
 - A hidden bar plugin no longer leaves an extra gap
+- The center of the bar sits on the true center, and only moves aside to avoid the left and right groups
 - The sparkline reads at low load, and the control center pill has a sliders icon and a tooltip
 - Extra time zones in `bar.clock` show the zone's time; they always showed local time before
 - Tooltips open above a bottom bar instead of off the screen
