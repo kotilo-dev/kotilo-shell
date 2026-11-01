@@ -105,7 +105,8 @@ Registers into a non-visual slot. Each provider type has an interface QML file t
 | `lock.widget` | lock screen | below the clock |
 | `osd.kind` | OSD stack | custom OSD types |
 | `shell.overlay` | hidden host | plugins that own a full-screen window, such as the palette |
-| `palette.provider`, `theme.target`, `notification.handler`, `wm.adapter` | non-visual | providers |
+| `theme.target` | non-visual | root is `C.ThemeTarget` with `fileName`, plus `template.conf` (API 1.3, ADR-0011) |
+| `palette.provider`, `notification.handler`, `wm.adapter` | non-visual | providers |
 
 ## 4. API (`import qs.*`, see ADR-0006)
 

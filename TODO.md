@@ -30,10 +30,11 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 - [x] Git, Containers and Ports bar modules (ADR-0010)
 - [x] Agent protocol (ADR-0003), `bar.agents`, approvals with keyboard Allow/Deny, `scripts/kotilo-agent`
 - [x] Focus Mode: Pomodoro, DND except approvals, compact bar, control center tile
-- [ ] Theme propagation targets (`theme.target` slot, first apps from SPEC §4.3)
+- [x] Theme propagation targets (ADR-0011): `theme.target` slot, ghostty and kitty; more apps from SPEC §4.3 in the parking lot
 - [ ] Plugin API v1: finish script plugins, `Shell.openPopup`, `Shell.registerPaletteAction`, `apiVersion` check
 
 ## Parking lot
+- More theme targets from SPEC §4.3, and a real render check in ghostty and kitty, which the dev machine does not have
 - One broken service file disables every plugin, because all of them import the services module
 - Idle CPU is about 1 % of one core with the polling services; measure against the budget on a machine without Omarchy's shell
 - Control center tiles for night light, VPN and screen share (need a compositor-neutral backend)

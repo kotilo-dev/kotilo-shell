@@ -62,22 +62,16 @@ Shipped in 0.1: catppuccin-mocha, gruvbox-dark, tokyo-night, rose-pine, nord, ev
 
 ## 6. Propagation targets
 
-Each target is a `theme.target` provider plugin (`plugins/core/theme.<app>/`). A target renders one or more files and triggers a reload.
+Each target is a `theme.target` provider plugin (`plugins/core/theme.<app>/`) with a `template.conf` beside its `Main.qml`. On every theme change it writes `$XDG_DATA_HOME/kotilo/shell/generated/<app>.conf`. It never edits an app's own config (ADR-0011): you opt in with one include line, placed after any line that also sets a theme.
 
-| Target | Output | Reload |
+| Target | Add to your config | Reload setting |
 |---|---|---|
-| ghostty | `~/.config/ghostty/themes/kotilo` | SIGUSR2 / config reload |
-| kitty | `~/.config/kitty/kotilo.conf` | `kitty @ set-colors` |
-| alacritty / foot | theme file | live-reload on write |
-| neovim | `~/.config/nvim/colors/kotilo.lua` | `nvim --server … --remote-send` |
-| vscode | `settings.json` `workbench.colorTheme` | automatic |
-| gtk3/4 | `gtk.css` + `gsettings color-scheme` | automatic |
-| qt6ct | `colors/kotilo.conf` | new windows |
-| btop, fzf, bat, starship, cava, yazi, lazygit | theme files | next launch |
-| vencord, firefox userChrome | css | reload |
-| wallpaper | `swww img` | immediate |
+| ghostty | `config-file = ?"~/.local/share/kotilo/shell/generated/ghostty.conf"` | `plugins["theme.ghostty"].reload` sends SIGUSR2 |
+| kitty | `include ~/.local/share/kotilo/shell/generated/kitty.conf` | `plugins["theme.kitty"].reload` sends SIGUSR1 |
 
-Templates use a minimal mustache syntax: `{{bg.base}}`, `{{accent.primary.rgb}}` (r,g,b), `{{ansi.3}}`, `{{#isDark}}…{{/isDark}}`.
+`reload` is off by default, so running windows change only when they next read their config. Set `theme.propagate` to `false` to stop generating files. The other apps from SPEC §4.3 are not built yet.
+
+Templates use a minimal mustache syntax: `{{bg.base}}`, `{{accent.primary.rgb}}` (r,g,b), `{{ansi.3}}`, `{{surface.1}}`, `{{#isDark}}…{{/isDark}}`, `{{^isDark}}…{{/isDark}}`. A missing token stops the render and keeps the last good file.
 
 ## 7. Adding a theme
 

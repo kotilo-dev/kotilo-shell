@@ -3,6 +3,7 @@ SlotRow 1.0 SlotRow.qml
 Pill 1.0 Pill.qml
 Tile 1.0 Tile.qml
 Slider 1.0 Slider.qml
+ThemeTarget 1.0 ThemeTarget.qml
 Surface 1.0 Surface.qml
 Icon 1.0 Icon.qml
 Label 1.0 Label.qml

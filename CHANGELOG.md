@@ -5,6 +5,7 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 ## [Unreleased]
 
 ### Added
+- Theme targets for ghostty and kitty: generated colour files you include from your own config (ADR-0011)
 - Focus Mode: Pomodoro cycle, popups held back except critical ones and approvals, compact bar, optional mute
 - Agent protocol over a Unix socket, with a bar module, approval popups, an agents panel and `scripts/kotilo-agent` (ADR-0003)
 - Git, Containers and Ports bar modules (ADR-0010)

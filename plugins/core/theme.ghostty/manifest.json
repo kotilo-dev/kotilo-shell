@@ -1,0 +1,12 @@
+{
+  "id": "theme.ghostty",
+  "name": "Ghostty theme",
+  "version": "0.3.0",
+  "apiVersion": "^1.3",
+  "author": "kotilo",
+  "description": "Keeps a Ghostty colour file in step with the shell theme",
+  "kind": "provider",
+  "slots": ["theme.target"],
+  "permissions": ["process", "fs:write"],
+  "settingsSchema": "settings.schema.json"
+}

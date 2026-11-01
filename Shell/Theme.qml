@@ -70,7 +70,6 @@ Singleton {
             ready = true;
             changed();
             Log.info("theme '" + schemeId + "' loaded (" + origin + ")", "theme");
-            // TODO(0.3): run theme.target providers to propagate to external apps
         } catch (e) {
             Log.error("tokens.json parse error: " + e, "theme");
         }

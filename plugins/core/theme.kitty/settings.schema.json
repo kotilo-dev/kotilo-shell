@@ -1,0 +1,6 @@
+{
+  "type": "object",
+  "properties": {
+    "reload": { "type": "boolean", "title": "Signal running Kitty windows to reload after a theme change", "default": false }
+  }
+}
