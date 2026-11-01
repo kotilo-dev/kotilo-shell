@@ -51,4 +51,16 @@ assert.equal(ctx.shortRate(87 * 1024 * 1024), "87M");
 assert.equal(ctx.shortRate(3 * 1024 * 1024 * 1024), "3.0G");
 for (const b of [0, 1023, 1024, 9.99 * 1048576, 10 * 1048576, 999.6 * 1048576, 1e15]) assert.ok(ctx.shortRate(b).length <= 4, String(b));
 
+const historyRows = plain(ctx.parseHistoryFiles(`{"app":"mail","summary":"New","body":"Hi","image":"/a.png","urgency":2,"timestamp":200}
+not json
+null
+{"summary":"Old","timestamp":100}
+`));
+assert.deepEqual(historyRows.map(r => r.summary), ["Old", "New"], "oldest first, broken lines left out");
+assert.equal(historyRows[1].appName, "mail");
+assert.equal(historyRows[1].urgency, 2);
+assert.deepEqual(historyRows[0].actions, []);
+assert.equal(historyRows[0].image, "");
+assert.equal(ctx.parseHistoryFiles("").length, 0);
+
 console.log("  devstatus checks pass");

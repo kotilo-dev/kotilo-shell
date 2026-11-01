@@ -24,14 +24,14 @@ Item {
 
     IpcHandler {
         target: "notifications"
-        function toggle(): void { root.panelOpen = S.Notifications.owning && !root.panelOpen; }
+        function toggle(): void { root.panelOpen = (S.Notifications.owning || S.Notifications.readOnly) && !root.panelOpen; }
         function clear(): void { S.Notifications.clear(); }
     }
 
     Connections {
         target: S.Notifications
         function onOpenRequested() { root.panelOpen = !root.panelOpen; }
-        function onOwningChanged() { if (!S.Notifications.owning) root.panelOpen = false; }
+        function onOwningChanged() { if (!S.Notifications.owning && !S.Notifications.readOnly) root.panelOpen = false; }
     }
 
     // One notification. Used by the popups and the panel.
@@ -251,8 +251,8 @@ Item {
                         else if (event.key === Qt.Key_Right) panel.moveAction(1);
                         else if (event.key === Qt.Key_Left) panel.moveAction(-1);
                         else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) panel.activate();
-                        else if (event.key === Qt.Key_Delete && panel.rows[panel.selected]) S.Notifications.dismiss(panel.rows[panel.selected]);
-                        else if (event.key === Qt.Key_C) S.Notifications.clear();
+                        else if (event.key === Qt.Key_Delete && !S.Notifications.readOnly && panel.rows[panel.selected]) S.Notifications.dismiss(panel.rows[panel.selected]);
+                        else if (event.key === Qt.Key_C && !S.Notifications.readOnly) S.Notifications.clear();
                         else return;
                         event.accepted = true;
                     }
@@ -299,7 +299,7 @@ Item {
                         anchors { bottom: parent.bottom; left: parent.left; margins: K.Theme.space.lg }
                         secondary: true
                         font.pixelSize: K.Theme.font.size - 2
-                        text: "↵ open   ←→ action   del dismiss   c clear all   esc close"
+                        text: S.Notifications.readOnly ? "↑↓ move   esc close" : "↵ open   ←→ action   del dismiss   c clear all   esc close"
                     }
                 }
             }

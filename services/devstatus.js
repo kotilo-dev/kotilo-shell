@@ -66,3 +66,18 @@ function shortRate(bytes) {
     while (Math.round(value) >= 1000 && unit < units.length - 1) { value /= 1024; unit++; }
     return (unit > 0 && value < 9.95 ? value.toFixed(1) : String(Math.round(value))) + units[unit];
 }
+
+// One JSON object per line, as Omarchy's history files -> notification-shaped rows, oldest first.
+// A line that does not parse is left out: another program writes these files.
+function parseHistoryFiles(text) {
+    const rows = [];
+    for (const line of String(text).split("\n")) {
+        if (!line.trim().length) continue;
+        let n;
+        try { n = JSON.parse(line); } catch (e) { continue; }
+        if (n === null || typeof n !== "object") continue;
+        rows.push({ appName: String(n.app || ""), summary: String(n.summary || ""), body: String(n.body || ""), image: String(n.image || ""),
+                    appIcon: String(n.appIcon || ""), urgency: Number(n.urgency) || 0, timestamp: Number(n.timestamp) || 0, actions: [] });
+    }
+    return rows.sort((a, b) => a.timestamp - b.timestamp);
+}

@@ -4,6 +4,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Services.Notifications as N
 import "../Shell" as K
+import "devstatus.js" as Dev
 
 // The notification daemon, or a read-only count from another one (ADR-0002, ADR-0007).
 // Never takes org.freedesktop.Notifications from another owner.
@@ -19,12 +20,29 @@ Singleton {
 
     readonly property bool enabled: K.Settings.get("notifications", "daemon", true)
     readonly property var server: serverLoader.item
-    readonly property var history: server ? server.trackedNotifications.values : []
+    readonly property var history: owning ? (server ? server.trackedNotifications.values : []) : passiveHistory
     property var popupQueue: []
     readonly property var popups: popupQueue.filter(n => history.includes(n))
 
-    readonly property int count: owning ? history.length : passiveCount
-    readonly property bool ready: owning || backend !== null
+    readonly property int count: owning ? history.length : (readOnly ? unread : passiveCount)
+    readonly property bool ready: owning || readOnly || backend !== null
+
+    // Omarchy's shell keeps its history as files and has no list to open, so while it owns the name
+    // this panel shows those files. They are Omarchy's: nothing here changes them.
+    readonly property string historyDir: (Quickshell.env("XDG_STATE_HOME") || (Quickshell.env("HOME") + "/.local/state")) + "/omarchy/notifications/history"
+    property bool readOnly: false
+    property var passiveHistory: []
+    property real seenAt: Date.now()
+    readonly property int unread: passiveHistory.filter(n => n.timestamp > seenAt).length
+
+    function readHistory() {
+        if (owning) { readOnly = false; return; }
+        K.Shell.run(["sh", "-c", '[ -d "$1" ] || exit 1; for f in "$1"/*.json; do [ -f "$f" ] && { cat "$f"; echo; }; done', "sh", historyDir]).then(r => {
+            notif.readOnly = r.code === 0 && !notif.owning;
+            notif.passiveHistory = notif.readOnly ? Dev.parseHistoryFiles(r.stdout) : [];
+        }, e => K.Log.debug("history read failed: " + e, "notifications"));
+    }
+    Timer { interval: 15000; repeat: true; running: !notif.owning; triggeredOnStart: true; onTriggered: notif.readHistory() }
     readonly property string error: checked && !ready ? "no notification daemon available" : ""
 
     signal openRequested()
@@ -158,6 +176,7 @@ Singleton {
 
     function open() {
         if (owning) openRequested();
+        else if (readOnly) { seenAt = Date.now(); readHistory(); openRequested(); }
         else if (backend) K.Shell.run(backend.open);
     }
 }
