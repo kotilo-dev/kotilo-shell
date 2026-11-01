@@ -15,7 +15,7 @@ Read `docs/SPEC.md` before any non-trivial change. This file is about *how we wo
 - Theme-agnostic. Never hardcode a color, font or radius in a module. Use `Theme.*` tokens only.
 - Every built-in module is implemented as a **plugin** through the same API third parties use (`docs/PLUGINS.md`). If the API cannot express what a core module needs, extend the API; do not bypass it.
 - Config is data: `~/.config/kotilo/shell/settings.json` (+ `themes/`, `plugins/`). The rest of `~/.config/kotilo` and `~/.local/share/kotilo` belongs to Kotilo Desktop: never touch it (ADR-0005). Users must never need to edit QML.
-- Performance budget: < 1 % CPU idle, < 150 MB RSS with the default module set, first paint of the bar < 300 ms. Lazy-load every popup/panel with `LazyLoader`.
+- Performance budget: < 1 % CPU idle, < 150 MB PSS with the default module set, first paint of the bar < 300 ms. Lazy-load every popup/panel with `LazyLoader`.
 - Accessibility: readable contrast in every bundled theme (text ≥ 4.5:1 on its surface), keyboard-navigable palette and control center, respect `prefers-reduced-motion` equivalent (`settings.animations = false`).
 
 ## Repository layout
