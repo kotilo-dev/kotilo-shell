@@ -21,7 +21,7 @@ Rectangle {
     implicitHeight: 76
     radius: K.Theme.radius.md
     color: active ? K.Theme.accent.primary : K.Theme.surface[0]
-    Behavior on color { ColorAnimation { duration: K.Theme.animMs } }
+    Behavior on color { ColorAnimation { duration: K.Theme.fastMs } }
 
     // Outside the tile, so it shows on a lit tile as well as an unlit one.
     Rectangle {
@@ -49,7 +49,11 @@ Rectangle {
         }
     }
 
+    StateLayer { hovered: tileMouse.containsMouse; pressed: tileMouse.pressed; color: tile.fg }
+
     MouseArea {
+        id: tileMouse
+        hoverEnabled: true
         anchors.fill: parent
         cursorShape: tile.available ? Qt.PointingHandCursor : Qt.ArrowCursor
         onClicked: tile.activate()

@@ -45,8 +45,10 @@ Item {
         function close(): void { root.shown = false; }
     }
 
+    C.Reveal { id: reveal; open: root.shown }
+
     LazyLoader {
-        active: root.shown
+        active: reveal.alive
 
         PanelWindow {
             id: win
@@ -56,7 +58,7 @@ Item {
             color: "transparent"
             WlrLayershell.layer: WlrLayer.Overlay
             WlrLayershell.namespace: "kotilo-palette"
-            WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+            WlrLayershell.keyboardFocus: reveal.open ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
             property var results: []
             property int total: 0
@@ -133,9 +135,10 @@ Item {
                 y: Math.round(parent.height * 0.18)
                 width: Math.min(640, parent.width - 2 * K.Theme.space.lg)
                 height: column.implicitHeight
-                clip: true
 
-                NumberAnimation on opacity { from: 0; to: 1; duration: K.Theme.animMs }
+                opacity: reveal.progress
+                enabled: reveal.open
+                transform: Translate { y: (1 - reveal.progress) * K.Theme.space.sm }
                 MouseArea { anchors.fill: parent }
 
                 Column {

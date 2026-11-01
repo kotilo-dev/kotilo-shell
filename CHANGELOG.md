@@ -9,6 +9,7 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 - Settings panel with general settings and forms generated from each plugin's schema (API 1.6, ADR-0004)
 
 ### Changed
+- Panels fade and rise in and leave quickly, with one hover and press treatment, soft shadows with Qt 6.9 or newer, tonal cards and switches in settings (API 1.9, ADR-0016)
 - Bar: neutral colours at rest, UI font with mono for git, 16 px icons, 36 px height, and related modules grouped (`barGroup`, API 1.8)
 
 ### Fixed

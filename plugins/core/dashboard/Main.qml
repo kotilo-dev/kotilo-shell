@@ -32,8 +32,10 @@ Item {
         function onDashboardClosed() { root.shown = false; }
     }
 
+    C.Reveal { id: reveal; open: root.shown }
+
     LazyLoader {
-        active: root.shown
+        active: reveal.alive
 
         PanelWindow {
             id: win
@@ -43,7 +45,7 @@ Item {
             color: "transparent"
             WlrLayershell.layer: WlrLayer.Overlay
             WlrLayershell.namespace: "kotilo-dashboard"
-            WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+            WlrLayershell.keyboardFocus: reveal.open ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
             MouseArea { anchors.fill: parent; onClicked: root.shown = false }
 
@@ -53,9 +55,10 @@ Item {
                 y: Math.round(parent.height * 0.08)
                 width: Math.min(860, parent.width - 2 * K.Theme.space.lg)
                 height: Math.min(parent.height * 0.84, flow.implicitHeight + heading.implicitHeight + 3 * K.Theme.space.lg + K.Theme.space.md)
-                clip: true
 
-                NumberAnimation on opacity { from: 0; to: 1; duration: K.Theme.animMs }
+                opacity: reveal.progress
+                enabled: reveal.open
+                transform: Translate { y: (1 - reveal.progress) * K.Theme.space.sm }
                 MouseArea { anchors.fill: parent }
 
                 Item {

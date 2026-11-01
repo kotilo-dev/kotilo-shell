@@ -42,6 +42,7 @@ Item {
         property int chosenAction: -1
         readonly property bool critical: notification.urgency === N.NotificationUrgency.Critical
         level: 1
+        border.width: critical ? 1 : 0
         width: parent ? parent.width : 0
         implicitHeight: content.implicitHeight + 2 * K.Theme.space.md
         height: implicitHeight
@@ -118,8 +119,11 @@ Item {
                                 color: actionButton.chosen ? K.Theme.text.onAccent : K.Theme.text.primary
                                 text: parent.modelData.text
                             }
+                            C.StateLayer { hovered: actionMouse.containsMouse; pressed: actionMouse.pressed }
                             MouseArea {
+                                id: actionMouse
                                 anchors.fill: parent
+                                hoverEnabled: true
                                 cursorShape: Qt.PointingHandCursor
                                 onClicked: parent.modelData.invoke()
                             }
@@ -181,8 +185,10 @@ Item {
     }
 
     // History, grouped by app with the newest first.
+    C.Reveal { id: reveal; open: root.panelOpen }
+
     LazyLoader {
-        active: root.panelOpen
+        active: reveal.alive
 
         PanelWindow {
             id: panel
@@ -192,7 +198,7 @@ Item {
             color: "transparent"
             WlrLayershell.layer: WlrLayer.Overlay
             WlrLayershell.namespace: "kotilo-notifications-panel"
-            WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+            WlrLayershell.keyboardFocus: reveal.open ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
             property int selected: 0
             property int action: 0                  // in the selected row; Enter must not act on a stale choice
@@ -226,7 +232,9 @@ Item {
                 anchors { top: parent.top; right: parent.right; bottom: parent.bottom; margins: K.Theme.space.sm }
                 width: 400
 
-                NumberAnimation on opacity { from: 0; to: 1; duration: K.Theme.animMs }
+                opacity: reveal.progress
+                enabled: reveal.open
+                transform: Translate { y: (1 - reveal.progress) * K.Theme.space.sm }
                 MouseArea { anchors.fill: parent }
 
                 Item {

@@ -67,6 +67,7 @@ Item {
             WlrLayershell.namespace: "kotilo-osd"
 
             C.Surface {
+                shadow: false
                 anchors.fill: parent
                 NumberAnimation on opacity { from: 0; to: 1; duration: K.Theme.animMs }
 

@@ -3,10 +3,13 @@ SlotRow 1.0 SlotRow.qml
 Card 1.0 Card.qml
 FocusRing 1.0 FocusRing.qml
 Pill 1.0 Pill.qml
+Toggle 1.0 Toggle.qml
 Tile 1.0 Tile.qml
+Reveal 1.0 Reveal.qml
 Slider 1.0 Slider.qml
 ThemeTarget 1.0 ThemeTarget.qml
 Sparkline 1.0 Sparkline.qml
+StateLayer 1.0 StateLayer.qml
 Surface 1.0 Surface.qml
 Icon 1.0 Icon.qml
 Label 1.0 Label.qml

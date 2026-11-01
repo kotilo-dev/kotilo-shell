@@ -31,8 +31,10 @@ Item {
         function onControlCenterToggled() { root.shown = !root.shown; }
     }
 
+    C.Reveal { id: reveal; open: root.shown }
+
     LazyLoader {
-        active: root.shown
+        active: reveal.alive
 
         PanelWindow {
             id: win
@@ -42,7 +44,7 @@ Item {
             color: "transparent"
             WlrLayershell.layer: WlrLayer.Overlay
             WlrLayershell.namespace: "kotilo-controlcenter"
-            WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+            WlrLayershell.keyboardFocus: reveal.open ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
             PwObjectTracker { objects: S.Audio.streams }
 
@@ -102,9 +104,10 @@ Item {
                 anchors { top: parent.top; right: parent.right; margins: K.Theme.space.sm }
                 width: 400
                 height: Math.min(parent.height - 2 * K.Theme.space.sm, content.implicitHeight + 2 * K.Theme.space.lg)
-                clip: true
 
-                NumberAnimation on opacity { from: 0; to: 1; duration: K.Theme.animMs }
+                opacity: reveal.progress
+                enabled: reveal.open
+                transform: Translate { y: (1 - reveal.progress) * K.Theme.space.sm }
                 MouseArea { anchors.fill: parent }
 
                 Item {
@@ -125,6 +128,7 @@ Item {
                     }
 
                     Flickable {
+                        clip: contentHeight > height        // else it would cut the selection ring
                         anchors { fill: parent; margins: K.Theme.space.lg }
                         contentHeight: content.implicitHeight
                         boundsBehavior: Flickable.StopAtBounds
@@ -195,8 +199,12 @@ Item {
                                             color: agentRow.modelData.state === "awaiting" ? K.Theme.state.warning : K.Theme.text.secondary
                                             text: agentRow.modelData.state
                                         }
+                                        C.StateLayer { hovered: agentMouse.containsMouse; pressed: agentMouse.pressed }
+
                                         MouseArea {
+                                            id: agentMouse
                                             anchors.fill: parent
+                                            hoverEnabled: true
                                             cursorShape: Qt.PointingHandCursor
                                             onClicked: win.openAgents()
                                         }

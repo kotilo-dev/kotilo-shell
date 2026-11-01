@@ -49,7 +49,7 @@ C.Card {
             width: parent.width
             height: 30
             radius: K.Theme.radius.sm
-            color: mouse.containsMouse ? K.Theme.surface[1] : "transparent"
+            color: "transparent"
             activeFocusOnTab: true
             Keys.onPressed: event => {
                 const key = event.key;
@@ -59,6 +59,7 @@ C.Card {
                 event.accepted = true;
             }
 
+            C.StateLayer { hovered: mouse.containsMouse; pressed: mouse.pressed }
             C.FocusRing { visible: row.activeFocus }
 
             C.Label {

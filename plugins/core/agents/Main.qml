@@ -46,8 +46,9 @@ Item {
         radius: K.Theme.radius.sm
         color: tint
 
+        C.StateLayer { hovered: buttonMouse.containsMouse; pressed: buttonMouse.pressed; color: button.ink }
         C.Label { id: label; anchors.centerIn: parent; color: button.ink; text: button.text }
-        MouseArea { anchors.fill: parent; cursorShape: Qt.PointingHandCursor; onClicked: button.clicked() }
+        MouseArea { id: buttonMouse; anchors.fill: parent; hoverEnabled: true; cursorShape: Qt.PointingHandCursor; onClicked: button.clicked() }
     }
 
     component Request: C.Surface {
@@ -57,6 +58,7 @@ Item {
         property bool highlighted: false
         readonly property bool hiddenText: command.truncated
         level: 1
+        border.width: 1
         width: parent ? parent.width : 0
         implicitHeight: column.implicitHeight + 2 * K.Theme.space.md
         height: implicitHeight
@@ -152,8 +154,10 @@ Item {
         }
     }
 
+    C.Reveal { id: reveal; open: root.panelOpen }
+
     LazyLoader {
-        active: root.panelOpen
+        active: reveal.alive
 
         PanelWindow {
             id: panel
@@ -163,7 +167,7 @@ Item {
             color: "transparent"
             WlrLayershell.layer: WlrLayer.Overlay
             WlrLayershell.namespace: "kotilo-agents-panel"
-            WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+            WlrLayershell.keyboardFocus: reveal.open ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
             property int selected: 0
             readonly property var requests: S.Agents.approvals
@@ -189,9 +193,10 @@ Item {
                 y: Math.round(parent.height * 0.12)
                 width: Math.min(640, parent.width - 2 * K.Theme.space.lg)
                 height: Math.min(parent.height * 0.76, content.implicitHeight + 2 * K.Theme.space.lg)
-                clip: true
 
-                NumberAnimation on opacity { from: 0; to: 1; duration: K.Theme.animMs }
+                opacity: reveal.progress
+                enabled: reveal.open
+                transform: Translate { y: (1 - reveal.progress) * K.Theme.space.sm }
                 MouseArea { anchors.fill: parent }
 
                 Item {

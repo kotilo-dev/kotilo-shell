@@ -34,8 +34,10 @@ Rectangle {
     implicitHeight: 26
     implicitWidth: content.implicitWidth + K.Theme.space.sm * 2
     radius: K.Theme.radius.sm
-    color: active ? accent : (mouse.containsMouse ? K.Theme.surface[0] : "transparent")
-    Behavior on color { ColorAnimation { duration: K.Theme.animMs } }
+    color: active ? accent : "transparent"
+    Behavior on color { ColorAnimation { duration: K.Theme.fastMs } }
+
+    StateLayer { hovered: mouse.containsMouse; pressed: mouse.pressed; color: pill.fg }
 
     Row {
         id: content

@@ -28,8 +28,10 @@ Item {
     onPluginChanged: if (plugin) K.Shell.registerPaletteAction(plugin, { title: "Open settings", exec: () => { root.shown = true; } })
     Component.onDestruction: if (plugin) K.Shell.unregisterPaletteActions(plugin)
 
+    C.Reveal { id: reveal; open: root.shown }
+
     LazyLoader {
-        active: root.shown
+        active: reveal.alive
 
         PanelWindow {
             id: win
@@ -39,7 +41,7 @@ Item {
             color: "transparent"
             WlrLayershell.layer: WlrLayer.Overlay
             WlrLayershell.namespace: "kotilo-settings"
-            WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
+            WlrLayershell.keyboardFocus: reveal.open ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
 
             property var schemas: ({})             // plugin id -> parsed schema
             property int selected: 1                // row 0 is a heading
@@ -158,9 +160,10 @@ Item {
                 y: Math.round(parent.height * 0.08)
                 width: Math.min(640, parent.width - 2 * K.Theme.space.lg)
                 height: Math.round(parent.height * 0.84)
-                clip: true
 
-                NumberAnimation on opacity { from: 0; to: 1; duration: K.Theme.animMs }
+                opacity: reveal.progress
+                enabled: reveal.open
+                transform: Translate { y: (1 - reveal.progress) * K.Theme.space.sm }
                 MouseArea { anchors.fill: parent }
 
                 Item {
@@ -222,7 +225,7 @@ Item {
                             readonly property var field: modelData.field || null
                             readonly property bool chosen: index === win.selected
                             width: ListView.view.width
-                            height: field ? 32 : 40
+                            height: field ? 36 : 40
 
                             C.Label {
                                 visible: !row.field
@@ -239,6 +242,14 @@ Item {
                                 radius: K.Theme.radius.sm
                                 color: row.chosen ? K.Theme.surface[1] : "transparent"
 
+                                C.StateLayer { hovered: rowMouse.containsMouse; pressed: rowMouse.pressed }
+
+                                C.Toggle {
+                                    id: toggle
+                                    anchors { right: parent.right; rightMargin: K.Theme.space.sm; verticalCenter: parent.verticalCenter }
+                                    visible: !!row.field && row.field.kind === "boolean"
+                                    checked: !!row.field && row.field.value === true
+                                }
                                 C.Label {
                                     anchors { left: parent.left; right: value.left; leftMargin: K.Theme.space.sm; rightMargin: K.Theme.space.md; verticalCenter: parent.verticalCenter }
                                     elide: Text.ElideRight
@@ -247,6 +258,7 @@ Item {
                                 }
                                 C.Label {
                                     id: value
+                                    visible: !toggle.visible
                                     anchors { right: parent.right; rightMargin: K.Theme.space.sm; verticalCenter: parent.verticalCenter }
                                     width: Math.min(implicitWidth, row.width * 0.5)
                                     elide: Text.ElideRight
@@ -256,7 +268,9 @@ Item {
                                     text: row.field ? K.Shell.formDisplay(row.field) : ""
                                 }
                                 MouseArea {
+                                    id: rowMouse
                                     anchors.fill: parent
+                                    hoverEnabled: true
                                     cursorShape: Qt.PointingHandCursor
                                     onClicked: {
                                         if (win.editing) win.stopEdit();

@@ -27,7 +27,8 @@ Singleton {
     readonly property var font:    tokens.font    || ({ ui: "Inter", mono: "JetBrains Mono", display: "Inter", size: 13 })
     readonly property bool isDark: (tokens.variant || "dark") === "dark"
     readonly property bool animations: Settings.ready && Settings.global.animations !== undefined ? Settings.global.animations : true
-    readonly property int animMs: animations ? 180 : 0
+    readonly property int animMs: animations ? 200 : 0      // entering
+    readonly property int fastMs: animations ? 100 : 0      // leaving, and state changes
 
     // ---- loading ----------------------------------------------------------
     // Resolution order: ~/.config/kotilo/shell/themes/<id>/tokens.json, then bundled themes/<id>/tokens.json
