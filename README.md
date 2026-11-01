@@ -6,7 +6,7 @@ Kotilo Shell is a developer-focused Wayland shell built on [Quickshell](https://
 
 Part of the [Kotilo](https://kotilo.dev) family: Kotilo Desktop (AI-agent workspace), Kotilo Launcher (Android), Kotilo Shell (Linux).
 
-<!-- TODO: hero GIF — docs/screenshots/hero.gif -->
+![Kotilo Shell bar cycling through the six bundled themes](docs/screenshots/hero.gif)
 
 ## Install
 
@@ -18,18 +18,18 @@ Or from your distribution:
 
 | Distro | Command |
 |---|---|
-| Arch | `paru -S kotilo-shell-git` |
+| Arch | `git clone … && cd kotilo-shell/packaging/aur && makepkg -si -p PKGBUILD-git` (AUR package pending) |
 | Fedora | `dnf copr enable kotilo/kotilo-shell && dnf install kotilo-shell` |
 | NixOS / home-manager | see `packaging/nix/README.md` |
 | Other | `git clone … && ./install/install.sh` |
 
-Then add to your compositor autostart: `qs -c kotilo`.
+After a package install, run `kotilo-shell-setup` once (`install.sh` does this for you). Then add to your compositor autostart: `qs -c kotilo`.
 
 ## Compatibility
 
 | Kotilo Shell | Quickshell | Niri | Hyprland |
 |---|---|---|---|
-| 0.1.x | 0.2.x | ≥ 25.08 | ≥ 0.50 |
+| 0.1.x | 0.3.x | ≥ 25.08 | ≥ 0.50 |
 
 ## Features (0.1 → 1.0)
 
