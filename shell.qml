@@ -25,8 +25,10 @@ ShellRoot {
         }
     }
 
-    // Non-bar slots. OSD plugins own their windows, so this host is never shown.
+    // Non-bar slots. These plugins own their windows or draw nothing, so this host is never shown.
     C.SlotRow { slotName: "osd.kind"; host: pluginHost; visible: false }
+    C.SlotRow { slotName: "shell.overlay"; host: pluginHost; visible: false }
+    C.SlotRow { slotName: "palette.provider"; host: pluginHost; visible: false }
 
     // Popups / panels are LazyLoaders inside their plugins; nothing else is created at startup.
 }

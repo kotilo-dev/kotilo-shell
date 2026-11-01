@@ -2,13 +2,14 @@
 pragma Singleton
 import QtQuick
 import Quickshell
+import "internal/fuzzy.js" as Fuzzy
 
 // Global constants and the sanctioned shell-out helper.
 Singleton {
     id: root
 
     readonly property string version: "0.1.0-dev"
-    readonly property string apiVersion: "1.0.0"
+    readonly property string apiVersion: "1.1.0"
 
     // Resolved config/data dirs (XDG-compliant; never assume a distro layout).
     // The shell/ level keeps these apart from Kotilo Desktop's own files: see docs/adr/0005.
@@ -44,6 +45,16 @@ Singleton {
     signal closePopupsRequested()
     function openPopup(plugin, file, anchorItem) { openPopupRequested(plugin, file, anchorItem || null); }
     function closePopups() { closePopupsRequested(); }
+
+    // Palette providers (ADR-0008): each exposes `title` and `items(query)`.
+    property var paletteProviders: []
+    signal paletteDataChanged()                 // a provider's rows changed while the palette may be open
+    function registerPaletteProvider(p) { paletteProviders = paletteProviders.concat([p]); }
+    function unregisterPaletteProvider(p) { paletteProviders = paletteProviders.filter(x => x !== p); }
+
+    // -1 for no match, otherwise higher is better.
+    function fuzzyScore(query, text) { return Fuzzy.score(query, text); }
+    function fuzzyRank(query, title, keywords) { return Fuzzy.rank(query, title, keywords); }
 
     // Notifications: forwarded to the Notifications service when it exists (0.2).
     signal notifyRequested(var notification)

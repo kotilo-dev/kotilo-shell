@@ -16,7 +16,7 @@
     "kind": { "enum": ["qml", "script", "provider"] },
     "slots": {
       "type": "array", "minItems": 1, "uniqueItems": true,
-      "items": { "enum": ["bar.left", "bar.center", "bar.right", "controlcenter.tile", "dashboard.card", "lock.widget", "osd.kind", "palette.provider", "theme.target", "notification.handler", "wm.adapter"] }
+      "items": { "enum": ["bar.left", "bar.center", "bar.right", "controlcenter.tile", "dashboard.card", "lock.widget", "osd.kind", "shell.overlay", "palette.provider", "theme.target", "notification.handler", "wm.adapter"] }
     },
     "permissions": {
       "type": "array", "uniqueItems": true,

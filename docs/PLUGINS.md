@@ -104,6 +104,7 @@ Registers into a non-visual slot. Each provider type has an interface QML file t
 | `dashboard.card` | masonry | cards |
 | `lock.widget` | lock screen | below the clock |
 | `osd.kind` | OSD stack | custom OSD types |
+| `shell.overlay` | hidden host | plugins that own a full-screen window, such as the palette |
 | `palette.provider`, `theme.target`, `notification.handler`, `wm.adapter` | non-visual | providers |
 
 ## 4. API (`import qs.*`, see ADR-0006)
@@ -130,6 +131,28 @@ Core and third-party plugins use the same imports. Never import the shell by fil
 - `Shell.registerPaletteAction(plugin, {title, icon, exec})`
 - `Shell.run(argv, {timeout, cwd}) → Promise<{stdout, stderr, code}>` — the only sanctioned way to shell out
 - `Shell.version`, `Shell.apiVersion`
+
+- `Shell.registerPaletteProvider(item)`, `Shell.unregisterPaletteProvider(item)`, `Shell.paletteDataChanged()`, `Shell.fuzzyScore(query, text)`, `Shell.fuzzyRank(query, title, keywords)` (API 1.1)
+
+### Palette providers (API 1.1, ADR-0008)
+A provider is a `kind: "provider"` plugin in `palette.provider`. It registers itself on load and unregisters on destruction:
+
+```qml
+Item {
+    id: root
+    property var plugin: null
+    property string slot: ""
+    readonly property string title: "Example"
+    Component.onCompleted: K.Shell.registerPaletteProvider(root)
+    Component.onDestruction: K.Shell.unregisterPaletteProvider(root)
+    function items(query) {
+        return [{ title: "Hello", subtitle: "optional", icon: "optional-theme-icon", keywords: "optional words",
+                  actions: [{ title: "Run", run: () => K.Log.info("hello") }] }];
+    }
+}
+```
+
+The palette filters and ranks your rows, so return every candidate. The first action runs on `Enter`; `Tab` lists them all. `items()` runs on the UI thread on each keystroke: answer from memory and never start a process there. When your data changes, call `Shell.paletteDataChanged()` so an open palette refreshes.
 
 ## 5. Loading and hot reload
 
