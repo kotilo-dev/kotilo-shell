@@ -9,7 +9,7 @@ Singleton {
     id: root
 
     readonly property string version: "0.1.0-dev"
-    readonly property string apiVersion: "1.4.0"
+    readonly property string apiVersion: "1.5.0"
 
     // Resolved config/data dirs (XDG-compliant; never assume a distro layout).
     // The shell/ level keeps these apart from Kotilo Desktop's own files: see docs/adr/0005.
@@ -77,6 +77,25 @@ Singleton {
     property var notificationHandlers: []
     function registerNotificationHandler(h) { notificationHandlers = notificationHandlers.concat([h]); }
     function unregisterNotificationHandler(h) { notificationHandlers = notificationHandlers.filter(x => x !== h); }
+
+    // Bar keyboard mode (ADR-0014): the output whose bar holds the keyboard, or "".
+    property string barKeyboardOutput: ""
+
+    // Handles a key for a bar item. Returns "activate" or "menu" when the item has work to do.
+    function barKey(event, item) {
+        const key = event.key;
+        let action = "";
+        if (key === Qt.Key_Left || key === Qt.Key_Right) {
+            const next = item.nextItemInFocusChain(key === Qt.Key_Right);
+            if (next) next.forceActiveFocus();
+        } else if (key === Qt.Key_Escape) barKeyboardOutput = "";
+        else if (key === Qt.Key_Return || key === Qt.Key_Enter || key === Qt.Key_Space) action = "activate";
+        else if (key === Qt.Key_Menu) action = "menu";
+        else return "";
+        event.accepted = true;
+        if (action) barKeyboardOutput = "";     // what it opens needs the keyboard
+        return action;
+    }
 
     signal agentsToggled()
     function toggleAgents() { agentsToggled(); }

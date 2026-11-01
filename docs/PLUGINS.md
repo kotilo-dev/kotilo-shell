@@ -188,6 +188,6 @@ Users should treat installing a plugin like installing a package.
 - [ ] `manifest.json` validates (`scripts/validate-manifests.py path/`)
 - [ ] no hardcoded colours/fonts; uses `Theme.*`
 - [ ] renders in light and dark themes
-- [ ] keyboard reachable (`Keys`/`activeFocus`) when interactive
+- [ ] keyboard reachable when interactive: `Pill` is; a custom bar item sets `activeFocusOnTab` and calls `Shell.barKey(event, item)` (ADR-0014)
 - [ ] `settings.schema.json` for every user-facing option
 - [ ] README with screenshot

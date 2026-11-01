@@ -18,6 +18,16 @@ Rectangle {
     signal clicked()
     signal rightClicked()
 
+    activeFocusOnTab: true
+    Keys.onPressed: event => {
+        const action = K.Shell.barKey(event, pill);
+        if (action === "activate") pill.clicked();
+        else if (action === "menu") pill.rightClicked();
+    }
+    onActiveFocusChanged: if (!activeFocus && !mouse.containsMouse) tipShown = false
+
+    FocusRing { visible: pill.activeFocus }
+
     implicitHeight: 26
     implicitWidth: content.implicitWidth + K.Theme.space.md * 2
     radius: K.Theme.radius.sm
@@ -40,7 +50,7 @@ Rectangle {
         onClicked: (e) => e.button === Qt.RightButton ? pill.rightClicked() : pill.clicked()
     }
 
-    Timer { id: hoverDelay; interval: 600; running: mouse.containsMouse && pill.tooltip.length > 0 }
+    Timer { id: hoverDelay; interval: 600; running: (mouse.containsMouse || pill.activeFocus) && pill.tooltip.length > 0 }
     property bool tipShown: false
     Connections {
         target: hoverDelay
@@ -48,7 +58,7 @@ Rectangle {
     }
     Connections {
         target: mouse
-        function onContainsMouseChanged() { if (!mouse.containsMouse) pill.tipShown = false; }
+        function onContainsMouseChanged() { if (!mouse.containsMouse && !pill.activeFocus) pill.tipShown = false; }
     }
 
     LazyLoader {

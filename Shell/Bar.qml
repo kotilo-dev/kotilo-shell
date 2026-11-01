@@ -20,6 +20,21 @@ PanelWindow {
     color: "transparent"
     WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.namespace: "kotilo-bar"
+    WlrLayershell.keyboardFocus: keyboard ? WlrKeyboardFocus.Exclusive : WlrKeyboardFocus.None
+
+    // Keyboard mode (ADR-0014). With nothing to focus, nothing could answer Esc, so it ends at once.
+    readonly property bool keyboard: !!screen && Shell.barKeyboardOutput === screen.name
+    onKeyboardChanged: if (keyboard) focusFirst.restart()
+
+    Timer {
+        id: focusFirst
+        interval: 50
+        onTriggered: {
+            const first = bar.contentItem.nextItemInFocusChain(true);
+            if (first && first.activeFocusOnTab) first.forceActiveFocus();
+            else Shell.barKeyboardOutput = "";
+        }
+    }
 
     Rectangle {
         anchors.fill: parent

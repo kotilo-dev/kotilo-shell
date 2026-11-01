@@ -6,6 +6,7 @@ import Quickshell
 import Quickshell.Io
 import "Shell" as K
 import "components" as C
+import "services" as S
 
 ShellRoot {
     id: root
@@ -21,6 +22,16 @@ ShellRoot {
     IpcHandler {
         target: "plugins"
         function reload(): void { Quickshell.reload(false); }
+    }
+
+    // Bar keyboard mode (ADR-0014). Also the way out from a script.
+    IpcHandler {
+        target: "bar"
+        function toggle(): void {
+            const screens = Quickshell.screens;
+            const output = screens.some(s => s.name === S.Workspaces.focusedOutput) ? S.Workspaces.focusedOutput : (screens.length ? screens[0].name : "");
+            K.Shell.barKeyboardOutput = K.Shell.barKeyboardOutput ? "" : output;
+        }
     }
 
     // One bar per screen.
