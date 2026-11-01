@@ -1,10 +1,10 @@
 {
   "id": "bar.resources",
   "name": "Resources",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "apiVersion": "^1.0",
   "author": "kotilo",
-  "description": "CPU and memory use",
+  "description": "CPU, memory and network use",
   "kind": "qml",
   "slots": [
     "bar.right"

@@ -9,6 +9,16 @@
       "minimum": 1,
       "title": "Update interval in seconds"
     },
+    "sparkline": {
+      "type": "boolean",
+      "default": true,
+      "title": "Show the CPU sparkline"
+    },
+    "network": {
+      "type": "boolean",
+      "default": true,
+      "title": "Show network down and up"
+    },
     "warnAt": {
       "type": "integer",
       "default": 85,

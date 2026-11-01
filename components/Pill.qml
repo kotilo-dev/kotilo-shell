@@ -15,6 +15,7 @@ Rectangle {
     property color accent: K.Theme.accent.primary
     property color fg: active ? K.Theme.text.onAccent : K.Theme.text.primary
     property bool mono: true
+    default property alias extras: content.data     // placed after the text
     signal clicked()
     signal rightClicked()
 

@@ -36,6 +36,7 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 - [x] Agents list in the control center; rows open the agents panel and never answer
 - [x] Bar keyboard mode (ADR-0014): `ipc call bar toggle`, Pill and tray
 - [x] Keyboard access to every notification action: ←→ in the panel
+- [x] CPU sparkline and net down/up in `bar.resources` (SPEC §3.1)
 
 ## Parking lot
 - More theme targets from SPEC §4.3, and a real render check in ghostty and kitty, which the dev machine does not have
@@ -43,6 +44,5 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 - Control center tiles for night light, VPN and screen share (need a compositor-neutral backend)
 - Adapters for more agent CLIs
 - Memory budget: 150 MB PSS, because an empty Quickshell with one window is already 208 MB RSS (108 MB PSS). In a nested shell Kotilo starts at 142 MB PSS and settles at 151-160 MB after panels have been opened, so it is over budget once used. This is not a leak: it stays flat over 40 reopens. A tighter glibc allocator (`MALLOC_ARENA_MAX=1`, lower trim threshold) did not help (156-159 MB). The live bar read 176 MB after a hot reload; a fresh start on the real desktop is not measured
-- CPU sparkline and net up/down in `bar.resources` (SPEC §3.1)
 - Vertical bar option
 - Sway adapter

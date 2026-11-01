@@ -43,3 +43,26 @@ function devPorts(texts, exclude) {
             if (isLocalOrAny(l.host) && l.port >= 1024 && l.port < 32768 && skip.indexOf(l.port) < 0) ports.add(l.port);
     return Array.from(ports).sort((a, b) => a - b);
 }
+
+// Parses /proc/net/dev into { rx, tx } byte totals. Skips loopback and virtual links, whose traffic
+// also crosses a real interface and would count twice.
+function parseNetDev(text) {
+    const total = { rx: 0, tx: 0 };
+    for (const line of String(text).split("\n")) {
+        const m = /^\s*([^:\s]+):\s*(.*)$/.exec(line);
+        if (!m || /^(lo|veth|docker|br-|virbr|podman|cni)/.test(m[1])) continue;
+        const f = m[2].trim().split(/\s+/).map(Number);
+        if (f.length < 9 || f.some(isNaN)) continue;
+        total.rx += f[0];
+        total.tx += f[8];
+    }
+    return total;
+}
+
+// Bytes per second -> at most four characters for the bar, such as 512K, 1.2M or 87M.
+function shortRate(bytes) {
+    const units = ["K", "M", "G", "T"];
+    let value = Math.max(0, bytes) / 1024, unit = 0;
+    while (Math.round(value) >= 1000 && unit < units.length - 1) { value /= 1024; unit++; }
+    return (unit > 0 && value < 9.95 ? value.toFixed(1) : String(Math.round(value))) + units[unit];
+}
