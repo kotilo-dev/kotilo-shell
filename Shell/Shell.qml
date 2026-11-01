@@ -109,6 +109,9 @@ Singleton {
     // Asks the dashboard to close, for a card whose action leaves the shell.
     signal dashboardClosed()
 
+    signal settingsToggled()
+    function toggleSettings() { settingsToggled(); }
+
     signal agentsToggled()
     function toggleAgents() { agentsToggled(); }
 

@@ -25,6 +25,11 @@ Item {
         function close(): void { root.shown = false; }
     }
 
+    Connections {
+        target: K.Shell
+        function onSettingsToggled() { root.shown = !root.shown; }
+    }
+
     onPluginChanged: if (plugin) K.Shell.registerPaletteAction(plugin, { title: "Open settings", exec: () => { root.shown = true; } })
     Component.onDestruction: if (plugin) K.Shell.unregisterPaletteActions(plugin)
 
