@@ -39,7 +39,7 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 
 ## Parking lot
 - More theme targets from SPEC §4.3, and a real render check in ghostty and kitty, which the dev machine does not have
-- One broken service file disables every plugin, because all of them import the services module
+- One service that fails to compile stops the whole shell: no bar, only errors in the log. Importing a QML module depends on all its singletons, so this is Qt behaviour. `scripts/test.sh` catches a typo where it has a Wayland session. The exposure for users is a Quickshell build without an optional module (Pipewire, UPower, Bluetooth, Networking, Mpris, SystemTray, Notifications), since eight services import those at compile time. `scripts/check-modules.sh` now names a missing module at install and on `kotilo-shell start`. The full fix would be runtime-loaded backends behind each service, which needs an ADR
 - Control center tiles for night light, VPN and screen share (need a compositor-neutral backend)
 - Adapters for more agent CLIs
 - Memory budget: 150 MB PSS, because an empty Quickshell with one window is already 208 MB RSS (108 MB PSS). In a nested shell Kotilo starts at 142 MB PSS and settles at 151-160 MB after panels have been opened, so it is over budget once used. This is not a leak: it stays flat over 40 reopens. A tighter glibc allocator (`MALLOC_ARENA_MAX=1`, lower trim threshold) did not help (156-159 MB). The live bar read 176 MB after a hot reload; a fresh start on the real desktop is not measured

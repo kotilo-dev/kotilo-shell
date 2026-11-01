@@ -19,6 +19,7 @@ package() {
   install -dm755 "$pkgdir/usr/share/kotilo-shell"
   cp -r shell.qml Shell components services plugins themes assets config "$pkgdir/usr/share/kotilo-shell/"
   install -Dm755 scripts/plugin.sh "$pkgdir/usr/share/kotilo-shell/scripts/plugin.sh"
+  install -Dm755 scripts/check-modules.sh "$pkgdir/usr/share/kotilo-shell/scripts/check-modules.sh"
   install -Dm755 scripts/kotilo-agent "$pkgdir/usr/share/kotilo-shell/scripts/kotilo-agent"
   install -dm755 "$pkgdir/usr/bin"
   ln -s ../share/kotilo-shell/scripts/kotilo-agent "$pkgdir/usr/bin/kotilo-agent"
@@ -34,6 +35,7 @@ C="${XDG_CONFIG_HOME:-$HOME/.config}"
 mkdir -p "$C/quickshell" "$C/kotilo/shell"
 ln -sfn /usr/share/kotilo-shell "$C/quickshell/kotilo"
 [ -f "$C/kotilo/shell/settings.json" ] || cp /usr/share/kotilo-shell/config/settings.default.json "$C/kotilo/shell/settings.json"
+/usr/share/kotilo-shell/scripts/check-modules.sh || true
 echo "Kotilo Shell linked. Start with: qs -c kotilo"
 EOF
 }

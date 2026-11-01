@@ -23,6 +23,15 @@ python3 -I tests/test-base16.py || fail=1
 echo "==> agent hook"
 python3 -I tests/test-kotilo-agent.py || fail=1
 
+echo "==> Quickshell modules (needs a Wayland session)"
+if [[ -n "${WAYLAND_DISPLAY:-}" ]] && command -v qs >/dev/null 2>&1; then
+  scripts/check-modules.sh || { echo "  module check failed"; fail=1; }
+  rc=0; scripts/check-modules.sh Quickshell.DoesNotExist 2>/dev/null || rc=$?
+  if [[ $rc -eq 1 ]]; then echo "  missing module is reported"; else echo "  missing module not reported"; fail=1; fi
+else
+  echo "  no Wayland session / qs — skipped"
+fi
+
 echo "==> JS units"
 if command -v node >/dev/null 2>&1; then node tests/test-fuzzy.mjs && node tests/test-devstatus.mjs && node tests/test-agentprotocol.mjs && node tests/test-template.mjs || fail=1; else echo "  node not found — skipping"; fi
 

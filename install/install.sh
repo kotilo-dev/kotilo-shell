@@ -48,7 +48,9 @@ set -euo pipefail
 CFG="${XDG_CONFIG_HOME:-$HOME/.config}/kotilo/shell"
 LOG="${XDG_CACHE_HOME:-$HOME/.cache}/kotilo/shell/shell.log"
 case "${1:-}" in
-  start)   exec qs -c kotilo >>"$LOG" 2>&1 ;;
+  start)   # In the background, so it cannot delay the first paint.
+           "${XDG_CONFIG_HOME:-$HOME/.config}/quickshell/kotilo/scripts/check-modules.sh" 2> >(tee -a "$LOG" >&2) &
+           exec qs -c kotilo >>"$LOG" 2>&1 ;;
   stop)    pkill -f '^(\S*/)?(qs|quickshell) .*-c kotilo' || true ;;
   restart) pkill -f '^(\S*/)?(qs|quickshell) .*-c kotilo' || true; sleep 0.3; setsid qs -c kotilo >>"$LOG" 2>&1 < /dev/null & disown; echo restarted ;;
   log)     tail -f "$LOG" ;;
@@ -60,6 +62,9 @@ esac
 EOF
 chmod +x "$BIN_DIR/kotilo-shell"
 ln -sf "$QS_DIR/scripts/kotilo-agent" "$BIN_DIR/kotilo-agent"
+
+# Says so now if this Quickshell cannot run the shell. Never stops the install.
+"$QS_DIR/scripts/check-modules.sh" || true
 
 # Compositor autostart hints
 cat <<EOF
