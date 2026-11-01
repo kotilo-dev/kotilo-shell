@@ -39,6 +39,7 @@ Item {
         id: card
         required property var notification
         property bool highlighted: false
+        property int chosenAction: -1
         readonly property bool critical: notification.urgency === N.NotificationUrgency.Critical
         level: 1
         width: parent ? parent.width : 0
@@ -101,16 +102,20 @@ Item {
                         model: card.notification.actions
 
                         delegate: Rectangle {
+                            id: actionButton
                             required property var modelData
+                            required property int index
+                            readonly property bool chosen: index === card.chosenAction
                             width: actionLabel.implicitWidth + 2 * K.Theme.space.md
                             height: 28
                             radius: K.Theme.radius.sm
-                            color: K.Theme.surface[1]
+                            color: chosen ? K.Theme.accent.primary : K.Theme.surface[1]
 
                             C.Label {
                                 id: actionLabel
                                 anchors.centerIn: parent
                                 textFormat: Text.PlainText
+                                color: actionButton.chosen ? K.Theme.text.onAccent : K.Theme.text.primary
                                 text: parent.modelData.text
                             }
                             MouseArea {
@@ -190,22 +195,29 @@ Item {
             WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
 
             property int selected: 0
+            property int action: 0                  // in the selected row; Enter must not act on a stale choice
             readonly property var rows: {
                 const newest = S.Notifications.history.slice().reverse();
                 const apps = Array.from(new Set(newest.map(n => n.appName)));
                 return apps.reduce((rows, app) => rows.concat(newest.filter(n => n.appName === app)), []);
             }
-            onRowsChanged: selected = Math.max(0, Math.min(selected, rows.length - 1))
+            onRowsChanged: { selected = Math.max(0, Math.min(selected, rows.length - 1)); action = 0; }
+            onSelectedChanged: action = 0
 
             function move(delta) {
                 if (rows.length) selected = (selected + delta + rows.length) % rows.length;
+            }
+
+            function moveAction(delta) {
+                const n = rows[selected];
+                if (n && n.actions.length) action = (action + delta + n.actions.length) % n.actions.length;
             }
 
             function activate() {
                 const n = rows[selected];
                 if (!n) return;
                 root.panelOpen = false;
-                if (n.actions.length) n.actions[0].invoke();
+                if (n.actions.length) n.actions[action].invoke();
             }
 
             MouseArea { anchors.fill: parent; onClicked: root.panelOpen = false }
@@ -228,6 +240,8 @@ Item {
                         if (event.key === Qt.Key_Escape) root.panelOpen = false;
                         else if (event.key === Qt.Key_Down || (ctrl && event.key === Qt.Key_N)) panel.move(1);
                         else if (event.key === Qt.Key_Up || (ctrl && event.key === Qt.Key_P)) panel.move(-1);
+                        else if (event.key === Qt.Key_Right) panel.moveAction(1);
+                        else if (event.key === Qt.Key_Left) panel.moveAction(-1);
                         else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) panel.activate();
                         else if (event.key === Qt.Key_Delete && panel.rows[panel.selected]) S.Notifications.dismiss(panel.rows[panel.selected]);
                         else if (event.key === Qt.Key_C) S.Notifications.clear();
@@ -260,6 +274,7 @@ Item {
                             required property int index
                             notification: modelData
                             highlighted: index === panel.selected
+                            chosenAction: highlighted && notification.actions.length > 1 ? panel.action : -1
                             width: ListView.view.width
                         }
 
@@ -276,7 +291,7 @@ Item {
                         anchors { bottom: parent.bottom; left: parent.left; margins: K.Theme.space.lg }
                         secondary: true
                         font.pixelSize: K.Theme.font.size - 2
-                        text: "↵ open   del dismiss   c clear all   esc close"
+                        text: "↵ open   ←→ action   del dismiss   c clear all   esc close"
                     }
                 }
             }
