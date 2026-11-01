@@ -15,7 +15,10 @@ Row {
         delegate: Loader {
             required property var modelData
             anchors.verticalCenter: parent.verticalCenter
-            sourceComponent: modelData.manifest.kind === "script" ? scriptComp : modelData.component
+            Component.onCompleted: {
+                if (modelData.manifest.kind === "script") sourceComponent = scriptComp;
+                else source = modelData.url;
+            }
             onLoaded: {
                 if (item.hasOwnProperty("plugin")) item.plugin = modelData;
                 if (item.hasOwnProperty("slot")) item.slot = row.slotName;

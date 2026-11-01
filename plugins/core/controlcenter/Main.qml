@@ -140,7 +140,7 @@ Item {
                                         required property var modelData
                                         required property int index
                                         width: (tiles.width - 2 * tiles.spacing) / 3
-                                        sourceComponent: modelData.component
+                                        source: modelData.url
                                         onLoaded: {
                                             item.plugin = modelData;
                                             item.slot = "controlcenter.tile";

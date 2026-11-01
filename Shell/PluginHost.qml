@@ -149,9 +149,12 @@ Item {
         // them a second copy of every singleton. Plugins elsewhere get the real ones via qs.* imports.
         const inShell = e.dir.startsWith(Quickshell.shellDir);
         const url = inShell ? Qt.resolvedUrl("../" + e.dir.substring(Quickshell.shellDir.length).replace(/^\/+/, "") + "/Main.qml") : "file://" + e.dir + "/Main.qml";
+        // Checked here, then mounted by URL: a Loader given a component takes ownership and destroys
+        // it with itself, which would break the next mount.
         const c = Qt.createComponent(url);
         if (c.status === Component.Error) { disable(e, e.manifest.id, c.errorString().trim()); return false; }
         e.component = c;
+        e.url = url;
         return true;
     }
 
