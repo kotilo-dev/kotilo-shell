@@ -61,6 +61,9 @@ Singleton {
     signal controlCenterToggled()
     function toggleControlCenter() { controlCenterToggled(); }
 
+    signal agentsToggled()
+    function toggleAgents() { agentsToggled(); }
+
     // Notifications: sent through the Notifications service.
     signal notifyRequested(var notification)
     function notify(n) { notifyRequested(n); }

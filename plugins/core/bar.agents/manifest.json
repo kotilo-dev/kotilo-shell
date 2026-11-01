@@ -1,0 +1,11 @@
+{
+  "id": "bar.agents",
+  "name": "Agents",
+  "version": "0.3.0",
+  "apiVersion": "^1.2",
+  "author": "kotilo",
+  "description": "Running coding agents and waiting approvals",
+  "kind": "qml",
+  "slots": ["bar.center"],
+  "permissions": []
+}

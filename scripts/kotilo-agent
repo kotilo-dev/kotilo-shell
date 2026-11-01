@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
+"""Speak the agent protocol (ADR-0003) from a hook or wrapper.
+
+  kotilo-agent status ID STATE [--tool T] [--project P]    STATE: running, awaiting, idle, done
+  kotilo-agent approve ID COMMAND [--cwd DIR]              waits for the answer
+
+approve prints allow or deny and exits 0 for allow, 1 for deny, 2 when no answer can come."""
+import argparse, json, os, socket, sys, time
+
+def connect():
+    path = os.environ.get("KOTILO_AGENT_SOCKET") or os.path.join(os.environ.get("XDG_RUNTIME_DIR", "/tmp"), "kotilo-agents.sock")
+    client = socket.socket(socket.AF_UNIX)
+    client.connect(path)
+    return client
+
+def send(client, message):
+    client.sendall((json.dumps(message) + "\n").encode())
+
+def status(args):
+    with connect() as client:
+        send(client, {"type": "agent.status", "id": args.id, "tool": args.tool, "project": args.project,
+                      "state": args.state, "since": int(time.time())})
+        client.shutdown(socket.SHUT_WR)
+        client.recv(1)                      # the shell has read it once it closes
+    return 0
+
+def approve(args):
+    with connect() as client:
+        send(client, {"type": "agent.approval", "id": args.id, "command": args.command, "cwd": args.cwd})
+        reader = client.makefile()
+        for line in reader:
+            reply = json.loads(line)
+            if reply.get("type") == "agent.approval.reply" and reply.get("id") == args.id:
+                print("allow" if reply.get("allow") is True else "deny")
+                return 0 if reply.get("allow") is True else 1
+    print("no answer", file=sys.stderr)
+    return 2
+
+parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+commands = parser.add_subparsers(dest="action", required=True)
+s = commands.add_parser("status")
+s.add_argument("id"); s.add_argument("state"); s.add_argument("--tool", default=""); s.add_argument("--project", default="")
+s.set_defaults(run=status)
+a = commands.add_parser("approve")
+a.add_argument("id"); a.add_argument("command"); a.add_argument("--cwd", default=os.getcwd())
+a.set_defaults(run=approve)
+args = parser.parse_args()
+try:
+    sys.exit(args.run(args))
+except OSError as e:
+    print(f"kotilo-agent: {e}", file=sys.stderr)
+    sys.exit(2)

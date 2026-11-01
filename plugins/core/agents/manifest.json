@@ -1,0 +1,11 @@
+{
+  "id": "agents",
+  "name": "Agent approvals",
+  "version": "0.3.0",
+  "apiVersion": "^1.2",
+  "author": "kotilo",
+  "description": "Approval requests from coding agents, and the list of running agents",
+  "kind": "qml",
+  "slots": ["shell.overlay"],
+  "permissions": ["process"]
+}

@@ -28,16 +28,17 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 ## 0.3 — Dev modules + agents + focus + propagation
 
 - [x] Git, Containers and Ports bar modules (ADR-0010)
-- [ ] Agent protocol (ADR-0003 first), `bar.agents`, approvals with keyboard Allow/Deny
+- [x] Agent protocol (ADR-0003), `bar.agents`, approvals with keyboard Allow/Deny, `scripts/kotilo-agent`
 - [ ] Focus Mode: Pomodoro, DND except approvals, compact bar, control center tile
 - [ ] Theme propagation targets (`theme.target` slot, first apps from SPEC §4.3)
 - [ ] Plugin API v1: finish script plugins, `Shell.openPopup`, `Shell.registerPaletteAction`, `apiVersion` check
 
 ## Parking lot
+- One broken service file disables every plugin, because all of them import the services module
 - Idle CPU is about 1 % of one core with the polling services; measure against the budget on a machine without Omarchy's shell
 - Control center tiles for night light, VPN and screen share (need a compositor-neutral backend)
-- Keyboard access to a notification's second action, needed for agent approvals in 0.3
-- Check mouse hover and click in the palette, notifications and control center
+- Keyboard access to a notification's second action
+- Adapters for agent CLIs (Claude Code hooks first) and the agents list in the control center
 - Memory: 0.1 already starts at 235 MB RSS against the 150 MB budget; the palette retains about 35 MB after first open
 - CPU sparkline and net up/down in `bar.resources` (SPEC §3.1)
 - Keyboard access to bar plugins (definition of done)
