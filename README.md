@@ -35,6 +35,8 @@ Start Focus Mode from the control center, or bind `qs -c kotilo ipc call focus t
 
 Open the control center from the bar, or bind `qs -c kotilo ipc call controlcenter toggle`.
 
+Open settings from the palette, or bind `qs -c kotilo ipc call settings toggle`. Plugins get a form from their `settings.schema.json`.
+
 Bind `qs -c kotilo ipc call bar toggle` to reach the bar from the keyboard: ←→ move, Enter activates, Menu opens the context action, Esc leaves.
 
 Kotilo Shell is your notification daemon unless another one is already running. It never takes over from one: stop the other daemon and the shell picks the name up within 15 s. Open the history with the bell, or with `qs -c kotilo ipc call notifications toggle`.

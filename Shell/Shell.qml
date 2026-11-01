@@ -3,13 +3,14 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import "internal/fuzzy.js" as Fuzzy
+import "internal/schemaform.js" as Form
 
 // Global constants and the sanctioned shell-out helper.
 Singleton {
     id: root
 
     readonly property string version: "0.3.0"
-    readonly property string apiVersion: "1.5.0"
+    readonly property string apiVersion: "1.6.0"
 
     // Resolved config/data dirs (XDG-compliant; never assume a distro layout).
     // The shell/ level keeps these apart from Kotilo Desktop's own files: see docs/adr/0005.
@@ -57,6 +58,13 @@ Singleton {
     // -1 for no match, otherwise higher is better.
     function fuzzyScore(query, text) { return Fuzzy.score(query, text); }
     function fuzzyRank(query, title, keywords) { return Fuzzy.rank(query, title, keywords); }
+
+    // Settings forms from a JSON schema (ADR-0004).
+    function formFields(schema, values) { return Form.fields(schema, values); }
+    function formStep(field, direction) { return Form.step(field, direction); }
+    function formParse(field, text) { return Form.parse(field, text); }
+    function formDisplay(field) { return Form.display(field); }
+    function formMove(rows, index, direction) { return Form.move(rows, index, direction); }
 
     signal controlCenterToggled()
     function toggleControlCenter() { controlCenterToggled(); }

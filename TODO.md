@@ -38,6 +38,12 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 - [x] Keyboard access to every notification action: ←→ in the panel
 - [x] CPU sparkline and net down/up in `bar.resources` (SPEC §3.1)
 
+## 0.4 — Settings, store, lock, dashboard
+
+- [x] Settings panel (ADR-0004): forms from plugin schemas, keyboard first, saving refused while `settings.json` does not parse
+- [ ] General settings in the panel: bar, animations, theme
+- [ ] Editors for array and object settings
+
 ## Parking lot
 - More theme targets from SPEC §4.3, and a real render check in ghostty and kitty, which the dev machine does not have
 - One service that fails to compile stops the whole shell: no bar, only errors in the log. Importing a QML module depends on all its singletons, so this is Qt behaviour. `scripts/test.sh` catches a typo where it has a Wayland session. The exposure for users is a Quickshell build without an optional module (Pipewire, UPower, Bluetooth, Networking, Mpris, SystemTray, Notifications), since eight services import those at compile time. `scripts/check-modules.sh` now names a missing module at install and on `kotilo-shell start`. The full fix would be runtime-loaded backends behind each service, which needs an ADR

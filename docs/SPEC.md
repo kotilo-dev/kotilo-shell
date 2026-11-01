@@ -141,8 +141,7 @@ Unix socket `$XDG_RUNTIME_DIR/kotilo-agents.sock`, JSON lines. Messages carry a 
 
 ## 10. Current milestone — 0.4 (not started; 0.3.0 released)
 
-0.1 and 0.2 are complete except for the AUR publish, which waits on AUR registration. 0.3.0 is released. 0.4 starts with the Settings GUI, which needs ADR-0004. Further agent CLI adapters and theme targets are in its parking lot.
+0.1 and 0.2 are complete except for the AUR publish, which waits on AUR registration. 0.3.0 is released. 0.4 has started with the Settings GUI (ADR-0004). Further agent CLI adapters and theme targets are in its parking lot.
 
 ## 11. Open decisions (ADRs to write)
 
-- ADR-0004 Settings GUI: inside shell (QML) vs separate app

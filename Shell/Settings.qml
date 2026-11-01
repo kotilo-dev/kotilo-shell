@@ -13,6 +13,7 @@ Singleton {
     property var global: ({})
     property bool ready: false
     property bool useDefaults: false            // set when settings.json cannot be read
+    property bool parseError: false             // the file does not parse, so saving would lose the user's edits
 
     signal changed(string pluginId, string key)
 
@@ -40,10 +41,12 @@ Singleton {
     function apply(json) {
         try {
             global = JSON.parse(json);
+            parseError = false;
             ready = true;
             changed("", "");
             Log.info("settings loaded from " + root.path, "settings");
         } catch (e) {
+            parseError = true;
             Log.error("settings parse error: " + e, "settings");
         }
     }
@@ -76,6 +79,7 @@ Singleton {
     }
 
     function save() {
+        if (parseError) { Log.warn("settings.json has a syntax error, so nothing was saved", "settings"); return; }
         file.setText(JSON.stringify(global, null, 2));
     }
 }

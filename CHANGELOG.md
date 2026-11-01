@@ -4,6 +4,12 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 
 ## [Unreleased]
 
+### Added
+- Settings panel with forms generated from each plugin's schema (API 1.6, ADR-0004)
+
+### Security
+- Nothing is saved while `settings.json` has a syntax error, so a hand edit in progress cannot be overwritten
+
 ## [0.3.0] - 2026-11-01
 
 ### Added
