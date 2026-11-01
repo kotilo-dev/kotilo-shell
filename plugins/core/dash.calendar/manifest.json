@@ -1,0 +1,11 @@
+{
+  "id": "dash.calendar",
+  "name": "Calendar card",
+  "version": "0.1.0",
+  "apiVersion": "^1.12",
+  "author": "kotilo",
+  "description": "A month calendar",
+  "kind": "qml",
+  "slots": ["dashboard.card"],
+  "permissions": []
+}

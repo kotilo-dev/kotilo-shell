@@ -138,24 +138,38 @@ Item {
                             contentHeight: flow.implicitHeight
                             boundsBehavior: Flickable.StopAtBounds
 
-                            Flow {
+                            // Three columns, filled in slot order: card n goes to column n % 3.
+                            Row {
                                 id: flow
+                                readonly property var cards: root.host && root.host.ready ? root.host.slot("dashboard.card") : []
+                                readonly property real columnWidth: (width - 2 * spacing) / 3
                                 width: parent.width
                                 spacing: K.Theme.space.md
 
                                 Repeater {
-                                    model: root.host && root.host.ready ? root.host.slot("dashboard.card") : []
+                                    model: 3
 
-                                    delegate: Loader {
-                                        required property var modelData
-                                        width: (flow.width - flow.spacing) / 2
-                                        source: modelData.url
-                                        onLoaded: {
-                                            item.plugin = modelData;
-                                            item.slot = "dashboard.card";
-                                            item.width = Qt.binding(() => width);
+                                    delegate: Column {
+                                        id: cardColumn
+                                        required property int index
+                                        width: flow.columnWidth
+                                        spacing: K.Theme.space.md
+
+                                        Repeater {
+                                            model: flow.cards.filter((card, i) => i % 3 === cardColumn.index)
+
+                                            delegate: Loader {
+                                                required property var modelData
+                                                width: cardColumn.width
+                                                source: modelData.url
+                                                onLoaded: {
+                                                    item.plugin = modelData;
+                                                    item.slot = "dashboard.card";
+                                                    item.width = Qt.binding(() => width);
+                                                }
+                                                onStatusChanged: if (status === Loader.Error) K.Log.error("failed to mount " + modelData.id, "dashboard")
+                                            }
                                         }
-                                        onStatusChanged: if (status === Loader.Error) K.Log.error("failed to mount " + modelData.id, "dashboard")
                                     }
                                 }
                             }

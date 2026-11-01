@@ -5,6 +5,7 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 ## [Unreleased]
 
 ### Added
+- Dashboard cards for the clock, calendar, media and weather. Weather uses Open-Meteo and stays offline until you set a city
 - Dashboard panel with tabs, opened from the date and time: Dashboard, Performance with processes grouped by name, Agents, GitHub and RSS (`dashboard.tab`, API 1.12, ADR-0017)
 - Windows list in the bar: pick a window to switch to its workspace and focus it (`Workspaces.workspaceOf`, API 1.11)
 - Bar scale setting: small, normal and large (API 1.10)

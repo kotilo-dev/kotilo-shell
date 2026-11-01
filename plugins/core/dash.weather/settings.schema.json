@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Weather",
+  "type": "object",
+  "properties": {
+    "city": { "type": "string", "default": "", "title": "City; empty keeps the card offline" },
+    "unit": { "type": "string", "enum": ["celsius", "fahrenheit"], "default": "celsius", "title": "Temperature unit" }
+  }
+}
