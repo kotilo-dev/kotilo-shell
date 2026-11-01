@@ -64,6 +64,7 @@ Singleton {
     function formStep(field, direction) { return Form.step(field, direction); }
     function formParse(field, text) { return Form.parse(field, text); }
     function formDisplay(field) { return Form.display(field); }
+    function formText(field) { return Form.text(field); }
     function formMove(rows, index, direction) { return Form.move(rows, index, direction); }
 
     signal controlCenterToggled()

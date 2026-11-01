@@ -7,7 +7,7 @@ import assert from "node:assert/strict";
 const src = readFileSync(new URL("../Shell/internal/schemaform.js", import.meta.url), "utf8").replace(".pragma library", "");
 const ctx = {};
 vm.runInNewContext(src, ctx);
-const { fields, step, parse, display, move } = ctx;
+const { fields, step, parse, display, move, text } = ctx;
 
 const schema = { properties: {
     on: { type: "boolean", default: true, title: "Enabled" },
@@ -20,7 +20,7 @@ const schema = { properties: {
 } };
 const f = fields(schema, { count: 2 });
 const by = key => f.find(x => x.key === key);
-assert.deepEqual(Array.from(f.map(x => x.kind)), ["boolean", "integer", "number", "string", "enum", "other", "other"]);
+assert.deepEqual(Array.from(f.map(x => x.kind)), ["boolean", "integer", "number", "string", "enum", "array", "object"]);
 assert.equal(by("on").title, "Enabled");
 assert.equal(by("count").title, "count");
 assert.equal(by("count").value, 2, "a stored value beats the default");
@@ -43,13 +43,35 @@ assert.equal(value(parse(by("count"), " 3 ")), 3);
 assert.equal(value(parse(by("ratio"), "0.25")), 0.25);
 assert.equal(value(parse(by("name"), "")), "");
 for (const bad of ["", "  ", "abc", "1.5", "0", "7", "Infinity", "NaN"]) assert.equal(parse(by("count"), bad).ok, false, "refuse: " + bad);
-assert.equal(parse(by("list"), "[]").ok, false);
 assert.equal(parse(by("side"), "up").ok, false);
 
 assert.equal(display(by("on")), "on");
 assert.equal(display(by("count")), "2");
 assert.equal(display(by("name")), "not set");
-assert.equal(display(by("list")), "edit in settings.json");
+assert.equal(display(by("list")), "none");
+assert.equal(display(by("map")), "none");
+assert.equal(display(fields({ properties: { x: {} } }, {})[0]), "edit in settings.json");
+
+const zones = fields({ properties: { zones: { type: "array", default: [],
+    items: { type: "object", required: ["label", "tz"], properties: { label: { type: "string" }, tz: { type: "string" } } } } } }, {})[0];
+assert.equal(text(zones), "[]");
+assert.equal(value(parse(zones, '[{"label":"SFO","tz":"America/Los_Angeles"}]')).length, 1);
+assert.equal(value(parse(zones, "[]")).length, 0);
+for (const bad of ["", "not json", "{}", "5", "null", '[{"label":"SFO"}]', '[{"label":"","tz":"UTC"}]', '[{"label":5,"tz":"UTC"}]', '["SFO"]'])
+    assert.equal(parse(zones, bad).ok, false, "refuse: " + bad);
+
+const ports = fields({ properties: { p: { type: "array", items: { type: "integer" } } } }, { p: [3000] })[0];
+assert.equal(text(ports), "[3000]");
+assert.equal(display(ports), "[3000]");
+assert.equal(parse(ports, "[3000, 8080]").ok, true);
+for (const bad of ['["3000"]', "[1.5]", "[null]"]) assert.equal(parse(ports, bad).ok, false, "refuse: " + bad);
+
+const rules = fields({ properties: { r: { type: "object" } } }, {})[0];
+assert.equal(text(rules), "{}");
+assert.equal(value(parse(rules, '{"Slack":{"popup":false}}')).Slack.popup, false);
+for (const bad of ["[]", "null", "5", "{"]) assert.equal(parse(rules, bad).ok, false, "refuse: " + bad);
+assert.equal(text(by("name")), "");
+assert.equal(text(by("count")), "2");
 
 const rows = [{ heading: "A" }, { field: {} }, { field: {} }, { heading: "B" }, { field: {} }];
 assert.equal(move(rows, 1, 1), 2);

@@ -1,7 +1,8 @@
 {
   "type": "object",
   "properties": {
-    "exclude": { "type": "array", "title": "Ports to hide", "default": [] },
+    "exclude": { "type": "array", "title": "Ports to hide",
+      "items": { "type": "integer" }, "default": [] },
     "max": { "type": "integer", "title": "Most ports shown before the rest collapse into a count", "default": 3 }
   }
 }

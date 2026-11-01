@@ -42,7 +42,7 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 
 - [x] Settings panel (ADR-0004): forms from plugin schemas, keyboard first, saving refused while `settings.json` does not parse
 - [x] General settings in the panel: theme, propagation, animations, bar position and height
-- [ ] Editors for array and object settings
+- [x] Array and object settings: edited as JSON, checked against the schema
 
 ## Parking lot
 - More theme targets from SPEC §4.3, and a real render check in ghostty and kitty, which the dev machine does not have

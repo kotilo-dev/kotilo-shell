@@ -8,6 +8,7 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 - Settings panel with general settings and forms generated from each plugin's schema (API 1.6, ADR-0004)
 
 ### Fixed
+- Extra time zones in `bar.clock` show the zone's time; they always showed local time before
 - Tooltips open above a bottom bar instead of off the screen
 
 ### Security

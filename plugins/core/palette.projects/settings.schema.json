@@ -1,7 +1,8 @@
 {
   "type": "object",
   "properties": {
-    "roots": { "type": "array", "title": "Folders to search, up to 3 levels deep", "default": ["~/dev", "~/src", "~/projects", "~/code"] },
+    "roots": { "type": "array", "title": "Folders to search, up to 3 levels deep",
+      "items": { "type": "string" }, "default": ["~/dev", "~/src", "~/projects", "~/code"] },
     "terminal": { "type": "string", "title": "Terminal command; defaults to $TERMINAL, then xdg-terminal-exec", "default": "" }
   }
 }

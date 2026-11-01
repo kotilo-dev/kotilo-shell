@@ -131,8 +131,7 @@ Item {
             }
 
             function startEdit() {
-                const value = current.field.value;
-                input.text = value === undefined ? "" : String(value);
+                input.text = K.Shell.formText(current.field);
                 refused = "";
                 editing = true;
                 input.selectAll();
@@ -146,7 +145,8 @@ Item {
 
             function commitEdit() {
                 const result = K.Shell.formParse(current.field, input.text);
-                if (!result.ok) { refused = "That value does not fit this setting."; return; }
+                if (!result.ok) { refused = current.field.schema.type === "array" || current.field.schema.type === "object"
+                    ? "That is not valid JSON for this setting." : "That value does not fit this setting."; return; }
                 write(result.value);
                 stopEdit();
             }
@@ -308,6 +308,7 @@ Item {
                                 selectedTextColor: K.Theme.text.onAccent
                                 font.family: K.Theme.font.mono
                                 font.pixelSize: K.Theme.font.size
+                                activeFocusOnTab: false
                                 Keys.onPressed: event => {
                                     if (event.key === Qt.Key_Escape) { win.refused = ""; win.stopEdit(); }
                                     else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) win.commitEdit();
