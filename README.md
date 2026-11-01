@@ -52,4 +52,4 @@ Read `CLAUDE.md` (working agreements) and `docs/CONTRIBUTING.md`.
 
 ## Licence
 
-TBD — see `docs/adr/0001-licence.md`.
+GPL-3.0-or-later, see `LICENSE.md`. Third-party plugins and themes loaded at runtime are treated as separate works and may use any licence (`docs/adr/0001-licence.md`).

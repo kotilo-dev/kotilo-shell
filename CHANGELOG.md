@@ -5,6 +5,7 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 ## [Unreleased]
 
 ### Added
+- Licence: GPL-3.0-or-later, with SPDX headers on all source files
 - Repository skeleton, specification, plugin and theme documentation
 - Core QML skeleton: ShellRoot, Bar, PluginHost, Theme, Settings
 - Compositor adapter interface with Niri and Hyprland stubs

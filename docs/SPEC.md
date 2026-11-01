@@ -1,6 +1,6 @@
 # Kotilo Shell — Product & Architecture Spec
 
-Status: draft v0.1 · Owner: Mustafa · Licence: GPL-3.0 (decision pending, see ADR-0001)
+Status: draft v0.1 · Owner: Mustafa · Licence: GPL-3.0-or-later (ADR-0001)
 
 ## 1. Positioning
 
@@ -154,7 +154,6 @@ Unix socket `$XDG_RUNTIME_DIR/kotilo-agents.sock`, JSON lines. Messages: `agent.
 
 ## 11. Open decisions (ADRs to write)
 
-- ADR-0001 Licence: GPL-3.0 vs MIT
 - ADR-0002 Notification daemon: own implementation vs integrate swaync
 - ADR-0003 Agent protocol transport: Unix socket vs D-Bus
 - ADR-0004 Settings GUI: inside shell (QML) vs separate app

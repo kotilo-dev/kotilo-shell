@@ -5,7 +5,7 @@ pkgrel=1
 pkgdesc="Developer-focused Wayland desktop shell for Niri and Hyprland, built on Quickshell"
 arch=('any')
 url="https://github.com/kotilo/kotilo-shell"
-license=('GPL-3.0-or-later')   # TODO: align with ADR-0001
+license=('GPL-3.0-or-later')
 depends=('quickshell' 'qt6-declarative' 'qt6-wayland' 'qt6-svg' 'qt6-5compat'
          'pipewire' 'wireplumber' 'upower' 'networkmanager' 'bluez' 'brightnessctl' 'playerctl'
          'wl-clipboard' 'jq' 'python' 'inter-font' 'ttf-jetbrains-mono-nerd')

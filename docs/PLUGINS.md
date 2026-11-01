@@ -137,6 +137,8 @@ Core and third-party plugins use the same imports. Never import the shell by fil
 
 ## 6. Distribution
 
+Kotilo Shell is GPL-3.0-or-later, but your plugin does not have to be: plugins and themes loaded at runtime are treated as separate works and may use any licence (ADR-0001).
+
 - `kotilo-shell plugin install <git-url | owner/repo>` clones into `~/.config/kotilo/shell/plugins/<id>`
 - `kotilo-shell plugin list|update|remove`
 - Index: `github.com/kotilo/kotilo-plugins` — a JSON list of manifests; the in-shell Plugin Store reads it
