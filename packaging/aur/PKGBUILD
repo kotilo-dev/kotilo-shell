@@ -9,7 +9,7 @@ license=('GPL-3.0-or-later')   # TODO: align with ADR-0001
 depends=('quickshell' 'qt6-declarative' 'qt6-wayland' 'qt6-svg' 'qt6-5compat'
          'pipewire' 'wireplumber' 'upower' 'networkmanager' 'bluez' 'brightnessctl' 'playerctl'
          'wl-clipboard' 'jq' 'python' 'inter-font' 'ttf-jetbrains-mono-nerd')
-optdepends=('cliphist: clipboard history' 'swww: wallpaper' 'matugen: dynamic Material You theme'
+optdepends=('cliphist: clipboard history' 'awww: wallpaper' 'matugen: dynamic Material You theme'
             'niri: supported compositor' 'hyprland: supported compositor')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
 sha256sums=('SKIP')

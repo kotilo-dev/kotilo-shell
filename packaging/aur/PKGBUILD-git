@@ -10,7 +10,7 @@ license=('GPL-3.0-or-later')
 depends=('quickshell' 'qt6-declarative' 'qt6-wayland' 'qt6-svg' 'qt6-5compat'
          'pipewire' 'wireplumber' 'upower' 'networkmanager' 'bluez' 'brightnessctl' 'playerctl'
          'wl-clipboard' 'jq' 'python' 'inter-font' 'ttf-jetbrains-mono-nerd')
-optdepends=('cliphist' 'swww' 'matugen' 'niri' 'hyprland')
+optdepends=('cliphist' 'awww' 'matugen' 'niri' 'hyprland')
 provides=('kotilo-shell')
 conflicts=('kotilo-shell')
 makedepends=('git')
@@ -24,4 +24,15 @@ package() {
   install -dm755 "$pkgdir/usr/share/kotilo-shell"
   cp -r shell.qml Shell components services plugins themes assets config scripts "$pkgdir/usr/share/kotilo-shell/"
   install -Dm644 README.md "$pkgdir/usr/share/doc/kotilo-shell/README.md"
+  # Quickshell only finds configs by name under the user's config dir, so link it there.
+  install -Dm755 /dev/stdin "$pkgdir/usr/bin/kotilo-shell-setup" <<'EOF'
+#!/usr/bin/env bash
+# Links the packaged shell into the user's quickshell config and seeds settings.
+set -e
+C="${XDG_CONFIG_HOME:-$HOME/.config}"
+mkdir -p "$C/quickshell" "$C/kotilo/shell"
+ln -sfn /usr/share/kotilo-shell "$C/quickshell/kotilo"
+[ -f "$C/kotilo/shell/settings.json" ] || cp /usr/share/kotilo-shell/config/settings.default.json "$C/kotilo/shell/settings.json"
+echo "Kotilo Shell linked. Start with: qs -c kotilo"
+EOF
 }
