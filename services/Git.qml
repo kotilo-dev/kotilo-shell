@@ -31,7 +31,7 @@ Singleton {
 
     function poll() {
         if (!repo.length) { branch = ""; return; }
-        K.Shell.run(["git", "--no-optional-locks", "-C", repo, "status", "--porcelain=v2", "--branch"]).then(r => {
+        K.Shell.run(["git", "--no-optional-locks", "-c", "core.fsmonitor=false", "-C", repo, "status", "--porcelain=v2", "--branch"]).then(r => {
             const s = r.code === 0 ? Dev.parseGit(r.stdout) : { branch: "", ahead: 0, behind: 0, dirty: 0 };
             branch = s.branch; ahead = s.ahead; behind = s.behind; dirty = s.dirty;
         }, e => K.Log.debug("status failed: " + e, "git"));
