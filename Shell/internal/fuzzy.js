@@ -6,7 +6,9 @@
 function rank(query, title, keywords) {
     const inTitle = score(query, title);
     if (inTitle >= 0) return 1000 + inTitle;
-    return keywords ? score(query, keywords) : -1;
+    // Long text contains most short queries as a subsequence, so keywords must match as a substring.
+    const q = String(query).toLowerCase().trim();
+    return keywords && q.length && String(keywords).toLowerCase().indexOf(q) >= 0 ? score(q, keywords) : -1;
 }
 
 // score(query, text) -> number. -1 means no match; otherwise higher is better.

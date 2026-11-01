@@ -26,6 +26,7 @@ before("gh", "GitHub Desktop", "Rough Sketch");
 
 assert.equal(rank("xyz", "Firefox", "web browser"), -1);
 assert.ok(rank("browser", "Firefox", "web browser") > 0, "keywords still find a row");
+assert.equal(rank("nord", "Disks", "storage partition format drive"), -1, "scattered letters in keywords are no match");
 assert.ok(rank("sample", "Kotilotest Sample", "") > rank("sample", "LibreOffice Draw", "Vector Graphics Sample Map Plot Lines Editor"),
   "a title match beats a keyword match");
 
