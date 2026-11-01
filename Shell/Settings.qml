@@ -58,15 +58,21 @@ Singleton {
         if (!global.plugins) global.plugins = {};
         if (!global.plugins[pluginId]) global.plugins[pluginId] = {};
         global.plugins[pluginId][key] = value;
-        save();
-        changed(pluginId, key);
+        commit(pluginId, key);
     }
 
     function setTheme(id) {
         if (!global.theme) global.theme = {};
         global.theme.id = id;
+        commit("", "theme");
+    }
+
+    // A new object wakes every binding on global. The file watcher cannot do this: it does not
+    // fire for our own writes on every filesystem (btrfs, for one).
+    function commit(pluginId, key) {
+        global = Object.assign({}, global);
         save();
-        changed("", "theme");
+        changed(pluginId, key);
     }
 
     function save() {
