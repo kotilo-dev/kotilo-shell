@@ -74,6 +74,7 @@ else
 fi
 
 echo
-if have qs; then echo "quickshell: $(qs --version 2>/dev/null || echo present)"
+if [[ $DRY -eq 1 ]]; then echo "quickshell: dry run, not checked"
+elif have qs; then echo "quickshell: $(qs --version 2>/dev/null || echo present)"
 else echo "!! quickshell (qs) not found on PATH"; exit 1; fi
 echo "Done. Next: ./install/install.sh"
