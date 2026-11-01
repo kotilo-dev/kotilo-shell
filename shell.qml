@@ -3,6 +3,7 @@
 // Kotilo Shell — entry point. Run with: qs -c kotilo  (after install) or ./scripts/dev.sh
 import QtQuick
 import Quickshell
+import Quickshell.Io
 import "Shell" as K
 import "components" as C
 
@@ -14,6 +15,13 @@ ShellRoot {
     // Core singletons are instantiated on first use (Theme, Settings, Log).
     // PluginHost discovers and validates plugins; Bar mounts the bar.* slots.
     K.PluginHost { id: pluginHost }
+    K.PopupHost {}
+
+    // User plugins live outside the shell folder, so Quickshell does not watch them.
+    IpcHandler {
+        target: "plugins"
+        function reload(): void { Quickshell.reload(false); }
+    }
 
     // One bar per screen.
     Variants {
@@ -30,6 +38,7 @@ ShellRoot {
     C.SlotRow { slotName: "shell.overlay"; host: pluginHost; visible: false }
     C.SlotRow { slotName: "palette.provider"; host: pluginHost; visible: false }
     C.SlotRow { slotName: "theme.target"; host: pluginHost; visible: false }
+    C.SlotRow { slotName: "notification.handler"; host: pluginHost; visible: false }
 
     // Popups / panels are LazyLoaders inside their plugins; nothing else is created at startup.
 }

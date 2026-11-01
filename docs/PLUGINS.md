@@ -64,6 +64,8 @@ Expected stdout for `format: "json"`:
   "percentage": 42, "actions": [{ "label": "Restart", "exec": ["systemctl", "reboot"] }] }
 ```
 
+`percentage` draws a thin meter under the widget. `actions` appear in the command palette. `timeout` in `widget.json` (seconds, default 10) stops a stuck command.
+
 `class` maps to token colours: `ok`→success, `warn`→warning, `error`→error, `info`→info, `muted`.
 
 ### 2.2 QML widget plugin (`kind: "qml"`)
@@ -83,17 +85,18 @@ Pill {
 }
 ```
 
-A plugin may ship extra QML files and open them via `Shell.openPopup(plugin, "File.qml")`; the host positions the popup under the widget.
+A plugin may ship extra QML files and open them via `Shell.openPopup(plugin, "File.qml", anchorItem)`; the host places the popup under `anchorItem`, and Esc or a click outside closes it. The file must be a plain name in the plugin's folder. Calling it again closes the popup. `Pill.tooltip` shows after a short hover.
 
 ### 2.3 Provider plugin (`kind: "provider"`)
-Registers into a non-visual slot. Each provider type has an interface QML file the plugin's `Main.qml` must inherit:
+Registers into a non-visual slot. There are no base types: each contract is a registration call or a root component (ADR-0012).
 
-| Slot | Base type | Must implement |
-|---|---|---|
-| `palette.provider` | `Kotilo.Palette.Provider` | `function query(text): [ {title, subtitle, icon, actions[]} ]`, `property string prefix` |
-| `theme.target` | `Kotilo.Theme.Target` | `function render(tokens): [ {path, content} ]`, `function reload()` |
-| `notification.handler` | `Kotilo.Notifications.Handler` | `function match(n): bool`, `function handle(n)` |
-| `wm.adapter` | `Services.Wm.Interface` | see `services/wm/Interface.qml` |
+| Slot | Contract |
+|---|---|
+| `palette.provider` | `Shell.registerPaletteProvider(item)`; see Palette providers in §4 |
+| `theme.target` | root is `C.ThemeTarget`, with `template.conf` beside `Main.qml` |
+| `notification.handler` | `Shell.registerNotificationHandler(item)`: `match(n)` returns whether to act, `handle(n)` returns true to hold the popup. Runs only while Kotilo Shell is the notification daemon |
+
+`wm.adapter`, `dashboard.card` and `lock.widget` are reserved: manifests may name them, but nothing mounts them yet.
 
 ## 3. Slots
 
@@ -129,7 +132,7 @@ Core and third-party plugins use the same imports. Never import the shell by fil
 ### Shell
 - `Shell.openPopup(plugin, file, anchorItem?)`, `Shell.closePopups()`
 - `Shell.notify({summary, body, icon, urgency, actions})`
-- `Shell.registerPaletteAction(plugin, {title, icon, exec})`
+- `Shell.registerPaletteAction(plugin, {title, icon, exec})`, `Shell.unregisterPaletteActions(plugin)`: `exec` is a function or an argv array (API 1.4)
 - `Shell.run(argv, {timeout, cwd}) → Promise<{stdout, stderr, code}>` — the only sanctioned way to shell out
 - `Shell.toggleControlCenter()` (API 1.2)
 - A plugin with a `host` property receives the PluginHost, for hosting other slots (API 1.2)
@@ -169,14 +172,15 @@ Kotilo Shell is GPL-3.0-or-later, but your plugin does not have to be: plugins a
 
 - `kotilo-shell plugin install <git-url | owner/repo>` clones into `~/.config/kotilo/shell/plugins/<id>`
 - `kotilo-shell plugin list|update|remove`
-- Index: `github.com/kotilo-dev/kotilo-plugins` — a JSON list of manifests; the in-shell Plugin Store reads it
+- Index (planned for 0.4): `github.com/kotilo-dev/kotilo-plugins`, a JSON list of manifests for the in-shell Plugin Store
+- After editing a plugin, run `qs -c kotilo ipc call plugins reload`
 
 ## 7. Security model (read this before publishing)
 
 QML cannot be sandboxed. A plugin can run any process the user can. Kotilo therefore:
-1. shows declared `permissions` before install and warns when a plugin uses `Shell.run` without declaring `process`;
-2. marks index-listed plugins as *reviewed* and all others as *unverified*;
-3. never auto-updates unverified plugins.
+1. shows declared `permissions` before install, and warns when a plugin appears to run processes without declaring `process`;
+2. labels every installed plugin as *unverified* until the reviewed index arrives with the Plugin Store (0.4);
+3. never auto-updates plugins.
 Users should treat installing a plugin like installing a package.
 
 ## 8. Checklist before publishing a plugin

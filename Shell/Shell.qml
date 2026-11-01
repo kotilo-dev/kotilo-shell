@@ -9,7 +9,7 @@ Singleton {
     id: root
 
     readonly property string version: "0.1.0-dev"
-    readonly property string apiVersion: "1.3.0"
+    readonly property string apiVersion: "1.4.0"
 
     // Resolved config/data dirs (XDG-compliant; never assume a distro layout).
     // The shell/ level keeps these apart from Kotilo Desktop's own files: see docs/adr/0005.
@@ -60,6 +60,23 @@ Singleton {
 
     signal controlCenterToggled()
     function toggleControlCenter() { controlCenterToggled(); }
+
+    // Palette actions: exec is a function or an argv array.
+    property var paletteActions: []
+    function registerPaletteAction(plugin, action) {
+        const entry = Object.assign({}, action, { pluginId: plugin.id, pluginName: plugin.manifest.name });
+        paletteActions = paletteActions.filter(a => a.pluginId !== plugin.id || a.title !== action.title).concat([entry]);
+    }
+    function unregisterPaletteActions(plugin) { paletteActions = paletteActions.filter(a => a.pluginId !== plugin.id); }
+    function runPaletteAction(action) {
+        if (typeof action.exec === "function") action.exec();
+        else Quickshell.execDetached(action.exec);
+    }
+
+    // Notification handlers: match(n) picks a notification, handle(n) returns true to hold its popup.
+    property var notificationHandlers: []
+    function registerNotificationHandler(h) { notificationHandlers = notificationHandlers.concat([h]); }
+    function unregisterNotificationHandler(h) { notificationHandlers = notificationHandlers.filter(x => x !== h); }
 
     signal agentsToggled()
     function toggleAgents() { agentsToggled(); }

@@ -184,7 +184,4 @@ Item {
         const ids = slots[name] || [];
         return ids.map(id => Object.assign({ id: id }, plugins[id]));
     }
-
-    // TODO(0.1): file watcher per plugin dir in dev mode -> re-scan that plugin
-    // TODO(0.2): popup hosting for Shell.openPopupRequested
 }

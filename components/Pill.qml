@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import QtQuick
+import Quickshell
 import "../Shell" as K
 
 // Standard bar chip: optional icon + text, optional accent fill, click + hover.
@@ -37,6 +38,35 @@ Rectangle {
         hoverEnabled: true
         acceptedButtons: Qt.LeftButton | Qt.RightButton
         onClicked: (e) => e.button === Qt.RightButton ? pill.rightClicked() : pill.clicked()
-        // TODO(0.2): tooltip popup via Shell.openPopup after hover delay
+    }
+
+    Timer { id: hoverDelay; interval: 600; running: mouse.containsMouse && pill.tooltip.length > 0 }
+    property bool tipShown: false
+    Connections {
+        target: hoverDelay
+        function onTriggered() { pill.tipShown = true; }
+    }
+    Connections {
+        target: mouse
+        function onContainsMouseChanged() { if (!mouse.containsMouse) pill.tipShown = false; }
+    }
+
+    LazyLoader {
+        active: pill.tipShown
+
+        PopupWindow {
+            anchor.item: pill
+            anchor.rect.y: pill.height + K.Theme.space.xs
+            implicitWidth: tipLabel.implicitWidth + 2 * K.Theme.space.md
+            implicitHeight: tipLabel.implicitHeight + 2 * K.Theme.space.sm
+            color: "transparent"
+            visible: true
+
+            Surface {
+                anchors.fill: parent
+                level: 1
+                Label { id: tipLabel; anchors.centerIn: parent; textFormat: Text.PlainText; text: pill.tooltip }
+            }
+        }
     }
 }

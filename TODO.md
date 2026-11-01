@@ -31,7 +31,7 @@ Mirror of `docs/SPEC.md` §10. Tick here, keep SPEC in sync at milestone end.
 - [x] Agent protocol (ADR-0003), `bar.agents`, approvals with keyboard Allow/Deny, `scripts/kotilo-agent`
 - [x] Focus Mode: Pomodoro, DND except approvals, compact bar, control center tile
 - [x] Theme propagation targets (ADR-0011): `theme.target` slot, ghostty and kitty; more apps from SPEC §4.3 in the parking lot
-- [ ] Plugin API v1: finish script plugins, `Shell.openPopup`, `Shell.registerPaletteAction`, `apiVersion` check
+- [x] Plugin API v1 (ADR-0012): script plugins, `Shell.openPopup`, `Shell.registerPaletteAction`, tooltips, `notification.handler`, docs match the code
 
 ## Parking lot
 - More theme targets from SPEC §4.3, and a real render check in ghostty and kitty, which the dev machine does not have

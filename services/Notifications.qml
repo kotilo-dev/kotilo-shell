@@ -97,6 +97,7 @@ Singleton {
 
     function receive(n) {
         n.tracked = true;
+        if (handled(n)) return;
         const critical = n.urgency === N.NotificationUrgency.Critical;
         // Focus Mode's own messages must get through the quiet they start.
         const focusHeld = Focus.quiet && n.appName !== "Kotilo Shell";
@@ -105,6 +106,15 @@ Singleton {
             return;
         }
         popupQueue = popupQueue.concat([n]);
+    }
+
+    function handled(n) {
+        let hold = false;
+        for (const h of K.Shell.notificationHandlers) {
+            try { if (h.match(n) && h.handle(n)) hold = true; }
+            catch (e) { K.Log.warn("notification handler failed: " + e, "notifications"); }
+        }
+        return hold;
     }
 
     // How long a popup stays, in ms. 0 keeps it until dismissed.

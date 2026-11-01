@@ -1,0 +1,11 @@
+{
+  "id": "palette.actions",
+  "name": "Plugin actions",
+  "version": "0.3.0",
+  "apiVersion": "^1.4",
+  "author": "kotilo",
+  "description": "Lists actions that plugins register with the palette",
+  "kind": "provider",
+  "slots": ["palette.provider"],
+  "permissions": ["process"]
+}

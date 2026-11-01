@@ -20,6 +20,24 @@ Pill {
     onPluginChanged: if (plugin) loadSpec()
     onClicked: if (spec.onClick) K.Shell.run(spec.onClick)
 
+    // Optional meter from the script's `percentage`.
+    Rectangle {
+        anchors { left: parent.left; bottom: parent.bottom; leftMargin: K.Theme.space.sm }
+        visible: typeof w.last.percentage === "number"
+        width: (w.width - 2 * K.Theme.space.sm) * Math.max(0, Math.min(100, w.last.percentage || 0)) / 100
+        height: 2
+        radius: 1
+        color: w.accent
+    }
+
+    // Script actions join the palette, replaced on each run.
+    function publishActions() {
+        K.Shell.unregisterPaletteActions(plugin);
+        for (const a of last.actions || [])
+            if (a.label && Array.isArray(a.exec)) K.Shell.registerPaletteAction(plugin, { title: a.label, icon: a.icon || "", exec: a.exec });
+    }
+    Component.onDestruction: if (plugin) K.Shell.unregisterPaletteActions(plugin)
+
     function loadSpec() {
         specFile.path = plugin.dir + "/widget.json";
         specFile.reload();
@@ -36,15 +54,22 @@ Pill {
 
     Timer { id: tick; repeat: true; onTriggered: if (!proc.running) proc.running = true }
 
+    // A stuck script must not hold the widget forever: tick skips while it runs.
+    Timer {
+        interval: (w.spec.timeout || 10) * 1000
+        running: proc.running
+        onTriggered: { w.error = "timed out"; proc.signal(15); }
+    }
+
     Process {
         id: proc
         command: w.spec.exec || ["true"]
         stdout: StdioCollector { id: out }
         onExited: (code) => {
             const t = out.text.trim();
-            if (code !== 0) { w.error = "exit " + code; return; }
+            if (code !== 0) { if (w.error !== "timed out") w.error = "exit " + code; return; }
             if ((w.spec.format || "json") === "text") { w.last = { text: t }; w.error = ""; return; }
-            try { w.last = JSON.parse(t); w.error = ""; } catch (e) { w.error = "bad JSON from " + w.plugin.id; }
+            try { w.last = JSON.parse(t); w.error = ""; w.publishActions(); } catch (e) { w.error = "bad JSON from " + w.plugin.id; }
         }
     }
 }

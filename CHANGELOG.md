@@ -5,6 +5,7 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 ## [Unreleased]
 
 ### Added
+- Plugin API 1.4: popups, palette actions, tooltips, notification handlers, script actions and timeouts (ADR-0012)
 - Theme targets for ghostty and kitty: generated colour files you include from your own config (ADR-0011)
 - Focus Mode: Pomodoro cycle, popups held back except critical ones and approvals, compact bar, optional mute
 - Agent protocol over a Unix socket, with a bar module, approval popups, an agents panel and `scripts/kotilo-agent` (ADR-0003)
@@ -19,3 +20,6 @@ All notable changes are recorded here. Format: Keep a Changelog; versioning: Sem
 - Themes: catppuccin-mocha, gruvbox-dark
 - Example plugins: bar.workspaces, bar.clock, script-plugin example
 - Install scripts (pacman/dnf/apt), dev/test/package scripts, AUR/COPR/Nix stubs, CI
+
+### Security
+- `plugin install` and `plugin remove` reject ids that are not valid, which could otherwise delete paths outside the plugin folder
